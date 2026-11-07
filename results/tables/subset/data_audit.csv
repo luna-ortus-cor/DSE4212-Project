@@ -1,0 +1,111 @@
+section,metric,detail,value
+overview,n_rows,,1891536
+overview,n_symbols,,502
+overview,n_unique_dates,,3768
+overview,date_min_all_rows,,2010-01-04
+overview,date_max_all_rows,,2024-12-20
+overview,first_valid_adj_close_date,,2010-01-04
+overview,last_valid_adj_close_date,,2024-12-20
+missing,pct_missing,Date,0.0
+missing,pct_missing,Symbol,0.0
+missing,pct_missing,Adj Close,67.33707420847395
+missing,pct_missing,Close,67.33707420847395
+missing,pct_missing,High,67.33707420847395
+missing,pct_missing,Low,67.33707420847395
+missing,pct_missing,Open,67.33707420847395
+missing,pct_missing,Volume,67.33707420847395
+missing,n_rows_all_prices_nan,,1273705
+missing,pct_rows_all_prices_nan,,67.33707420847395
+missing,n_rows_volume_without_price,,0
+anomalies,n_duplicate_date_symbol_rows,,0
+anomalies,n_duplicate_full_rows,,0
+anomalies,n_nonpositive,Adj Close,0
+anomalies,n_nonpositive,Close,0
+anomalies,n_nonpositive,High,0
+anomalies,n_nonpositive,Low,0
+anomalies,n_nonpositive,Open,0
+anomalies,n_negative_volume,,0
+anomalies,n_zero_volume,,7
+anomalies,n_zero_volume_with_price,,7
+anomalies,n_high_lt_low,,0
+anomalies,n_close_outside_high_low,,0
+symbol_history,rows_per_symbol_min,,3768.0
+symbol_history,rows_per_symbol_q25,,3768.0
+symbol_history,rows_per_symbol_median,,3768.0
+symbol_history,rows_per_symbol_q75,,3768.0
+symbol_history,rows_per_symbol_max,,3768.0
+symbol_history,valid_adj_close_rows_per_symbol_min,,0.0
+symbol_history,valid_adj_close_rows_per_symbol_q25,,0.0
+symbol_history,valid_adj_close_rows_per_symbol_median,,0.0
+symbol_history,valid_adj_close_rows_per_symbol_q75,,3768.0
+symbol_history,valid_adj_close_rows_per_symbol_max,,3768.0
+symbol_history,n_symbols_without_valid_price,,330
+symbol_history,symbols_without_valid_price,,"A, AAPL, ABNB, ACGL, ACN, ADBE, ADI, ADP, ADSK, AEE, AEP, AFL, AIG, AIZ, AKAM, ALGN, AMAT, AMCR, AMD, AME"
+symbol_history,n_late_listing,first valid > global first,22
+symbol_history,n_early_end,last valid < global last,0
+symbol_history,shortest_history_valid_rows,A first=none last=none,0
+symbol_history,shortest_history_valid_rows,AAPL first=none last=none,0
+symbol_history,shortest_history_valid_rows,ABNB first=none last=none,0
+symbol_history,shortest_history_valid_rows,ACGL first=none last=none,0
+symbol_history,shortest_history_valid_rows,ACN first=none last=none,0
+symbol_history,longest_history_valid_rows,ABT first=2010-01-04 last=2024-12-20,3768
+symbol_history,longest_history_valid_rows,ADM first=2010-01-04 last=2024-12-20,3768
+symbol_history,longest_history_valid_rows,AES first=2010-01-04 last=2024-12-20,3768
+symbol_history,longest_history_valid_rows,AJG first=2010-01-04 last=2024-12-20,3768
+symbol_history,longest_history_valid_rows,ALB first=2010-01-04 last=2024-12-20,3768
+symbol_history,n_symbols_internal_gap,,0
+symbol_history,n_internal_gap_gt_ffill_limit,limit=3,0
+symbol_history,max_internal_gap_run,,0
+coverage,n_dates_with_no_valid_price,,0
+coverage,valid_symbols_per_date_min,,150.0
+coverage,valid_symbols_per_date_q25,,158.0
+coverage,valid_symbols_per_date_median,,167.0
+coverage,valid_symbols_per_date_q75,,170.0
+coverage,valid_symbols_per_date_max,,172.0
+coverage,n_dates_coverage_below_10pct,,0
+coverage,n_dates_coverage_below_50pct,,3768
+adjustment,adj_close_over_close_min,,0.3302273017455082
+adjustment,adj_close_over_close_q25,,0.80035248823151
+adjustment,adj_close_over_close_median,,0.9082465883678051
+adjustment,adj_close_over_close_q75,,0.9827963541686741
+adjustment,adj_close_over_close_max,,1.0
+adjustment,adj_close_over_close_q0.1pct,,0.4023815754196532
+adjustment,adj_close_over_close_q99.9pct,,1.0
+adjustment,n_adj_close_gt_close,,0
+adjustment,adj_close_over_close_min_at,,T 2010-01-04
+adjustment,adj_close_over_close_max_at,,AOS 2024-10-31
+companies,n_rows,,502
+companies,n_unique_symbols,,502
+companies,n_duplicate_symbols,,0
+companies,n_missing_sector,,0
+companies,n_symbols_only_in_stocks,,0
+companies,symbols_only_in_stocks,,
+companies,n_symbols_only_in_companies,,0
+companies,symbols_only_in_companies,,
+companies,n_per_sector,Basic Materials,22
+companies,n_per_sector,Communication Services,22
+companies,n_per_sector,Consumer Cyclical,55
+companies,n_per_sector,Consumer Defensive,37
+companies,n_per_sector,Energy,22
+companies,n_per_sector,Financial Services,67
+companies,n_per_sector,Healthcare,62
+companies,n_per_sector,Industrials,70
+companies,n_per_sector,Real Estate,31
+companies,n_per_sector,Technology,82
+companies,n_per_sector,Utilities,32
+index,n_rows,,2517
+index,date_min,,2014-12-22
+index,date_max,,2024-12-20
+index,n_duplicate_dates,,0
+index,is_sorted_ascending,,True
+index,n_missing_values,S&P500,0
+index,n_nonpositive_values,S&P500,0
+index,max_gap_days,,4
+index,n_gaps_gt_threshold,days>4,0
+index,n_dates_in_index_not_in_stocks,,0
+index,n_stock_dates_in_index_range_not_in_index,,0
+index,largest_gap_days,2015-01-16->2015-01-20,4
+index,largest_gap_days,2015-02-13->2015-02-17,4
+index,largest_gap_days,2015-04-02->2015-04-06,4
+index,largest_gap_days,2015-05-22->2015-05-26,4
+index,largest_gap_days,2015-07-02->2015-07-06,4

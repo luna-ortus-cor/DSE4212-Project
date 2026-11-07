@@ -1,0 +1,9 @@
+First: 2012-01-03 | N=100 T=504 q=0.198 MP_edge=2.089 n_signal=2 lambda_max=53.5 top_share=0.535 avg_corr=0.517 | pooled ex.kurt=11.68 share>|4sd|=3.35e-03 (normal 6.3e-05) | median ann.vol=0.334 mean skew=-0.28
+Stress: 2020-03-31 | N=100 T=504 q=0.198 MP_edge=2.089 n_signal=4 lambda_max=48.6 top_share=0.486 avg_corr=0.467 | pooled ex.kurt=25.87 share>|4sd|=1.10e-02 (normal 6.3e-05) | median ann.vol=0.341 mean skew=-0.99
+Last: 2024-12-20 | N=100 T=504 q=0.198 MP_edge=2.089 n_signal=6 lambda_max=22.9 top_share=0.229 avg_corr=0.204 | pooled ex.kurt=29.19 share>|4sd|=5.52e-03 (normal 6.3e-05) | median ann.vol=0.269 mean skew=-0.32
+rebalance dates: 156 from 2012-01-03 to 2024-12-10
+n_signal: min 2 | median 4 | max 6
+top_share: min 0.230 | median 0.351 | max 0.535 (peak 2012-01-03)
+avg_corr: min 0.205 | median 0.332 | max 0.517 (peak 2012-01-03)
+index vol overlay from 2015-01-23; correlation with rebalance-date series over 119 dates: top_share 0.24, avg_corr 0.24, n_signal -0.19
+rolling 21d avg corr: mean 0.321, min 0.038 (2017-10-12), max 0.808 (2011-09-01); 2020 mean 0.375, 2022 mean 0.428; other years mean 0.309

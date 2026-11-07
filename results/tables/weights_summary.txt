@@ -1,0 +1,12 @@
+rebalance dates: 156 from 2012-01-03 to 2024-12-10
+universe size: 100 to 100
+solver fallbacks (rebalances with at least one): 0
+EW: mean eff.N 100.0, mean max weight 0.010, mean positions>0.1% 100, mean one-way change between rebalances 0.010
+GMV-SAMPLE: mean eff.N 10.3, mean max weight 0.207, mean positions>0.1% 20, mean one-way change between rebalances 0.100
+GMV-LW: mean eff.N 11.9, mean max weight 0.177, mean positions>0.1% 22, mean one-way change between rebalances 0.094
+GMV-RMT: mean eff.N 10.0, mean max weight 0.202, mean positions>0.1% 20, mean one-way change between rebalances 0.092
+GMV-PCA: mean eff.N 10.7, mean max weight 0.178, mean positions>0.1% 20, mean one-way change between rebalances 0.090
+HRP: mean eff.N 66.3, mean max weight 0.039, mean positions>0.1% 100, mean one-way change between rebalances 0.111
+HRP-RMT: mean eff.N 68.4, mean max weight 0.038, mean positions>0.1% 100, mean one-way change between rebalances 0.102
+MV-SAMPLE: mean eff.N 6.9, mean max weight 0.256, mean positions>0.1% 11, mean one-way change between rebalances 0.254
+MV-RMT: mean eff.N 6.8, mean max weight 0.263, mean positions>0.1% 11, mean one-way change between rebalances 0.263

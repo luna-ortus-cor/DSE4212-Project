@@ -1,0 +1,6 @@
+First: 2012-01-03 | Sample | max-Sharpe est ret 0.275 vol 0.133 SR 2.07 | realized ret 0.085 vol 0.098 SR 0.87 | eff.N 4.7 max w 0.295 | frontier top end est ret 0.492 vs realized -0.001
+First: 2012-01-03 | RMT | max-Sharpe est ret 0.277 vol 0.133 SR 2.08 | realized ret 0.088 vol 0.098 SR 0.90 | eff.N 4.7 max w 0.286 | frontier top end est ret 0.492 vs realized -0.001
+Stress: 2020-03-31 | Sample | max-Sharpe est ret 0.600 vol 0.280 SR 2.14 | realized ret 0.624 vol 0.296 SR 2.11 | eff.N 5.2 max w 0.287 | frontier top end est ret 1.328 vs realized 1.990
+Stress: 2020-03-31 | RMT | max-Sharpe est ret 0.622 vol 0.307 SR 2.03 | realized ret 0.613 vol 0.306 SR 2.00 | eff.N 4.3 max w 0.297 | frontier top end est ret 1.328 vs realized 1.990
+Latest with future: 2023-12-20 | Sample | max-Sharpe est ret 0.326 vol 0.175 SR 1.87 | realized ret 0.132 vol 0.132 SR 1.01 | eff.N 5.9 max w 0.277 | frontier top end est ret 0.487 vs realized 0.024
+Latest with future: 2023-12-20 | RMT | max-Sharpe est ret 0.326 vol 0.174 SR 1.88 | realized ret 0.087 vol 0.137 SR 0.64 | eff.N 5.1 max w 0.324 | frontier top end est ret 0.487 vs realized 0.024

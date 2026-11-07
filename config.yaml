@@ -1,0 +1,80 @@
+# All parameters are fixed a priori (CLAUDE.md section 6). Sensitivity grids are for
+# sensitivity reporting only, never for choosing the headline configuration.
+# Note: write floats with a decimal point and no exponent shortcut (PyYAML parses 1e-3 as a string).
+# Note: dates must be quoted, otherwise YAML turns them into date objects.
+
+run:
+  seed: 42
+  annualization: 252
+  rf: 0.0
+
+paths:
+  raw_dir: data/raw
+  processed_dir: data/processed
+  cache_dir: results/cache
+  tables_dir: results/tables
+  figures_dir: results/figures
+
+data:
+  start_date: "2010-01-04"   # first date with a valid price in the supplied file (step 1.1 audit)
+  end_date: "2024-12-20"     # last date with a valid price in the supplied file (step 1.1 audit)
+  ffill_limit: 3
+  max_missing_frac: 0.05
+  suspect_abs_logret: 0.40
+  winsor_lower: 0.001
+  winsor_upper: 0.999
+  stocks_file: sp500_stocks.csv
+  companies_file: sp500_companies.csv
+  index_file: sp500_index.csv
+  stocks_columns: ["Date", "Symbol", "Adj Close", "Close", "High", "Low", "Open", "Volume"]
+  companies_columns: ["Symbol", "Sector", "Industry", "Marketcap", "Weight"]
+  index_columns: ["Date", "S&P500"]
+
+eda:
+  stress_date: "2020-03-31"   # inside the COVID stress period (2020-02-19 to 2020-12-31)
+  corr_window_days: 21
+  index_vol_window_days: 21
+  highlight_years: [2020, 2022]
+  frontier_horizon_days: 252
+  frontier_points: 50
+
+stats:
+  block_length: 10
+  n_boot: 5000
+  sensitivity_block_lengths: [5, 10, 20]
+  references: [GMV-SAMPLE, EW, GMV-LW]
+  alpha: 0.05
+
+regimes:
+  covid_start: "2020-02-19"
+  covid_end: "2020-12-31"
+  stress_year: 2022
+  vol_window_days: 63       # S&P 500 trailing realized volatility defining the regimes
+  min_history_days: 252     # observations before the expanding median is trusted
+
+universe:
+  n_assets: 100
+  lookback_days: 504
+  dollar_volume_window: 252
+
+backtest:
+  rebalance_days: 21
+  cost_bps: 10.0
+  max_weight: null
+  mu_convention: arithmetic   # Markowitz expected returns: "arithmetic" (mean + var/2) or "log"
+
+pca:
+  k_rule: mp
+  k_fixed: null
+  baing_kmax: 10
+
+hrp:
+  linkage: single
+
+sensitivity:
+  n_assets: [50, 100, 200]
+  lookback_days: [252, 504, 756]
+  cost_bps: [0.0, 5.0, 10.0, 20.0]
+  max_weight: [0.10]
+  pca_k_fixed: [1, 3, 5, 10]
+  hrp_linkage: [single, ward, average]

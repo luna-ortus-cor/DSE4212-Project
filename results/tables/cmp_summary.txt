@@ -1,0 +1,15 @@
+First: 2012-01-03 | LW shrinkage 0.015 | RMT n_signal 2 | PCA K (mp rule) 2, Bai-Ng 2
+  condition numbers: Sample 2.49e+03 | Ledoit-Wolf 1.44e+03 | RMT 791 | PCA 566
+  effective N: EW 100.0 | GMV-SAMPLE 4.7 | GMV-LW 5.5 | GMV-RMT 5.1 | GMV-PCA 6.6 | HRP 48.0 | HRP-RMT 54.1
+  max weight: EW 0.010 | GMV-SAMPLE 0.394 | GMV-LW 0.347 | GMV-RMT 0.378 | GMV-PCA 0.282 | HRP 0.050 | HRP-RMT 0.046
+  positions > 0.1%: EW 100 | GMV-SAMPLE 9 | GMV-LW 10 | GMV-RMT 11 | GMV-PCA 11 | HRP 100 | HRP-RMT 100
+Stress: 2020-03-31 | LW shrinkage 0.077 | RMT n_signal 4 | PCA K (mp rule) 4, Bai-Ng 4
+  condition numbers: Sample 1.68e+03 | Ledoit-Wolf 425 | RMT 286 | PCA 390
+  effective N: EW 100.0 | GMV-SAMPLE 7.2 | GMV-LW 9.5 | GMV-RMT 7.7 | GMV-PCA 7.6 | HRP 79.5 | HRP-RMT 83.3
+  max weight: EW 0.010 | GMV-SAMPLE 0.223 | GMV-LW 0.185 | GMV-RMT 0.207 | GMV-PCA 0.223 | HRP 0.027 | HRP-RMT 0.022
+  positions > 0.1%: EW 100 | GMV-SAMPLE 15 | GMV-LW 19 | GMV-RMT 14 | GMV-PCA 15 | HRP 100 | HRP-RMT 100
+Last: 2024-12-20 | LW shrinkage 0.041 | RMT n_signal 6 | PCA K (mp rule) 6, Bai-Ng 3
+  condition numbers: Sample 449 | Ledoit-Wolf 253 | RMT 148 | PCA 139
+  effective N: EW 100.0 | GMV-SAMPLE 17.0 | GMV-LW 19.1 | GMV-RMT 17.0 | GMV-PCA 17.1 | HRP 66.0 | HRP-RMT 68.1
+  max weight: EW 0.010 | GMV-SAMPLE 0.140 | GMV-LW 0.127 | GMV-RMT 0.110 | GMV-PCA 0.107 | HRP 0.034 | HRP-RMT 0.028
+  positions > 0.1%: EW 100 | GMV-SAMPLE 34 | GMV-LW 37 | GMV-RMT 36 | GMV-PCA 31 | HRP 100 | HRP-RMT 100

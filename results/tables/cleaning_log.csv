@@ -1,0 +1,17 @@
+metric,detail,value
+n_symbols_input,,502
+n_dates_in_window,,3768
+n_dates_dropped_no_price,,0
+n_dates_kept,,3768
+n_return_dates,,3767
+date_min,,2010-01-05
+date_max,,2024-12-20
+n_nonpositive_prices_masked,,0
+n_symbols_dropped_no_price,,330
+n_symbols_dropped_missing_gt_threshold,max_missing_frac=0.05,0
+n_symbols_kept,,172
+n_prices_forward_filled,limit=3,0
+pct_prices_forward_filled,"of in-span cells, kept symbols",0.0
+n_nan_log_returns,,30265
+n_suspect_returns,abs_logret>0.4,11
+n_suspect_symbols,,9

@@ -1,0 +1,11 @@
+/data/
+results/cache/
+.venv/
+__pycache__/
+.ipynb_checkpoints/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+CLAUDE.md
+PLAN.md
+PROGRESS.md
