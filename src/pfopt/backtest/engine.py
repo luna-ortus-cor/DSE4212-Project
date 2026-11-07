@@ -197,7 +197,10 @@ class SimulationResult:
 
 
 def simulate(
-    weights: pd.DataFrame, simple_returns: pd.DataFrame, cost_bps: float
+    weights: pd.DataFrame,
+    simple_returns: pd.DataFrame,
+    cost_bps: float,
+    long_only: bool = True,
 ) -> SimulationResult:
     """Simulate a strategy's daily P&L with weight drift and proportional transaction costs.
 
@@ -221,6 +224,9 @@ def simulate(
         date in its index.
     cost_bps : float
         Proportional cost in basis points per unit of turnover (``sum |dw|``), at least 0.
+    long_only : bool, default True
+        Require non-negative weights. With ``False`` (unconstrained GMV, step 5.5) short positions
+        are allowed; rows must still sum to 1. Short positions pay no borrow or financing cost.
 
     Returns
     -------
@@ -247,7 +253,7 @@ def simulate(
         raise ValueError("rebalance dates must be strictly increasing")
     targets = weights.to_numpy(dtype=float)
     for row in targets:
-        check_weights(row)
+        check_weights(row, long_only=long_only)
     first, n_days = int(rebalance_pos[0]), len(dates)
     if first >= n_days - 1:
         raise ValueError("no holding day after the first rebalance date")
@@ -267,7 +273,7 @@ def simulate(
         day = first + 1 + i
         r = returns[day]
         nan = np.isnan(r)
-        n_missing += int(np.sum(nan & (w > 0)))
+        n_missing += int(np.sum(nan & (w != 0)))
         r = np.where(nan, 0.0, r)
         daily[i] = w
         portfolio = float(w @ r)

@@ -144,9 +144,7 @@ def metrics_by_period(
         if len(sub) < 2:
             raise ValueError(f"period {period!r} has fewer than 2 observations")
         for strategy in returns.columns:
-            rows[(period, strategy)] = performance_metrics(
-                sub[strategy], None, annualization, rf
-            )
+            rows[(period, strategy)] = performance_metrics(sub[strategy], None, annualization, rf)
     table = pd.DataFrame.from_dict(rows, orient="index")
     table.index = pd.MultiIndex.from_tuples(table.index, names=["period", "strategy"])
     return table

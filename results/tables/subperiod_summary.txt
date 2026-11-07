@@ -1,0 +1,33 @@
+days per period: Full OOS 3263, COVID stress 221, 2022 251, Calm (rest) 2791, High-vol regime 1108, Low-vol regime 1094
+regime labels available from 2016-03-24 to 2024-12-20 (2202 days; 50% high-vol); unclassified days are in neither regime; window 63d, expanding median after 252 observations, label lagged one day
+short periods give noisy ratios: the standard error of an annualized Sharpe ratio is roughly sqrt(252 / days) (about 1.0 for 250 days)
+
+Sharpe ratio (net):
+strategy           EW  GMV-LW  GMV-PCA  GMV-RMT  GMV-SAMPLE   HRP  HRP-RMT  MV-RMT  MV-SAMPLE
+period                                                                                       
+Full OOS         0.99    0.76     0.72     0.66        0.74  0.93     0.94    0.90       0.92
+COVID stress     0.67    0.06     0.07     0.07        0.08  0.48     0.47    1.64       1.58
+2022            -0.50   -0.37    -0.02    -0.18       -0.38 -0.50    -0.50   -0.77      -0.76
+Calm (rest)      1.44    1.21     1.09     1.06        1.19  1.41     1.44    1.05       1.08
+High-vol regime  0.78    0.46     0.57     0.53        0.47  0.68     0.69    0.55       0.55
+Low-vol regime   1.31    1.16     0.70     0.76        1.15  1.29     1.34    1.41       1.42
+
+Maximum drawdown (net):
+strategy            EW  GMV-LW  GMV-PCA  GMV-RMT  GMV-SAMPLE    HRP  HRP-RMT  MV-RMT  MV-SAMPLE
+period                                                                                         
+Full OOS        -0.376  -0.335   -0.343   -0.362      -0.333 -0.356   -0.359  -0.383     -0.380
+COVID stress    -0.376  -0.335   -0.343   -0.362      -0.333 -0.356   -0.359  -0.342     -0.337
+2022            -0.237  -0.181   -0.148   -0.173      -0.184 -0.213   -0.218  -0.335     -0.319
+Calm (rest)     -0.200  -0.129   -0.121   -0.125      -0.128 -0.166   -0.169  -0.225     -0.234
+High-vol regime -0.350  -0.327   -0.336   -0.350      -0.325 -0.335   -0.338  -0.430     -0.412
+Low-vol regime  -0.135  -0.103   -0.126   -0.128      -0.102 -0.110   -0.109  -0.159     -0.160
+
+Annualized volatility (net):
+strategy            EW  GMV-LW  GMV-PCA  GMV-RMT  GMV-SAMPLE    HRP  HRP-RMT  MV-RMT  MV-SAMPLE
+period                                                                                         
+Full OOS         0.174   0.130    0.135    0.136       0.130  0.148    0.150   0.202      0.199
+COVID stress     0.390   0.311    0.325    0.340       0.312  0.352    0.357   0.410      0.402
+2022             0.245   0.163    0.163    0.168       0.164  0.200    0.202   0.255      0.245
+Calm (rest)      0.134   0.098    0.102    0.100       0.099  0.111    0.112   0.168      0.167
+High-vol regime  0.240   0.179    0.185    0.191       0.180  0.207    0.210   0.268      0.264
+Low-vol regime   0.113   0.088    0.094    0.091       0.089  0.093    0.094   0.171      0.164

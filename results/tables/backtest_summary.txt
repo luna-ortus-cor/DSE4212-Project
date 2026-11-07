@@ -3,19 +3,19 @@ weights: max |row sum - 1| = 8.88e-16, min weight = 0.00e+00
 NaN in gross/net returns: 0; missing held-asset returns: 0
 rebalances with a solver fallback: 0; universe sizes 100 to 100
 SPX returns: 2014-12-23 to 2024-12-20 (2516 days)
-runtime: weights 59 s, total 67 s
+runtime: weights cached, total 6 s
 
 headline metrics, net of 10 bps costs (gross Sharpe in brackets):
 strategy     | ann.ret | ann.vol | Sharpe [gross] | Sortino | maxDD  | turnover/yr
 EW           |   0.170 |   0.174 |   0.99 [ 1.00] |    1.40 | -0.376 |   0.87
-GMV-SAMPLE   |   0.093 |   0.130 |   0.74 [ 0.76] |    1.05 | -0.333 |   2.40
 GMV-LW       |   0.094 |   0.130 |   0.76 [ 0.78] |    1.07 | -0.335 |   2.26
-GMV-RMT      |   0.084 |   0.136 |   0.66 [ 0.68] |    0.93 | -0.362 |   2.20
 GMV-PCA      |   0.092 |   0.135 |   0.72 [ 0.74] |    1.01 | -0.343 |   2.18
-HRP          |   0.136 |   0.148 |   0.93 [ 0.95] |    1.31 | -0.356 |   2.74
+GMV-RMT      |   0.084 |   0.136 |   0.66 [ 0.68] |    0.93 | -0.362 |   2.20
+GMV-SAMPLE   |   0.093 |   0.130 |   0.74 [ 0.76] |    1.05 | -0.333 |   2.40
 HRP-RMT      |   0.138 |   0.150 |   0.94 [ 0.96] |    1.32 | -0.359 |   2.54
-MV-SAMPLE    |   0.177 |   0.199 |   0.92 [ 0.95] |    1.31 | -0.380 |   5.81
+HRP          |   0.136 |   0.148 |   0.93 [ 0.95] |    1.31 | -0.356 |   2.74
 MV-RMT       |   0.174 |   0.202 |   0.90 [ 0.93] |    1.29 | -0.383 |   6.03
+MV-SAMPLE    |   0.177 |   0.199 |   0.92 [ 0.95] |    1.31 | -0.380 |   5.81
 
 risk forecast (realized / predicted volatility):
 strategy     | mean ratio | pooled variance ratio | bias statistic

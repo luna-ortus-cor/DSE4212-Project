@@ -1,0 +1,10 @@
+| strategy | constraint | ann_vol | sharpe | annual_turnover | mean_max_weight | mean_leverage | realized_over_pred |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| GMV-SAMPLE | long-only | 0.130 | 0.744 | 2.397 | 0.207 | 1.000 | 1.187 |
+| GMV-LW | long-only | 0.130 | 0.758 | 2.262 | 0.177 | 1.000 | 1.185 |
+| GMV-RMT | long-only | 0.136 | 0.663 | 2.195 | 0.202 | 1.000 | 1.226 |
+| GMV-PCA | long-only | 0.135 | 0.721 | 2.175 | 0.178 | 1.000 | 1.319 |
+| GMV-SAMPLE-UNC | unconstrained | 0.134 | 0.702 | 12.061 | 0.190 | 3.663 | 1.551 |
+| GMV-LW-UNC | unconstrained | 0.130 | 0.757 | 9.498 | 0.149 | 3.146 | 1.455 |
+| GMV-RMT-UNC | unconstrained | 0.140 | 0.532 | 6.700 | 0.161 | 2.723 | 1.552 |
+| GMV-PCA-UNC | unconstrained | 0.146 | 0.551 | 6.289 | 0.128 | 2.670 | 1.989 |

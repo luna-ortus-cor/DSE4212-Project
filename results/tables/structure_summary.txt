@@ -1,0 +1,57 @@
+156 rebalances; 155 complete holding periods; sectors are a current snapshot used as labels only
+
+concentration (averages over rebalances; share_zero = member holdings at or below 0.1%):
+            mean_hhi  mean_effective_n  mean_max_weight  mean_top10_share  mean_n_positions  share_zero    p50    p90    p99    max
+EW             0.010           100.000            0.010             0.100           100.000       0.000  0.010  0.010  0.010  0.010
+GMV-SAMPLE     0.112            10.275            0.207             0.844            20.109       0.799  0.000  0.030  0.158  0.430
+GMV-LW         0.094            11.888            0.177             0.809            21.994       0.780  0.000  0.035  0.142  0.354
+GMV-RMT        0.112            10.008            0.202             0.859            19.763       0.802  0.000  0.029  0.160  0.417
+GMV-PCA        0.101            10.690            0.178             0.852            19.538       0.805  0.000  0.032  0.151  0.294
+HRP            0.015            66.327            0.039             0.266            99.865       0.001  0.008  0.019  0.037  0.064
+HRP-RMT        0.015            68.381            0.038             0.257            99.955       0.000  0.008  0.019  0.036  0.061
+MV-SAMPLE      0.157             6.932            0.256             0.967            11.365       0.886  0.000  0.014  0.208  0.512
+MV-RMT         0.162             6.841            0.263             0.962            11.359       0.886  0.000  0.014  0.214  0.481
+
+mean sector weight (%):
+            Financial Services  Technology  Industrials  Consumer Cyclical  Healthcare  Consumer Defensive  Communication Services  Energy  Real Estate  Basic Materials  Utilities
+EW                        14.8        13.6         12.5               12.4        10.9                 9.9                     9.0     4.6          4.4              4.0        4.0
+GMV-SAMPLE                 8.3         1.7          2.8               17.4        11.4                29.3                     7.7     1.9          1.4              0.0       18.2
+GMV-LW                     8.3         1.8          3.0               16.7        11.9                29.4                     7.7     2.0          1.6              0.1       17.6
+GMV-RMT                    9.6         1.4          3.1               14.6         6.6                29.7                     6.7     2.7          0.6              0.2       24.8
+GMV-PCA                    8.1         0.9          1.0               11.6         9.7                32.7                     7.0     1.5          1.0              0.0       26.4
+HRP                       10.8         9.8          9.4               11.6        13.0                18.5                     9.3     3.2          4.5              2.7        7.4
+HRP-RMT                   12.2         9.3         10.1               10.8        12.3                17.6                     8.9     3.1          4.8              2.8        8.0
+MV-SAMPLE                  9.3        11.4          3.9               12.6        15.9                23.8                     6.2     3.2          2.6              3.3        7.8
+MV-RMT                     9.2        12.2          3.7               11.7        13.9                25.0                     5.7     3.2          2.3              3.5        9.7
+
+GMV-SAMPLE: most underweight Technology (-12.0 pp), most overweight Consumer Defensive (+19.5 pp)
+GMV-RMT: most underweight Technology (-12.2 pp), most overweight Utilities (+20.9 pp)
+MV-SAMPLE: most underweight Industrials (-8.7 pp), most overweight Consumer Defensive (+14.0 pp)
+
+Spearman correlation of window diagnostics with log(vol ratio vs GMV-SAMPLE) and return difference (p-values optimistic: overlapping windows):
+   diagnostic         target  spearman_rho  p_value   n
+top_eig_share  logvol_GMV-LW        -0.266    0.001 155
+top_eig_share     ret_GMV-LW         0.144    0.074 155
+top_eig_share logvol_GMV-RMT         0.191    0.017 155
+top_eig_share    ret_GMV-RMT         0.099    0.222 155
+top_eig_share logvol_GMV-PCA         0.008    0.916 155
+top_eig_share    ret_GMV-PCA         0.007    0.936 155
+    mean_corr  logvol_GMV-LW        -0.272    0.001 155
+    mean_corr     ret_GMV-LW         0.145    0.072 155
+    mean_corr logvol_GMV-RMT         0.187    0.020 155
+    mean_corr    ret_GMV-RMT         0.096    0.233 155
+    mean_corr logvol_GMV-PCA         0.016    0.839 155
+    mean_corr    ret_GMV-PCA         0.008    0.921 155
+ rmt_n_signal  logvol_GMV-LW         0.258    0.001 155
+ rmt_n_signal     ret_GMV-LW        -0.140    0.083 155
+ rmt_n_signal logvol_GMV-RMT        -0.176    0.029 155
+ rmt_n_signal    ret_GMV-RMT        -0.073    0.369 155
+ rmt_n_signal logvol_GMV-PCA        -0.049    0.547 155
+ rmt_n_signal    ret_GMV-PCA        -0.004    0.962 155
+
+mean log(vol / vol of GMV-SAMPLE) by market-mode share (median split; negative = lower risk):
+                market mode high  market mode low
+logvol_GMV-LW             -0.014           -0.006
+logvol_GMV-RMT             0.028            0.014
+logvol_GMV-PCA             0.037            0.047
+mean market-mode share 0.377, RMT signal count 2 to 6

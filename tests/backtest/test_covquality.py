@@ -86,8 +86,10 @@ def test_stability_table_collects_strategies() -> None:
     dates = pd.bdate_range("2020-01-01", periods=3)
     a = pd.DataFrame([[1.0, 0.0]] * 3, index=dates, columns=["X", "Y"])
     b = pd.DataFrame([[0.5, 0.5], [0.4, 0.6], [0.5, 0.5]], index=dates, columns=["X", "Y"])
-    sims = {"A": fake_simulation(pd.Series([0.0], index=dates[1:2]), dates),
-            "B": fake_simulation(pd.Series([0.0], index=dates[1:2]), dates)}
+    sims = {
+        "A": fake_simulation(pd.Series([0.0], index=dates[1:2]), dates),
+        "B": fake_simulation(pd.Series([0.0], index=dates[1:2]), dates),
+    }
     table = stability_table({"A": a, "B": b}, sims)
     assert list(table.index) == ["A", "B"]
     assert table.loc["A", "mean_l1_target_change"] == 0.0

@@ -64,6 +64,42 @@ class StrategyResult:
     info: dict[str, object]
 
 
+def build_covariances(
+    x: np.ndarray, cfg: Config
+) -> tuple[dict[str, np.ndarray], dict[str, object]]:
+    """Sample, Ledoit-Wolf, RMT and PCA-factor covariances of one winsorized window.
+
+    Parameters
+    ----------
+    x : numpy.ndarray
+        Validated ``T x N`` log-return window.
+    cfg : Config
+        Uses ``pca`` (K rule).
+
+    Returns
+    -------
+    (dict, dict)
+        Covariance per estimator (keys in :data:`ESTIMATORS` order) and the diagnostics
+        ``lw_shrinkage``, ``rmt_n_signal``, ``rmt_lam_plus``, ``pca_K`` and ``pca_explained``.
+    """
+    sample = sample_cov(x)
+    lw, delta = lw_cov(x, return_shrinkage=True)
+    rmt, rmt_info = rmt_cov(x, return_info=True)
+    k_fixed = cfg.pca.k_fixed if cfg.pca.k_rule == "fixed" else None
+    pca, pca_info = pca_factor_cov(
+        x, K=k_fixed, rule=cfg.pca.k_rule, kmax=cfg.pca.baing_kmax, return_info=True
+    )
+    covariances = {"Sample": sample, "Ledoit-Wolf": lw, "RMT": rmt, "PCA": pca}
+    info = {
+        "lw_shrinkage": delta,
+        "rmt_n_signal": rmt_info["n_signal"],
+        "rmt_lam_plus": rmt_info["lam_plus"],
+        "pca_K": pca_info["K"],
+        "pca_explained": pca_info["explained"],
+    }
+    return covariances, info
+
+
 def core_strategies(window: np.ndarray, cfg: Config) -> StrategyResult:
     """Build all covariance estimators and core strategy weights from one window.
 
@@ -82,14 +118,9 @@ def core_strategies(window: np.ndarray, cfg: Config) -> StrategyResult:
     """
     x = validate_returns(window)
     n = x.shape[1]
-    sample = sample_cov(x)
-    lw, delta = lw_cov(x, return_shrinkage=True)
-    rmt, rmt_info = rmt_cov(x, return_info=True)
-    k_fixed = cfg.pca.k_fixed if cfg.pca.k_rule == "fixed" else None
-    pca, pca_info = pca_factor_cov(
-        x, K=k_fixed, rule=cfg.pca.k_rule, kmax=cfg.pca.baing_kmax, return_info=True
-    )
-    covariances = {"Sample": sample, "Ledoit-Wolf": lw, "RMT": rmt, "PCA": pca}
+    covariances, cov_info = build_covariances(x, cfg)
+    sample, lw = covariances["Sample"], covariances["Ledoit-Wolf"]
+    rmt, pca = covariances["RMT"], covariances["PCA"]
 
     cap = cfg.backtest.max_weight
     weights: dict[str, np.ndarray] = {"EW": np.full(n, 1.0 / n)}
@@ -104,14 +135,7 @@ def core_strategies(window: np.ndarray, cfg: Config) -> StrategyResult:
     weights["HRP"] = hrp_weights(sample, linkage_method=cfg.hrp.linkage)
     weights["HRP-RMT"] = hrp_weights(rmt, corr=cov_to_corr(rmt), linkage_method=cfg.hrp.linkage)
 
-    info = {
-        "lw_shrinkage": delta,
-        "rmt_n_signal": rmt_info["n_signal"],
-        "rmt_lam_plus": rmt_info["lam_plus"],
-        "pca_K": pca_info["K"],
-        "pca_explained": pca_info["explained"],
-        "gmv": gmv_info,
-    }
+    info = {**cov_info, "gmv": gmv_info}
     return StrategyResult(weights=weights, covariances=covariances, info=info)
 
 

@@ -159,20 +159,26 @@ def test_truncation_gives_an_identical_prefix(data, result) -> None:
     short = generate_weights(*data, CFG, end_date=end)
     assert short.diagnostics.index[-1] == end
     for strategy in ALL_STRATEGIES:
-        assert np.array_equal(short.weights[strategy].to_numpy(), result.weights[strategy].iloc[:7].to_numpy())
+        assert np.array_equal(
+            short.weights[strategy].to_numpy(), result.weights[strategy].iloc[:7].to_numpy()
+        )
 
 
 def test_strategy_subset_matches_the_full_run(data, result) -> None:
     subset = generate_weights(*data, CFG, strategies=["EW", "GMV-SAMPLE"])
     assert set(subset.weights) == {"EW", "GMV-SAMPLE"}
     for strategy in subset.weights:
-        assert np.array_equal(subset.weights[strategy].to_numpy(), result.weights[strategy].to_numpy())
+        assert np.array_equal(
+            subset.weights[strategy].to_numpy(), result.weights[strategy].to_numpy()
+        )
     assert "solver_MV-SAMPLE" not in subset.diagnostics.columns
 
 
 def test_cap_applies_to_optimized_strategies(data) -> None:
     cfg = dataclasses.replace(CFG, backtest=BacktestConfig(rebalance_days=STEP, max_weight=0.25))
-    res = generate_weights(*data, cfg, strategies=["EW", "GMV-SAMPLE", "GMV-RMT", "MV-SAMPLE", "MV-RMT"])
+    res = generate_weights(
+        *data, cfg, strategies=["EW", "GMV-SAMPLE", "GMV-RMT", "MV-SAMPLE", "MV-RMT"]
+    )
     for strategy in res.weights:
         assert res.weights[strategy].to_numpy().max() <= 0.25 + 1e-8, strategy
 
@@ -180,7 +186,9 @@ def test_cap_applies_to_optimized_strategies(data) -> None:
 def test_deterministic(data, result) -> None:
     again = generate_weights(*data, CFG)
     for strategy in ALL_STRATEGIES:
-        assert np.array_equal(again.weights[strategy].to_numpy(), result.weights[strategy].to_numpy())
+        assert np.array_equal(
+            again.weights[strategy].to_numpy(), result.weights[strategy].to_numpy()
+        )
 
 
 def test_write_and_read_roundtrip(result, tmp_path) -> None:
@@ -188,7 +196,9 @@ def test_write_and_read_roundtrip(result, tmp_path) -> None:
     back = read_weights_result(tmp_path / "cache")
     assert set(back.weights) == set(result.weights)
     for strategy in result.weights:
-        pd.testing.assert_frame_equal(back.weights[strategy], result.weights[strategy], check_freq=False)
+        pd.testing.assert_frame_equal(
+            back.weights[strategy], result.weights[strategy], check_freq=False
+        )
     pd.testing.assert_frame_equal(back.universe, result.universe, check_freq=False)
     pd.testing.assert_frame_equal(back.diagnostics, result.diagnostics, check_freq=False)
     with pytest.raises(FileNotFoundError):

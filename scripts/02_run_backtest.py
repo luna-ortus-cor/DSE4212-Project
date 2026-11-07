@@ -65,7 +65,9 @@ def _load_or_generate(
         if current and set(cached.weights) == set(ALL_STRATEGIES):
             logger.info("using cached weights from %s", cache)
             return cached, None
-        logger.info("cached weights are stale (missing strategies or forecast columns); regenerating")
+        logger.info(
+            "cached weights are stale (missing strategies or forecast columns); regenerating"
+        )
     start = time.perf_counter()
     result = generate_weights(log_returns, dollar_volume, cfg)
     elapsed = time.perf_counter() - start
@@ -117,15 +119,21 @@ def main() -> None:
     gross_df = pd.DataFrame({s: sim.gross for s, sim in sims.items()})
     net_df = pd.DataFrame({s: sim.net for s, sim in sims.items()})
     turnover_df = pd.DataFrame({s: sim.turnover for s, sim in sims.items()})
-    for name, frame in (("returns_gross", gross_df), ("returns_net", net_df), ("turnover", turnover_df)):
+    for name, frame in (
+        ("returns_gross", gross_df),
+        ("returns_net", net_df),
+        ("turnover", turnover_df),
+    ):
         frame.to_parquet(cache / f"{name}.parquet")
 
     # ---- metric tables ------------------------------------------------------------------
     net_table = metrics_table(sims, "net", ann, rf)
     gross_table = metrics_table(sims, "gross", ann, rf)
-    main = pd.concat(
-        [gross_table.assign(basis="gross"), net_table.assign(basis="net")]
-    ).rename_axis("strategy").reset_index()
+    main = (
+        pd.concat([gross_table.assign(basis="gross"), net_table.assign(basis="net")])
+        .rename_axis("strategy")
+        .reset_index()
+    )
     main = main[["strategy", "basis", *[c for c in main.columns if c not in ("strategy", "basis")]]]
     main.to_csv(tables / "main_metrics.csv", index=False)
 
@@ -147,9 +155,11 @@ def main() -> None:
         tables / "common_period_metrics.csv"
     )
 
-    # ---- figures ----------------------------------------------------------------------------------
+    # ---- figures ----------------------------------------------------------------------
     wealth = (1.0 + net_df).cumprod()
-    save_figure(plot_equity_curves(wealth, "Wealth, net of costs (start = 1)"), "bt_equity_curves", figures)
+    save_figure(
+        plot_equity_curves(wealth, "Wealth, net of costs (start = 1)"), "bt_equity_curves", figures
+    )
     wealth_common = (1.0 + pd.concat([common, spx], axis=1)).cumprod()
     save_figure(
         plot_equity_curves(wealth_common, "Wealth since the SPX start, net (S&P 500 price index)"),
@@ -161,13 +171,17 @@ def main() -> None:
     rolling = net_df.rolling(ann)
     rolling_vol = rolling.std(ddof=1) * np.sqrt(ann)
     rolling_sharpe = (rolling.mean() - rf / ann) / rolling.std(ddof=1) * np.sqrt(ann)
-    save_figure(plot_rolling_sharpe_vol(rolling_sharpe, rolling_vol, ann), "bt_rolling_sharpe_vol", figures)
+    save_figure(
+        plot_rolling_sharpe_vol(rolling_sharpe, rolling_vol, ann), "bt_rolling_sharpe_vol", figures
+    )
     save_figure(
         plot_turnover_effective_n(net_table["annual_turnover"], stability["mean_effective_n"]),
         "bt_turnover_effective_n",
         figures,
     )
-    save_figure(plot_risk_return(net_table["ann_vol"], net_table["ann_return"]), "bt_risk_return", figures)
+    save_figure(
+        plot_risk_return(net_table["ann_vol"], net_table["ann_return"]), "bt_risk_return", figures
+    )
     ratios = {
         s: risk_forecast_quality(result.diagnostics, sims[s], s, ann).periods["ratio"] for s in _GMV
     }

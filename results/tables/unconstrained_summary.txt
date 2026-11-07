@@ -1,0 +1,21 @@
+3263 daily net returns, 156 rebalances, cost 10 bps; shorts carry no borrow cost
+rebalance x strategy cases needing a ridge: 0
+
+                   constraint  ann_vol  ann_return  sharpe  max_drawdown  annual_turnover  mean_max_weight  mean_min_weight  mean_leverage  mean_pred_vol  realized_over_pred
+strategy                                                                                                                                                                     
+GMV-SAMPLE          long-only    0.130       0.093   0.744        -0.333            2.397            0.207            0.000          1.000          0.110               1.187
+GMV-LW              long-only    0.130       0.094   0.758        -0.335            2.262            0.177            0.000          1.000          0.109               1.185
+GMV-RMT             long-only    0.136       0.084   0.663        -0.362            2.195            0.202            0.000          1.000          0.111               1.226
+GMV-PCA             long-only    0.135       0.092   0.721        -0.343            2.175            0.178            0.000          1.000          0.102               1.319
+GMV-SAMPLE-UNC  unconstrained    0.134       0.089   0.702        -0.356           12.061            0.190           -0.119          3.663          0.087               1.551
+GMV-LW-UNC      unconstrained    0.130       0.094   0.757        -0.349            9.498            0.149           -0.095          3.146          0.089               1.455
+GMV-RMT-UNC     unconstrained    0.140       0.067   0.532        -0.357            6.700            0.161           -0.055          2.723          0.091               1.552
+GMV-PCA-UNC     unconstrained    0.146       0.072   0.551        -0.319            6.289            0.128           -0.067          2.670          0.073               1.989
+
+H3: log variance ratio vs the sample covariance, unconstrained minus long-only (negative = larger advantage without the constraint); block bootstrap (block 10, B=5000):
+  Ledoit-Wolf  gap unconstrained -0.068, long-only -0.012, difference -0.055 [-0.080, -0.033] p=0.000: supported (advantage larger without the constraint, significant)
+  RMT          gap unconstrained +0.090, long-only +0.087, difference +0.003 [-0.050, +0.049] p=0.952: not supported (advantage not larger without the constraint)
+  PCA          gap unconstrained +0.168, long-only +0.066, difference +0.103 [+0.054, +0.161] p=0.000: not supported (advantage not larger without the constraint)
+
+volatility relative to sample GMV (%, long-only / unconstrained): Ledoit-Wolf -0.6/-3.3, RMT +4.5/+4.6, PCA +3.3/+8.8
+mean unconstrained leverage 3.05

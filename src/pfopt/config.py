@@ -22,6 +22,7 @@ logger = logging.getLogger(__name__)
 
 HRP_LINKAGES = ("single", "ward", "average")
 PCA_K_RULES = ("mp", "fixed", "baing")
+SIM_DISTRIBUTIONS = ("gaussian", "student_t")
 
 
 @dataclass(frozen=True)
@@ -380,6 +381,77 @@ class RegimeConfig:
 
 
 @dataclass(frozen=True)
+class SimulationConfig:
+    """Factor-model simulation study (PLAN.md step 6.1).
+
+    The true covariance is ``B F B' + D`` with one market factor (all assets), ``n_groups`` group
+    factors (each loading on its own disjoint block of assets, blocks of near-equal size) and
+    idiosyncratic noise. The true model is drawn once and shared by all grid cells and both
+    distributions, so replications differ only through sampling.
+
+    Attributes
+    ----------
+    n_assets : int
+        Number of simulated assets ``N``.
+    n_groups : int
+        Number of group factors / disjoint asset blocks (``K_true = 1 + n_groups``).
+    sample_sizes : tuple of int
+        Sample lengths ``T`` of the grid.
+    n_reps : int
+        Replications per grid cell.
+    distributions : tuple of str
+        Subset of ``("gaussian", "student_t")``; the first one is the main result.
+    t_df : float
+        Degrees of freedom of the multivariate Student-t variant (must exceed 4 so that the
+        kurtosis exists); the covariance is scaled to equal the Gaussian one.
+    market_vol : float
+        Annual volatility of the market factor.
+    group_vols : tuple of float
+        Annual volatilities of the group factors, cycled if ``n_groups`` exceeds its length.
+    loading_low, loading_high : float
+        Bounds of the uniform distribution of the factor loadings.
+    idio_vol_low, idio_vol_high : float
+        Bounds of the uniform distribution of annual idiosyncratic volatilities.
+    alpha : float
+        Significance level of the confidence bands (normal approximation across replications).
+    """
+
+    n_assets: int = 100
+    n_groups: int = 2
+    sample_sizes: tuple[int, ...] = (126, 252, 504, 1000)
+    n_reps: int = 200
+    distributions: tuple[str, ...] = ("gaussian", "student_t")
+    t_df: float = 5.0
+    market_vol: float = 0.15
+    group_vols: tuple[float, ...] = (0.08, 0.06)
+    loading_low: float = 0.5
+    loading_high: float = 1.5
+    idio_vol_low: float = 0.15
+    idio_vol_high: float = 0.45
+    alpha: float = 0.05
+
+    def __post_init__(self) -> None:
+        if self.n_groups < 0 or self.n_assets < 2 * max(self.n_groups, 1):
+            raise ValueError("need n_groups >= 0 and at least two assets per group")
+        if not self.sample_sizes or any(t <= self.n_assets for t in self.sample_sizes):
+            raise ValueError("every sample size must exceed n_assets (sample covariance full rank)")
+        if self.n_reps < 2:
+            raise ValueError(f"n_reps must be >= 2, got {self.n_reps}")
+        if not self.distributions or any(d not in SIM_DISTRIBUTIONS for d in self.distributions):
+            raise ValueError(f"distributions must be a non-empty subset of {SIM_DISTRIBUTIONS}")
+        if self.t_df <= 4.0:
+            raise ValueError(f"t_df must be > 4, got {self.t_df}")
+        if self.market_vol <= 0 or not self.group_vols or any(v <= 0 for v in self.group_vols):
+            raise ValueError("factor volatilities must be positive")
+        if not 0.0 < self.loading_low <= self.loading_high:
+            raise ValueError("need 0 < loading_low <= loading_high")
+        if not 0.0 < self.idio_vol_low <= self.idio_vol_high:
+            raise ValueError("need 0 < idio_vol_low <= idio_vol_high")
+        if not 0.0 < self.alpha < 1.0:
+            raise ValueError(f"alpha must be in (0, 1), got {self.alpha}")
+
+
+@dataclass(frozen=True)
 class Config:
     """Top-level project configuration."""
 
@@ -394,6 +466,7 @@ class Config:
     pca: PCAConfig = field(default_factory=PCAConfig)
     hrp: HRPConfig = field(default_factory=HRPConfig)
     sensitivity: SensitivityConfig = field(default_factory=SensitivityConfig)
+    simulation: SimulationConfig = field(default_factory=SimulationConfig)
 
     def __post_init__(self) -> None:
         n, t = self.universe.n_assets, self.universe.lookback_days
@@ -413,7 +486,8 @@ class Config:
         """Hex digest of the sections that determine the weights and returns, for cache folders.
 
         Only ``run``, ``data``, ``universe``, ``backtest``, ``pca`` and ``hrp`` are included, so
-        editing analysis-only sections (``eda``, ``stats``, ``regimes``, ``sensitivity``, paths)
+        editing analysis-only sections (``eda``, ``stats``, ``regimes``, ``sensitivity``,
+        ``simulation``, paths)
         does not invalidate cached weights and returns.
 
         Parameters

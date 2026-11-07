@@ -23,7 +23,9 @@ def test_period_masks_partition_the_sample() -> None:
     assert not (covid & year).any() and not (covid & calm).any() and not (year & calm).any()
     np.testing.assert_array_equal(covid | year | calm, full)
     assert full.all()
-    assert DAYS[covid][0] == pd.Timestamp("2020-02-19") and DAYS[covid][-1] == pd.Timestamp("2020-12-31")
+    assert DAYS[covid][0] == pd.Timestamp("2020-02-19") and DAYS[covid][-1] == pd.Timestamp(
+        "2020-12-31"
+    )
     assert year.sum() == (DAYS.year == 2022).sum()
     assert not calm[DAYS.get_loc(pd.Timestamp("2020-06-01"))]
 

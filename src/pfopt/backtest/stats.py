@@ -23,7 +23,7 @@ Ledoit and Wolf is not implemented.)
 
 from __future__ import annotations
 
-from collections.abc import Sequence
+from collections.abc import Mapping, Sequence
 
 import numpy as np
 import pandas as pd
@@ -209,3 +209,72 @@ def block_length_sensitivity(
         ],
         ignore_index=True,
     )
+
+
+def log_var_double_difference(
+    returns: pd.DataFrame,
+    quadruples: Mapping[str, tuple[str, str, str, str]],
+    block_length: int = 10,
+    n_boot: int = 5000,
+    seed: int = 42,
+    alpha: float = 0.05,
+    chunk_size: int = 250,
+) -> pd.DataFrame:
+    """Bootstrap test of a difference in log variance ratios (the H3 statistic, step 5.5).
+
+    For each named quadruple ``(a, a_ref, b, b_ref)`` the statistic is
+    ``[log var(a) - log var(a_ref)] - [log var(b) - log var(b_ref)]``. With ``a`` an
+    unconstrained estimator-based GMV, ``a_ref`` unconstrained sample GMV, and ``b``, ``b_ref``
+    their long-only counterparts, a negative value means the estimator's volatility advantage
+    over the sample covariance is larger without the long-only constraint (H3). The same
+    resampled days are used for all series (joint circular block bootstrap, percentile interval
+    and p-value).
+
+    Parameters
+    ----------
+    returns : pandas.DataFrame
+        Date x strategy daily returns (finite).
+    quadruples : mapping of str to tuple of 4 str
+        Name to ``(a, a_ref, b, b_ref)`` column names.
+    block_length, n_boot, seed, chunk_size
+        See :func:`bootstrap_moments`.
+    alpha : float, default 0.05
+        Significance level.
+
+    Returns
+    -------
+    pandas.DataFrame
+        One row per name with ``gap_a`` (``log var(a) - log var(a_ref)``), ``gap_b``, ``estimate``
+        (their difference), ``ci_low``, ``ci_high``, ``p_value`` and ``significant``.
+    """
+    if not np.isfinite(returns.to_numpy(dtype=float)).all():
+        raise ValueError("returns must be finite")
+    columns = list(returns.columns)
+    needed = {c for quad in quadruples.values() for c in quad}
+    missing = sorted(needed - set(columns))
+    if missing:
+        raise ValueError(f"column(s) {missing} not found in returns")
+    x = returns.to_numpy(dtype=float)
+    log_var_hat = np.log(x.var(axis=0, ddof=1))
+    _, variances = bootstrap_moments(x, block_length, n_boot, seed, chunk_size)
+    log_var_star = np.log(variances)
+    rows = []
+    for name, (a, a_ref, b, b_ref) in quadruples.items():
+        i, j, k, m = (columns.index(c) for c in (a, a_ref, b, b_ref))
+        gap_a, gap_b = log_var_hat[i] - log_var_hat[j], log_var_hat[k] - log_var_hat[m]
+        star_a = log_var_star[:, i] - log_var_star[:, j]
+        draws = star_a - (log_var_star[:, k] - log_var_star[:, m])
+        low, high, p_value = _percentile_summary(draws, alpha)
+        rows.append(
+            {
+                "name": name,
+                "gap_a": float(gap_a),
+                "gap_b": float(gap_b),
+                "estimate": float(gap_a - gap_b),
+                "ci_low": low,
+                "ci_high": high,
+                "p_value": p_value,
+                "significant": p_value < alpha,
+            }
+        )
+    return pd.DataFrame(rows)

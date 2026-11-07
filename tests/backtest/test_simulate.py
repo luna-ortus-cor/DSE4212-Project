@@ -141,7 +141,9 @@ def test_daily_weights_are_the_start_of_day_holdings() -> None:
     sim = simulate(weights, returns, cost_bps=0.0)
     np.testing.assert_allclose(sim.daily_weights.iloc[0].to_numpy(), [0.5, 0.5])
     np.testing.assert_allclose(sim.daily_weights.iloc[1].to_numpy(), np.array([0.55, 0.5]) / 1.05)
-    np.testing.assert_allclose(sim.daily_weights.iloc[2].to_numpy(), [0.5, 0.5])  # after rebalancing
+    np.testing.assert_allclose(
+        sim.daily_weights.iloc[2].to_numpy(), [0.5, 0.5]
+    )  # after rebalancing
     np.testing.assert_allclose(sim.daily_weights.sum(axis=1), 1.0)
 
 

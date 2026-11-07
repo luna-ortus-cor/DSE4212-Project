@@ -78,3 +78,18 @@ sensitivity:
   max_weight: [0.10]
   pca_k_fixed: [1, 3, 5, 10]
   hrp_linkage: [single, ward, average]
+
+simulation:                  # step 6.1: factor-model simulation study (N=100, K_true = 1 + n_groups)
+  n_assets: 100
+  n_groups: 2                # disjoint asset blocks, one group factor each
+  sample_sizes: [126, 252, 504, 1000]
+  n_reps: 200
+  distributions: [gaussian, student_t]   # first entry is the main result
+  t_df: 5.0
+  market_vol: 0.15
+  group_vols: [0.08, 0.06]
+  loading_low: 0.5
+  loading_high: 1.5
+  idio_vol_low: 0.15
+  idio_vol_high: 0.45
+  alpha: 0.05

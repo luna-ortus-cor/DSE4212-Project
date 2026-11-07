@@ -19,18 +19,24 @@ from pfopt.viz.plots import (  # noqa: E402
     plot_corr_heatmaps,
     plot_cov_spectra,
     plot_drawdowns,
+    plot_eigen_vs_performance,
     plot_equity_curves,
     plot_frontiers,
+    plot_h3_summary,
+    plot_heatmap_panels,
     plot_mp_spectra,
     plot_period_bars,
     plot_return_histograms,
     plot_risk_return,
     plot_rolling_correlation,
     plot_rolling_sharpe_vol,
+    plot_simulation_accuracy,
     plot_sorted_weights,
     plot_spectrum_timeseries,
     plot_turnover_effective_n,
     plot_vol_forecast_ratio,
+    plot_weight_dynamics,
+    plot_weight_survival,
 )
 from pfopt.viz.style import FIG_WIDTH_IN, METHOD_COLORS, PALETTE, save_figure  # noqa: E402
 
@@ -124,7 +130,9 @@ def test_frontier_figure() -> None:
 def _wealth(names: list[str]) -> pd.DataFrame:
     index = pd.bdate_range("2020-01-01", periods=300)
     rng = np.random.default_rng(0)
-    returns = pd.DataFrame(rng.normal(0.0004, 0.01, size=(300, len(names))), index=index, columns=names)
+    returns = pd.DataFrame(
+        rng.normal(0.0004, 0.01, size=(300, len(names))), index=index, columns=names
+    )
     return (1.0 + returns).cumprod()
 
 
@@ -156,7 +164,9 @@ def test_turnover_and_risk_return_figures() -> None:
 def test_vol_forecast_ratio_figure() -> None:
     index = pd.bdate_range("2012-01-03", periods=40, freq="21B")
     rng = np.random.default_rng(1)
-    ratios = {s: pd.Series(np.exp(rng.normal(0.1, 0.2, 40)), index=index) for s in CORE_STRATEGIES[1:5]}
+    ratios = {
+        s: pd.Series(np.exp(rng.normal(0.1, 0.2, 40)), index=index) for s in CORE_STRATEGIES[1:5]
+    }
     _assert_figure(plot_vol_forecast_ratio(ratios), 1)
 
 
@@ -182,3 +192,75 @@ def test_sorted_weights_grid() -> None:
     panels = [("A", weights), ("B", weights), ("C", weights)]
     fig = plot_sorted_weights(panels, CORE_STRATEGIES)
     _assert_figure(fig, len(CORE_STRATEGIES) * 3)
+
+
+def test_heatmap_panels_figure() -> None:
+    rng = np.random.default_rng(4)
+    table = pd.DataFrame(rng.uniform(0.1, 1.0, (9, 4)), index=ALL_NAMES, columns=list("abcd"))
+    panels = [("vol", table, ".3f"), ("sharpe", table, ".2f"), ("turnover", table, ".1f")]
+    _assert_figure(plot_heatmap_panels(panels), 3)
+
+
+def test_diverging_heatmap_and_structure_figures() -> None:
+    rng = np.random.default_rng(5)
+    table = pd.DataFrame(rng.normal(0, 0.03, (9, 5)), index=ALL_NAMES, columns=list("abcde"))
+    panels = [("mean", table.abs(), ".1f"), ("active", table, ".1f", "RdBu_r")]
+    _assert_figure(plot_heatmap_panels(panels, ncols=1, xtick_rotation=30), 2)
+
+    dates = pd.date_range("2013-01-01", periods=30, freq="W")
+    eff = pd.DataFrame(rng.uniform(5, 50, (30, 9)), index=dates, columns=ALL_NAMES)
+    turnover = pd.DataFrame(rng.uniform(0, 0.5, (30, 9)), index=dates, columns=ALL_NAMES)
+    _assert_figure(plot_weight_dynamics(eff, turnover), 2)
+
+    pooled = {name: rng.dirichlet(np.ones(100)) for name in ALL_NAMES}
+    _assert_figure(plot_weight_survival(pooled), 1)
+
+    diagnostics = pd.DataFrame(
+        {"top_eig_share": rng.uniform(0.2, 0.6, 30), "rmt_n_signal": rng.integers(1, 5, 30)},
+        index=dates,
+    )
+    performance = pd.DataFrame(
+        {"logvol_GMV-RMT": rng.normal(0, 0.1, 30), "logvol_GMV-PCA": rng.normal(0, 0.1, 30)},
+        index=dates,
+    )
+    _assert_figure(plot_eigen_vs_performance(diagnostics, performance, ("GMV-RMT", "GMV-PCA")), 2)
+
+
+def test_h3_summary_figure() -> None:
+    rng = np.random.default_rng(6)
+    names = ["Sample", "Ledoit-Wolf", "RMT", "PCA"]
+    vol = pd.DataFrame(
+        {"Long-only": rng.uniform(12, 15, 4), "Unconstrained": rng.uniform(10, 20, 4)}, index=names
+    )
+    relative = pd.DataFrame(rng.normal(0, 5, (3, 2)), index=names[1:], columns=vol.columns)
+    dates = pd.date_range("2013-01-01", periods=20, freq="W")
+    leverage = pd.DataFrame(rng.uniform(1.5, 4, (20, 4)), index=dates, columns=names)
+    _assert_figure(plot_h3_summary(vol, relative, leverage), 3)
+
+
+def test_simulation_accuracy_figure() -> None:
+    rng = np.random.default_rng(8)
+    rows = []
+    specs = (
+        ("frob_error", "covariance", ["GMV-SAMPLE", "GMV-LW", "GMV-RMT", "GMV-PCA"]),
+        ("l1_dist", "long-only", ["GMV-SAMPLE", "GMV-LW", "GMV-RMT", "GMV-PCA", "HRP", "EW"]),
+        ("var_ratio", "long-only", ["GMV-SAMPLE", "GMV-LW", "GMV-RMT", "GMV-PCA", "HRP", "EW"]),
+        ("var_ratio", "unconstrained", ["GMV-SAMPLE", "GMV-LW", "GMV-RMT", "GMV-PCA"]),
+    )
+    for metric, constraint, methods in specs:
+        for method in methods:
+            for t in (126, 252, 504):
+                mean = rng.uniform(1.0, 2.0)
+                rows.append(
+                    {
+                        "distribution": "gaussian",
+                        "T": t,
+                        "method": method,
+                        "constraint": constraint,
+                        "metric": metric,
+                        "mean": mean,
+                        "ci_low": 0.9 * mean,
+                        "ci_high": 1.1 * mean,
+                    }
+                )
+    _assert_figure(plot_simulation_accuracy(pd.DataFrame(rows), "gaussian"), 4)

@@ -86,9 +86,7 @@ def test_cap_cannot_improve_the_sharpe_ratio_and_is_respected() -> None:
     capped = max_sharpe_long_only(mu, sigma, max_weight=0.2)
     assert capped.max() <= 0.2 + 1e-8
     assert sharpe(capped, mu, sigma) <= sharpe(free, mu, sigma) + 1e-9
-    np.testing.assert_allclose(
-        max_sharpe_long_only(mu, sigma, max_weight=1 / 8), np.full(8, 1 / 8)
-    )
+    np.testing.assert_allclose(max_sharpe_long_only(mu, sigma, max_weight=1 / 8), np.full(8, 1 / 8))
     with pytest.raises(ValueError, match="infeasible"):
         max_sharpe_long_only(mu, sigma, max_weight=0.1)
 

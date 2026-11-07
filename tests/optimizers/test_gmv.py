@@ -167,9 +167,7 @@ def test_single_asset_and_permutation_equivariance() -> None:
     np.testing.assert_array_equal(gmv_long_only(np.array([[2.0]])), [1.0])
     perm = np.random.default_rng(3).permutation(12)
     base = gmv_long_only(FACTOR_COV)
-    np.testing.assert_allclose(
-        gmv_long_only(FACTOR_COV[np.ix_(perm, perm)]), base[perm], atol=1e-6
-    )
+    np.testing.assert_allclose(gmv_long_only(FACTOR_COV[np.ix_(perm, perm)]), base[perm], atol=1e-6)
 
 
 def test_invalid_matrices_raise() -> None:

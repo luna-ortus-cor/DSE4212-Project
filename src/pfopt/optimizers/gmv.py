@@ -95,8 +95,8 @@ def gmv_long_only(
         Solver tolerance (gap and feasibility for CLARABEL, ``ftol`` for SLSQP).
     return_info : bool, default False
         If True, also return a dict with ``solver`` ("CLARABEL", "SLSQP" or "closed-form"),
-        ``fallback`` (True if SLSQP replaced a failed CLARABEL run) and ``objective`` (``w' Sigma w``
-        in the original units).
+        ``fallback`` (True if SLSQP replaced a failed CLARABEL run) and ``objective``
+        (``w' Sigma w`` in the original units).
 
     Returns
     -------

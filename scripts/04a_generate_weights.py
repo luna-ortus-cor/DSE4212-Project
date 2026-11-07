@@ -48,7 +48,8 @@ def _summary_lines(result: WeightsResult) -> list[str]:
         change = 0.5 * np.abs(np.diff(frame.to_numpy(), axis=0)).sum(axis=1)
         lines.append(
             f"{strategy}: mean eff.N {stats['effective_n'].mean():.1f}, mean max weight "
-            f"{stats['max_weight'].mean():.3f}, mean positions>0.1% {stats['n_positions'].mean():.0f}, "
+            f"{stats['max_weight'].mean():.3f}, "
+            f"mean positions>0.1% {stats['n_positions'].mean():.0f}, "
             f"mean one-way change between rebalances {change.mean():.3f}"
         )
     return lines
@@ -99,7 +100,9 @@ def main() -> None:
         past = dates <= cutoff
         for strategy in ALL_STRATEGIES:
             before = result.weights[strategy].loc[past].to_numpy()
-            after = corrupted.weights[strategy].loc[corrupted.diagnostics.index <= cutoff].to_numpy()
+            after = (
+                corrupted.weights[strategy].loc[corrupted.diagnostics.index <= cutoff].to_numpy()
+            )
             if not np.array_equal(before, after):
                 raise AssertionError(f"{strategy}: weights up to {cutoff.date()} changed")
         logger.info("leakage check PASSED up to %s (%d rebalance dates)", cutoff.date(), past.sum())

@@ -1,0 +1,9 @@
+grid,variants,combinations
+baseline,1,9
+lookback,2,18
+universe,1,9
+cost,3,27
+cap,1,9
+pca_k,5,5
+hrp_linkage,2,4
+total,15,81

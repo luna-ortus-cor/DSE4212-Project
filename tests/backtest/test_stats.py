@@ -95,7 +95,9 @@ def test_clear_sharpe_difference_is_detected() -> None:
     returns = frame(rng.normal(0.002, 0.01, 2000), rng.normal(0.0, 0.01, 2000))
     table = compare_to_references(returns, ["B"], n_boot=1000)
     row = table[(table.strategy == "A") & (table.test == "sharpe_diff")].iloc[0]
-    assert row["estimate"] == pytest.approx(sharpe_ratio(returns.to_numpy())[0] - sharpe_ratio(returns.to_numpy())[1])
+    assert row["estimate"] == pytest.approx(
+        sharpe_ratio(returns.to_numpy())[0] - sharpe_ratio(returns.to_numpy())[1]
+    )
     assert row["estimate"] > 2.0
     assert row["ci_low"] > 0 and row["p_value"] < 0.01 and bool(row["significant"])
 
@@ -120,7 +122,9 @@ def test_table_structure_and_symmetry_between_reference_and_strategy() -> None:
     assert (table.block_length == 5).all() and (table.n_boot == 500).all()
 
     def row(reference: str, strategy: str, test: str) -> pd.Series:
-        sel = table[(table.reference == reference) & (table.strategy == strategy) & (table.test == test)]
+        sel = table[
+            (table.reference == reference) & (table.strategy == strategy) & (table.test == test)
+        ]
         return sel.iloc[0]
 
     for test in ("sharpe_diff", "log_var_ratio"):

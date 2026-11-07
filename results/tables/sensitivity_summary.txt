@@ -1,0 +1,110 @@
+scenarios run (incl. baseline): 15; common window starts 2013-01-07 (all tables below use it; own-window numbers are in sensitivity_metrics.csv)
+skipped: N=200: at most 170 symbols have a full 504-day window
+
+strategy-parameter combinations tried:
+       grid  variants  combinations
+   baseline         1             9
+   lookback         2            18
+   universe         1             9
+       cost         3            27
+        cap         1             9
+      pca_k         5             5
+hrp_linkage         2             4
+      total        15            81
+
+volatility by q (net, annualized):
+            N=50\nT=504\nq=0.10  N=100\nT=756\nq=0.13  N=100\nT=504\nq=0.20  N=100\nT=252\nq=0.40
+EW                        0.182                 0.176                 0.176                 0.176
+GMV-SAMPLE                0.143                 0.136                 0.134                 0.130
+GMV-LW                    0.142                 0.136                 0.133                 0.129
+GMV-RMT                   0.147                 0.142                 0.140                 0.134
+GMV-PCA                   0.144                 0.141                 0.138                 0.133
+HRP                       0.154                 0.153                 0.152                 0.149
+HRP-RMT                   0.155                 0.154                 0.153                 0.151
+MV-SAMPLE                 0.214                 0.200                 0.205                 0.208
+MV-RMT                    0.218                 0.200                 0.208                 0.215
+
+Sharpe by q (net):
+            N=50\nT=504\nq=0.10  N=100\nT=756\nq=0.13  N=100\nT=504\nq=0.20  N=100\nT=252\nq=0.40
+EW                         0.90                  0.95                  0.95                  0.95
+GMV-SAMPLE                 0.73                  0.75                  0.73                  0.82
+GMV-LW                     0.75                  0.76                  0.75                  0.84
+GMV-RMT                    0.67                  0.72                  0.66                  0.78
+GMV-PCA                    0.71                  0.75                  0.71                  0.85
+HRP                        0.86                  0.91                  0.89                  0.93
+HRP-RMT                    0.87                  0.91                  0.90                  0.92
+MV-SAMPLE                  0.80                  0.87                  0.92                  0.74
+MV-RMT                     0.81                  0.86                  0.91                  0.72
+
+volatility relative to EW by q:
+            N=50\nT=504\nq=0.10  N=100\nT=756\nq=0.13  N=100\nT=504\nq=0.20  N=100\nT=252\nq=0.40
+EW                         1.00                  1.00                  1.00                  1.00
+GMV-SAMPLE                 0.78                  0.78                  0.76                  0.74
+GMV-LW                     0.78                  0.77                  0.76                  0.73
+GMV-RMT                    0.81                  0.81                  0.79                  0.76
+GMV-PCA                    0.79                  0.80                  0.79                  0.75
+HRP                        0.85                  0.87                  0.86                  0.85
+HRP-RMT                    0.85                  0.88                  0.87                  0.86
+MV-SAMPLE                  1.17                  1.14                  1.16                  1.18
+MV-RMT                     1.20                  1.14                  1.18                  1.22
+
+annual turnover by q:
+            N=50\nT=504\nq=0.10  N=100\nT=756\nq=0.13  N=100\nT=504\nq=0.20  N=100\nT=252\nq=0.40
+EW                          1.1                   0.9                   0.9                   0.9
+GMV-SAMPLE                  2.1                   1.8                   2.5                   4.2
+GMV-LW                      2.0                   1.8                   2.4                   3.8
+GMV-RMT                     2.0                   1.8                   2.3                   3.6
+GMV-PCA                     1.7                   1.7                   2.3                   3.5
+HRP                         2.5                   2.7                   2.8                   3.1
+HRP-RMT                     2.4                   2.5                   2.6                   2.8
+MV-SAMPLE                   5.4                   4.3                   5.8                   8.3
+MV-RMT                      5.4                   4.4                   6.0                   8.4
+
+Sharpe vs cost (bps):
+            0 bps  5 bps  10 bps  20 bps
+EW           0.95   0.95    0.95    0.94
+GMV-SAMPLE   0.75   0.74    0.73    0.72
+GMV-LW       0.76   0.76    0.75    0.73
+GMV-RMT      0.68   0.67    0.66    0.64
+GMV-PCA      0.73   0.72    0.71    0.70
+HRP          0.91   0.90    0.89    0.87
+HRP-RMT      0.92   0.91    0.90    0.89
+MV-SAMPLE    0.95   0.94    0.92    0.90
+MV-RMT       0.94   0.92    0.91    0.88
+
+volatility vs weight cap (HRP has no cap mechanism and stays uncapped):
+            no cap  cap 10%
+EW           0.176    0.176
+GMV-SAMPLE   0.134    0.132
+GMV-LW       0.133    0.132
+GMV-RMT      0.140    0.137
+GMV-PCA      0.138    0.135
+HRP          0.152    0.152
+HRP-RMT      0.153    0.153
+MV-SAMPLE    0.205    0.179
+MV-RMT       0.208    0.181
+Sharpe vs weight cap:
+            no cap  cap 10%
+EW            0.95     0.95
+GMV-SAMPLE    0.73     0.79
+GMV-LW        0.75     0.79
+GMV-RMT       0.66     0.71
+GMV-PCA       0.71     0.78
+HRP           0.89     0.89
+HRP-RMT       0.90     0.90
+MV-SAMPLE     0.92     0.97
+MV-RMT        0.91     0.89
+
+GMV-PCA volatility / Sharpe vs K rule:
+            MP    K=1   K=3    K=5   K=10  Bai-Ng
+GMV-PCA  0.138  0.146  0.14  0.138  0.136    0.14
+           MP   K=1   K=3   K=5  K=10  Bai-Ng
+GMV-PCA  0.71  0.54  0.65  0.73  0.74    0.67
+
+HRP volatility / Sharpe vs linkage:
+         single   ward  average
+HRP       0.152  0.154    0.152
+HRP-RMT   0.153  0.155    0.153
+         single  ward  average
+HRP        0.89  0.87      0.9
+HRP-RMT    0.90  0.88      0.9

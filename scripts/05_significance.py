@@ -43,7 +43,8 @@ def _volatility_lines(table: pd.DataFrame, reference: str) -> list[str]:
         flag = "*" if r["significant"] else " "
         ratio, low, high = (float(np.exp(r[c] / 2.0)) for c in ("estimate", "ci_low", "ci_high"))
         lines.append(
-            f"  {r['strategy']:<11} {ratio:6.3f} [{low:6.3f}, {high:6.3f}]  p={r['p_value']:.3f} {flag}"
+            f"  {r['strategy']:<11} {ratio:6.3f} [{low:6.3f}, {high:6.3f}]  "
+            f"p={r['p_value']:.3f} {flag}"
         )
     return lines
 
@@ -72,9 +73,7 @@ def main() -> None:
         "alpha": s.alpha,
     }
 
-    main_table = compare_to_references(
-        returns, s.references, block_length=s.block_length, **common
-    )
+    main_table = compare_to_references(returns, s.references, block_length=s.block_length, **common)
     sensitivity = block_length_sensitivity(
         returns, s.references, block_lengths=s.sensitivity_block_lengths, **common
     )
@@ -100,13 +99,18 @@ def main() -> None:
         "",
         *_volatility_lines(main_table, "EW"),
         "",
-        f"tests whose significance flips with the block length {tuple(s.sensitivity_block_lengths)}: "
+        "tests whose significance flips with the block length "
+        f"{tuple(s.sensitivity_block_lengths)}: "
         f"{len(unstable)} of {len(flags)}",
     ]
     for (reference, strategy, test), _ in unstable.iterrows():
         lines.append(f"  {test}: {strategy} vs {reference}")
     (tables / "significance_summary.txt").write_text("\n".join(lines) + "\n", encoding="utf-8")
-    logger.info("done in %.0f s; summary in %s", time.perf_counter() - started, tables / "significance_summary.txt")
+    logger.info(
+        "done in %.0f s; summary in %s",
+        time.perf_counter() - started,
+        tables / "significance_summary.txt",
+    )
 
 
 if __name__ == "__main__":

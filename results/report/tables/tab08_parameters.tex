@@ -1,0 +1,67 @@
+\begin{table}[t]
+\centering\footnotesize
+\caption{Fixed a priori parameters.}\label{tab:parameters}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lll}
+\toprule
+section & parameter & value \\
+\midrule
+run & seed & 42 \\
+run & annualization & 252 \\
+run & rf & 0.0 \\
+data & start\_date & 2010-01-04 \\
+data & end\_date & 2024-12-20 \\
+data & ffill\_limit & 3 \\
+data & max\_missing\_frac & 0.05 \\
+data & suspect\_abs\_logret & 0.4 \\
+data & winsor\_lower & 0.001 \\
+data & winsor\_upper & 0.999 \\
+eda & stress\_date & 2020-03-31 \\
+eda & corr\_window\_days & 21 \\
+eda & index\_vol\_window\_days & 21 \\
+eda & highlight\_years & [2020, 2022] \\
+eda & frontier\_horizon\_days & 252 \\
+eda & frontier\_points & 50 \\
+stats & block\_length & 10 \\
+stats & n\_boot & 5000 \\
+stats & sensitivity\_block\_lengths & [5, 10, 20] \\
+stats & references & [GMV-SAMPLE, EW, GMV-LW] \\
+stats & alpha & 0.05 \\
+regimes & covid\_start & 2020-02-19 \\
+regimes & covid\_end & 2020-12-31 \\
+regimes & stress\_year & 2022 \\
+regimes & vol\_window\_days & 63 \\
+regimes & min\_history\_days & 252 \\
+universe & n\_assets & 100 \\
+universe & lookback\_days & 504 \\
+universe & dollar\_volume\_window & 252 \\
+backtest & rebalance\_days & 21 \\
+backtest & cost\_bps & 10.0 \\
+backtest & max\_weight & none \\
+backtest & mu\_convention & arithmetic \\
+pca & k\_rule & mp \\
+pca & k\_fixed & none \\
+pca & baing\_kmax & 10 \\
+hrp & linkage & single \\
+sensitivity & n\_assets & [50, 100, 200] \\
+sensitivity & lookback\_days & [252, 504, 756] \\
+sensitivity & cost\_bps & [0.0, 5.0, 10.0, 20.0] \\
+sensitivity & max\_weight & [0.1] \\
+sensitivity & pca\_k\_fixed & [1, 3, 5, 10] \\
+sensitivity & hrp\_linkage & [single, ward, average] \\
+simulation & n\_assets & 100 \\
+simulation & n\_groups & 2 \\
+simulation & sample\_sizes & [126, 252, 504, 1000] \\
+simulation & n\_reps & 200 \\
+simulation & distributions & [gaussian, student\_t] \\
+simulation & t\_df & 5.0 \\
+simulation & market\_vol & 0.15 \\
+simulation & group\_vols & [0.08, 0.06] \\
+simulation & loading\_low & 0.5 \\
+simulation & loading\_high & 1.5 \\
+simulation & idio\_vol\_low & 0.15 \\
+simulation & idio\_vol\_high & 0.45 \\
+simulation & alpha & 0.05 \\
+\bottomrule
+\end{tabular}}
+\end{table}

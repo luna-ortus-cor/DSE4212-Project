@@ -1,0 +1,173 @@
+\begin{table}[t]
+\centering\footnotesize
+\caption{Sensitivity analyses.}\label{tab:sensitivity}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{llllrrr}
+\toprule
+grid & variant & strategy & period & ann\_vol & sharpe & annual\_turnover \\
+\midrule
+baseline & baseline & EW & own & 0.174 & 0.993 & 0.869 \\
+baseline & baseline & GMV-SAMPLE & own & 0.130 & 0.744 & 2.397 \\
+baseline & baseline & GMV-LW & own & 0.130 & 0.758 & 2.262 \\
+baseline & baseline & GMV-RMT & own & 0.136 & 0.663 & 2.195 \\
+baseline & baseline & GMV-PCA & own & 0.135 & 0.721 & 2.175 \\
+baseline & baseline & HRP & own & 0.148 & 0.934 & 2.737 \\
+baseline & baseline & HRP-RMT & own & 0.150 & 0.941 & 2.535 \\
+baseline & baseline & MV-SAMPLE & own & 0.199 & 0.919 & 5.812 \\
+baseline & baseline & MV-RMT & own & 0.202 & 0.898 & 6.029 \\
+baseline & baseline & EW & common & 0.176 & 0.948 & 0.879 \\
+baseline & baseline & GMV-SAMPLE & common & 0.134 & 0.734 & 2.508 \\
+baseline & baseline & GMV-LW & common & 0.133 & 0.746 & 2.361 \\
+baseline & baseline & GMV-RMT & common & 0.140 & 0.659 & 2.300 \\
+baseline & baseline & GMV-PCA & common & 0.138 & 0.714 & 2.297 \\
+baseline & baseline & HRP & common & 0.152 & 0.891 & 2.760 \\
+baseline & baseline & HRP-RMT & common & 0.153 & 0.902 & 2.561 \\
+baseline & baseline & MV-SAMPLE & common & 0.205 & 0.924 & 5.797 \\
+baseline & baseline & MV-RMT & common & 0.208 & 0.907 & 5.989 \\
+lookback & T=252 & EW & own & 0.181 & 0.899 & 0.867 \\
+lookback & T=252 & GMV-SAMPLE & own & 0.127 & 0.843 & 4.055 \\
+lookback & T=252 & GMV-LW & own & 0.127 & 0.850 & 3.668 \\
+lookback & T=252 & GMV-RMT & own & 0.130 & 0.796 & 3.442 \\
+lookback & T=252 & GMV-PCA & own & 0.129 & 0.871 & 3.306 \\
+lookback & T=252 & HRP & own & 0.150 & 0.920 & 3.037 \\
+lookback & T=252 & HRP-RMT & own & 0.151 & 0.921 & 2.765 \\
+lookback & T=252 & MV-SAMPLE & own & 0.203 & 0.700 & 8.606 \\
+lookback & T=252 & MV-RMT & own & 0.209 & 0.687 & 8.513 \\
+lookback & T=252 & EW & common & 0.176 & 0.950 & 0.881 \\
+lookback & T=252 & GMV-SAMPLE & common & 0.130 & 0.822 & 4.196 \\
+lookback & T=252 & GMV-LW & common & 0.129 & 0.835 & 3.795 \\
+lookback & T=252 & GMV-RMT & common & 0.134 & 0.779 & 3.551 \\
+lookback & T=252 & GMV-PCA & common & 0.133 & 0.848 & 3.514 \\
+lookback & T=252 & HRP & common & 0.149 & 0.929 & 3.052 \\
+lookback & T=252 & HRP-RMT & common & 0.151 & 0.925 & 2.778 \\
+lookback & T=252 & MV-SAMPLE & common & 0.208 & 0.739 & 8.346 \\
+lookback & T=252 & MV-RMT & common & 0.215 & 0.719 & 8.437 \\
+lookback & T=756 & EW & own & 0.176 & 0.949 & 0.860 \\
+lookback & T=756 & GMV-SAMPLE & own & 0.136 & 0.752 & 1.821 \\
+lookback & T=756 & GMV-LW & own & 0.136 & 0.756 & 1.778 \\
+lookback & T=756 & GMV-RMT & own & 0.142 & 0.718 & 1.823 \\
+lookback & T=756 & GMV-PCA & own & 0.141 & 0.746 & 1.715 \\
+lookback & T=756 & HRP & own & 0.153 & 0.913 & 2.660 \\
+lookback & T=756 & HRP-RMT & own & 0.154 & 0.913 & 2.494 \\
+lookback & T=756 & MV-SAMPLE & own & 0.200 & 0.872 & 4.339 \\
+lookback & T=756 & MV-RMT & own & 0.200 & 0.857 & 4.383 \\
+lookback & T=756 & EW & common & 0.176 & 0.949 & 0.860 \\
+lookback & T=756 & GMV-SAMPLE & common & 0.136 & 0.752 & 1.821 \\
+lookback & T=756 & GMV-LW & common & 0.136 & 0.756 & 1.778 \\
+lookback & T=756 & GMV-RMT & common & 0.142 & 0.718 & 1.823 \\
+lookback & T=756 & GMV-PCA & common & 0.141 & 0.746 & 1.715 \\
+lookback & T=756 & HRP & common & 0.153 & 0.913 & 2.660 \\
+lookback & T=756 & HRP-RMT & common & 0.154 & 0.913 & 2.494 \\
+lookback & T=756 & MV-SAMPLE & common & 0.200 & 0.872 & 4.339 \\
+lookback & T=756 & MV-RMT & common & 0.200 & 0.857 & 4.383 \\
+universe & N=50 & EW & own & 0.179 & 0.931 & 1.050 \\
+universe & N=50 & GMV-SAMPLE & own & 0.139 & 0.730 & 2.026 \\
+universe & N=50 & GMV-LW & own & 0.138 & 0.749 & 1.941 \\
+universe & N=50 & GMV-RMT & own & 0.143 & 0.672 & 1.913 \\
+universe & N=50 & GMV-PCA & own & 0.140 & 0.715 & 1.605 \\
+universe & N=50 & HRP & own & 0.151 & 0.886 & 2.500 \\
+universe & N=50 & HRP-RMT & own & 0.152 & 0.902 & 2.414 \\
+universe & N=50 & MV-SAMPLE & own & 0.207 & 0.793 & 5.471 \\
+universe & N=50 & MV-RMT & own & 0.212 & 0.802 & 5.381 \\
+universe & N=50 & EW & common & 0.182 & 0.904 & 1.051 \\
+universe & N=50 & GMV-SAMPLE & common & 0.143 & 0.733 & 2.122 \\
+universe & N=50 & GMV-LW & common & 0.142 & 0.748 & 2.035 \\
+universe & N=50 & GMV-RMT & common & 0.147 & 0.665 & 2.006 \\
+universe & N=50 & GMV-PCA & common & 0.144 & 0.706 & 1.692 \\
+universe & N=50 & HRP & common & 0.154 & 0.859 & 2.524 \\
+universe & N=50 & HRP-RMT & common & 0.155 & 0.873 & 2.432 \\
+universe & N=50 & MV-SAMPLE & common & 0.214 & 0.804 & 5.443 \\
+universe & N=50 & MV-RMT & common & 0.218 & 0.814 & 5.356 \\
+cost & 0 bps & EW & own & 0.174 & 0.998 & 0.869 \\
+cost & 0 bps & GMV-SAMPLE & own & 0.130 & 0.763 & 2.397 \\
+cost & 0 bps & GMV-LW & own & 0.130 & 0.776 & 2.262 \\
+cost & 0 bps & GMV-RMT & own & 0.136 & 0.680 & 2.195 \\
+cost & 0 bps & GMV-PCA & own & 0.135 & 0.738 & 2.175 \\
+cost & 0 bps & HRP & own & 0.149 & 0.953 & 2.737 \\
+cost & 0 bps & HRP-RMT & own & 0.150 & 0.958 & 2.535 \\
+cost & 0 bps & MV-SAMPLE & own & 0.199 & 0.948 & 5.812 \\
+cost & 0 bps & MV-RMT & own & 0.202 & 0.928 & 6.029 \\
+cost & 0 bps & EW & common & 0.176 & 0.953 & 0.879 \\
+cost & 0 bps & GMV-SAMPLE & common & 0.134 & 0.753 & 2.508 \\
+cost & 0 bps & GMV-LW & common & 0.133 & 0.764 & 2.361 \\
+cost & 0 bps & GMV-RMT & common & 0.140 & 0.675 & 2.300 \\
+cost & 0 bps & GMV-PCA & common & 0.138 & 0.731 & 2.297 \\
+cost & 0 bps & HRP & common & 0.152 & 0.909 & 2.760 \\
+cost & 0 bps & HRP-RMT & common & 0.153 & 0.919 & 2.561 \\
+cost & 0 bps & MV-SAMPLE & common & 0.205 & 0.952 & 5.797 \\
+cost & 0 bps & MV-RMT & common & 0.208 & 0.936 & 5.989 \\
+cost & 5 bps & EW & own & 0.174 & 0.995 & 0.869 \\
+cost & 5 bps & GMV-SAMPLE & own & 0.130 & 0.754 & 2.397 \\
+cost & 5 bps & GMV-LW & own & 0.130 & 0.767 & 2.262 \\
+cost & 5 bps & GMV-RMT & own & 0.136 & 0.672 & 2.195 \\
+cost & 5 bps & GMV-PCA & own & 0.135 & 0.729 & 2.175 \\
+cost & 5 bps & HRP & own & 0.149 & 0.943 & 2.737 \\
+cost & 5 bps & HRP-RMT & own & 0.150 & 0.950 & 2.535 \\
+cost & 5 bps & MV-SAMPLE & own & 0.199 & 0.933 & 5.812 \\
+cost & 5 bps & MV-RMT & own & 0.202 & 0.913 & 6.029 \\
+cost & 5 bps & EW & common & 0.176 & 0.950 & 0.879 \\
+cost & 5 bps & GMV-SAMPLE & common & 0.134 & 0.744 & 2.508 \\
+cost & 5 bps & GMV-LW & common & 0.133 & 0.755 & 2.361 \\
+cost & 5 bps & GMV-RMT & common & 0.140 & 0.667 & 2.300 \\
+cost & 5 bps & GMV-PCA & common & 0.138 & 0.723 & 2.297 \\
+cost & 5 bps & HRP & common & 0.152 & 0.900 & 2.760 \\
+cost & 5 bps & HRP-RMT & common & 0.153 & 0.911 & 2.561 \\
+cost & 5 bps & MV-SAMPLE & common & 0.205 & 0.938 & 5.797 \\
+cost & 5 bps & MV-RMT & common & 0.208 & 0.921 & 5.989 \\
+cost & 20 bps & EW & own & 0.174 & 0.987 & 0.869 \\
+cost & 20 bps & GMV-SAMPLE & own & 0.130 & 0.726 & 2.397 \\
+cost & 20 bps & GMV-LW & own & 0.129 & 0.741 & 2.262 \\
+cost & 20 bps & GMV-RMT & own & 0.136 & 0.647 & 2.195 \\
+cost & 20 bps & GMV-PCA & own & 0.135 & 0.705 & 2.175 \\
+cost & 20 bps & HRP & own & 0.148 & 0.915 & 2.737 \\
+cost & 20 bps & HRP-RMT & own & 0.150 & 0.924 & 2.535 \\
+cost & 20 bps & MV-SAMPLE & own & 0.199 & 0.889 & 5.812 \\
+cost & 20 bps & MV-RMT & own & 0.202 & 0.867 & 6.029 \\
+cost & 20 bps & EW & common & 0.176 & 0.943 & 0.879 \\
+cost & 20 bps & GMV-SAMPLE & common & 0.134 & 0.716 & 2.508 \\
+cost & 20 bps & GMV-LW & common & 0.133 & 0.729 & 2.361 \\
+cost & 20 bps & GMV-RMT & common & 0.140 & 0.643 & 2.300 \\
+cost & 20 bps & GMV-PCA & common & 0.138 & 0.698 & 2.297 \\
+cost & 20 bps & HRP & common & 0.152 & 0.873 & 2.760 \\
+cost & 20 bps & HRP-RMT & common & 0.153 & 0.886 & 2.561 \\
+cost & 20 bps & MV-SAMPLE & common & 0.205 & 0.896 & 5.797 \\
+cost & 20 bps & MV-RMT & common & 0.208 & 0.878 & 5.989 \\
+cap & cap 10\% & EW & own & 0.174 & 0.993 & 0.869 \\
+cap & cap 10\% & GMV-SAMPLE & own & 0.129 & 0.805 & 2.166 \\
+cap & cap 10\% & GMV-LW & own & 0.129 & 0.804 & 2.114 \\
+cap & cap 10\% & GMV-RMT & own & 0.133 & 0.742 & 2.118 \\
+cap & cap 10\% & GMV-PCA & own & 0.132 & 0.798 & 2.058 \\
+cap & cap 10\% & HRP & own & 0.148 & 0.934 & 2.737 \\
+cap & cap 10\% & HRP-RMT & own & 0.150 & 0.941 & 2.535 \\
+cap & cap 10\% & MV-SAMPLE & own & 0.175 & 0.995 & 4.961 \\
+cap & cap 10\% & MV-RMT & own & 0.176 & 0.923 & 5.107 \\
+cap & cap 10\% & EW & common & 0.176 & 0.948 & 0.879 \\
+cap & cap 10\% & GMV-SAMPLE & common & 0.132 & 0.788 & 2.287 \\
+cap & cap 10\% & GMV-LW & common & 0.132 & 0.786 & 2.232 \\
+cap & cap 10\% & GMV-RMT & common & 0.137 & 0.712 & 2.233 \\
+cap & cap 10\% & GMV-PCA & common & 0.135 & 0.780 & 2.182 \\
+cap & cap 10\% & HRP & common & 0.152 & 0.891 & 2.760 \\
+cap & cap 10\% & HRP-RMT & common & 0.153 & 0.902 & 2.561 \\
+cap & cap 10\% & MV-SAMPLE & common & 0.179 & 0.968 & 5.087 \\
+cap & cap 10\% & MV-RMT & common & 0.181 & 0.895 & 5.269 \\
+pca\_k & K=1 & GMV-PCA & own & 0.142 & 0.555 & 1.338 \\
+pca\_k & K=1 & GMV-PCA & common & 0.146 & 0.544 & 1.398 \\
+pca\_k & K=3 & GMV-PCA & own & 0.136 & 0.657 & 2.005 \\
+pca\_k & K=3 & GMV-PCA & common & 0.140 & 0.648 & 2.111 \\
+pca\_k & K=5 & GMV-PCA & own & 0.134 & 0.733 & 2.089 \\
+pca\_k & K=5 & GMV-PCA & common & 0.138 & 0.729 & 2.201 \\
+pca\_k & K=10 & GMV-PCA & own & 0.133 & 0.740 & 2.243 \\
+pca\_k & K=10 & GMV-PCA & common & 0.136 & 0.737 & 2.364 \\
+pca\_k & Bai-Ng & GMV-PCA & own & 0.136 & 0.677 & 2.052 \\
+pca\_k & Bai-Ng & GMV-PCA & common & 0.140 & 0.668 & 2.164 \\
+hrp\_linkage & ward & HRP & own & 0.151 & 0.912 & 3.204 \\
+hrp\_linkage & ward & HRP-RMT & own & 0.152 & 0.916 & 2.967 \\
+hrp\_linkage & ward & HRP & common & 0.154 & 0.872 & 3.260 \\
+hrp\_linkage & ward & HRP-RMT & common & 0.155 & 0.875 & 3.017 \\
+hrp\_linkage & average & HRP & own & 0.149 & 0.939 & 2.953 \\
+hrp\_linkage & average & HRP-RMT & own & 0.150 & 0.932 & 2.818 \\
+hrp\_linkage & average & HRP & common & 0.152 & 0.900 & 2.988 \\
+hrp\_linkage & average & HRP-RMT & common & 0.153 & 0.896 & 2.833 \\
+\bottomrule
+\end{tabular}}
+\end{table}

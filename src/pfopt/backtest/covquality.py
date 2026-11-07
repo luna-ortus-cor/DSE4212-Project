@@ -8,9 +8,9 @@ the holding period ``k`` (the trading days after rebalance date ``t_k`` up to an
 - predicted volatility ``P_k = sqrt(w_k' Sigma_k w_k) * sqrt(A)``, with ``Sigma_k`` the covariance
   matrix that produced the weights (stored by the engine as ``pred_vol_<strategy>``);
 - realized volatility ``V_k = std(gross daily returns in period k, ddof=1) * sqrt(A)``;
-- period ratio ``V_k / P_k`` and its log. Over ``n_k`` daily returns the standard error of ``V_k`` is
-  about ``V_k / sqrt(2 (n_k - 1))`` (roughly 16% for 21 days), so single periods are noisy and
-  averages over periods are the meaningful numbers.
+- period ratio ``V_k / P_k`` and its log. Over ``n_k`` daily returns the standard error of
+  ``V_k`` is about ``V_k / sqrt(2 (n_k - 1))`` (roughly 16% for 21 days), so single periods are
+  noisy and averages over periods are the meaningful numbers.
 
 Two aggregates do not depend on the period length:
 
@@ -65,9 +65,7 @@ def weight_stats(
     }
 
 
-def weight_stability(
-    weights: pd.DataFrame, turnover: pd.Series | None = None
-) -> dict[str, float]:
+def weight_stability(weights: pd.DataFrame, turnover: pd.Series | None = None) -> dict[str, float]:
     """Stability and concentration of a strategy's weights over the rebalances.
 
     Parameters

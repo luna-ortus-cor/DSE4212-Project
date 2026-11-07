@@ -81,13 +81,16 @@ def main() -> None:
     sharpe, drawdown, volatility = matrix("sharpe"), matrix("max_drawdown"), matrix("ann_vol")
     figure_sharpe = table["sharpe"].unstack("strategy").loc[order].rename(index=labelled)
     figure_drawdown = table["max_drawdown"].unstack("strategy").loc[order].rename(index=labelled)
-    save_figure(plot_period_bars(figure_sharpe, figure_drawdown), "subperiod_sharpe_drawdown", figures)
+    save_figure(
+        plot_period_bars(figure_sharpe, figure_drawdown), "subperiod_sharpe_drawdown", figures
+    )
 
     classified = labels.dropna()
     share_high = days["high_vol"] / (days["high_vol"] + days["low_vol"])
     lines = [
         "days per period: " + ", ".join(f"{names[k]} {days[k]}" for k in order),
-        f"regime labels available from {classified.index[0].date()} to {classified.index[-1].date()} "
+        f"regime labels available from {classified.index[0].date()} "
+        f"to {classified.index[-1].date()} "
         f"({len(classified)} days; {100 * share_high:.0f}% high-vol); unclassified days are in "
         f"neither regime; window {r.vol_window_days}d, expanding median after "
         f"{r.min_history_days} observations, label lagged one day",

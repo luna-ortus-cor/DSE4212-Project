@@ -37,7 +37,8 @@ def test_known_drawdown_and_dates() -> None:
     wealth = [1.10, 0.88, 0.924, 1.0164, 0.91476, 1.189188]
     np.testing.assert_allclose((1.0 + r).cumprod(), wealth)
     np.testing.assert_allclose(
-        drawdown_series(r), [0.0, 0.88 / 1.1 - 1, 0.924 / 1.1 - 1, 1.0164 / 1.1 - 1, 0.91476 / 1.1 - 1, 0.0]
+        drawdown_series(r),
+        [0.0, 0.88 / 1.1 - 1, 0.924 / 1.1 - 1, 1.0164 / 1.1 - 1, 0.91476 / 1.1 - 1, 0.0],
     )
     info = max_drawdown(r)
     assert info.max_drawdown == pytest.approx(-0.2)
@@ -124,7 +125,9 @@ def test_metrics_table_from_simulations() -> None:
     dates = pd.bdate_range("2020-01-01", periods=61)
     returns = pd.DataFrame(rng.normal(0.0005, 0.01, size=(61, 2)), index=dates, columns=["A", "B"])
     weights = {
-        "S": pd.DataFrame(rng.dirichlet(np.ones(2), size=3), index=dates[[0, 20, 40]], columns=["A", "B"]),
+        "S": pd.DataFrame(
+            rng.dirichlet(np.ones(2), size=3), index=dates[[0, 20, 40]], columns=["A", "B"]
+        ),
         "T": pd.DataFrame([[0.5, 0.5]] * 3, index=dates[[0, 20, 40]], columns=["A", "B"]),
     }
     sims = {name: simulate(frame, returns, cost_bps=50.0) for name, frame in weights.items()}

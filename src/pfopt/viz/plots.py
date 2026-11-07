@@ -155,9 +155,7 @@ def plot_risk_return(annual_vol: pd.Series, annual_return: pd.Series) -> Figure:
     return fig
 
 
-def plot_vol_forecast_ratio(
-    ratios: Mapping[str, pd.Series], rolling_window: int = 12
-) -> Figure:
+def plot_vol_forecast_ratio(ratios: Mapping[str, pd.Series], rolling_window: int = 12) -> Figure:
     """Realized-to-predicted volatility per holding period, with a rolling mean.
 
     A ratio above 1 means the strategy's risk was under-predicted. Dots are single 21-day periods
@@ -175,7 +173,9 @@ def plot_vol_forecast_ratio(
     for name, series in ratios.items():
         color = METHOD_COLORS[name]
         ax.plot(series.index, series, ls="none", marker=".", ms=2.5, color=color, alpha=0.35)
-        ax.plot(series.index, series.rolling(rolling_window).mean(), color=color, lw=1.2, label=name)
+        ax.plot(
+            series.index, series.rolling(rolling_window).mean(), color=color, lw=1.2, label=name
+        )
     ax.axhline(1.0, color=PALETTE["black"], lw=0.7)
     ax.set_yscale("log")
     ax.set_ylabel("Realized / predicted volatility")
@@ -232,7 +232,9 @@ def plot_frontiers(panels: Sequence[tuple[str, Mapping[str, Any]]]) -> Figure:
     for ax, (title, curves) in zip(axes, panels, strict=True):
         for name, curve in curves.items():
             color = ESTIMATOR_COLORS[name]
-            ax.plot(100 * curve.est_vol, 100 * curve.est_ret, color=color, label=f"{name}, estimated")
+            ax.plot(
+                100 * curve.est_vol, 100 * curve.est_ret, color=color, label=f"{name}, estimated"
+            )
             ax.plot(
                 100 * curve.real_vol,
                 100 * curve.real_ret,
@@ -478,4 +480,246 @@ def plot_rolling_correlation(
     ax.set_ylabel(f"Average pairwise correlation\n({window}-day window)")
     if highlight_years:
         ax.legend(loc="upper left", ncol=len(highlight_years))
+    return fig
+
+
+def plot_heatmap_panels(
+    panels: Sequence[tuple[str, pd.DataFrame, str] | tuple[str, pd.DataFrame, str, str]],
+    ncols: int = 2,
+    panel_height: float = 2.6,
+    xtick_rotation: float = 0.0,
+) -> Figure:
+    """Annotated heatmaps (rows = strategies, columns = scenario variants), one per panel.
+
+    Parameters
+    ----------
+    panels : sequence of (title, table, number format[, colormap])
+        ``table`` is strategy x variant; ``number format`` is a format spec such as ``".2f"``.
+        Each panel has its own colour scale (default viridis). For a non-default colormap whose
+        values straddle zero (for example ``"RdBu_r"``) the scale is symmetric around zero.
+    ncols : int, default 2
+        Panels per row.
+    panel_height : float, default 2.6
+        Height in inches of one row of panels.
+    xtick_rotation : float, default 0
+        Rotation (degrees) of the column labels.
+    """
+    apply_style()
+    nrows = int(np.ceil(len(panels) / ncols))
+    fig, axes = plt.subplots(
+        nrows,
+        ncols,
+        figsize=(FIG_WIDTH_IN, panel_height * nrows),
+        squeeze=False,
+        layout="constrained",
+    )
+    for ax in axes.ravel()[len(panels) :]:
+        ax.set_visible(False)
+    for ax, (title, table, fmt, *extra) in zip(axes.ravel(), panels, strict=False):
+        cmap = extra[0] if extra else "viridis"
+        values = table.to_numpy(dtype=float)
+        lo, hi = float(np.nanmin(values)), float(np.nanmax(values))
+        limits = {}
+        if cmap != "viridis" and lo < 0.0 < hi:
+            limits = {"vmin": -max(-lo, hi), "vmax": max(-lo, hi)}
+        image = ax.imshow(values, aspect="auto", cmap=cmap, **limits)
+        for i in range(values.shape[0]):
+            for j in range(values.shape[1]):
+                red, green, blue, _ = image.cmap(image.norm(values[i, j]))
+                color = "white" if 0.299 * red + 0.587 * green + 0.114 * blue < 0.5 else "black"
+                label = format(values[i, j], fmt)
+                ax.text(j, i, label, ha="center", va="center", fontsize=6, color=color)
+        ax.set_xticks(range(values.shape[1]))
+        ha = "right" if xtick_rotation else "center"
+        ax.set_xticklabels(list(table.columns), fontsize=6, rotation=xtick_rotation, ha=ha)
+        ax.set_yticks(range(values.shape[0]))
+        ax.set_yticklabels(list(table.index), fontsize=6.5)
+        ax.set_title(title, fontsize=8)
+        ax.tick_params(length=0)
+        fig.colorbar(image, ax=ax, shrink=0.8, pad=0.02).ax.tick_params(labelsize=6)
+    return fig
+
+
+def plot_weight_dynamics(effective_n: pd.DataFrame, turnover: pd.DataFrame) -> Figure:
+    """Effective number of holdings (top) and per-rebalance turnover (bottom) over time.
+
+    Parameters
+    ----------
+    effective_n : pandas.DataFrame
+        Rebalance date x strategy ``1 / sum(w^2)``.
+    turnover : pandas.DataFrame
+        Rebalance date x strategy ``sum |target - drifted|`` (without the initial investment).
+        Columns are keys of ``METHOD_COLORS``.
+    """
+    apply_style()
+    fig, axes = plt.subplots(2, 1, figsize=(FIG_WIDTH_IN, 5.2), sharex=True, layout="constrained")
+    for name in effective_n.columns:
+        color = METHOD_COLORS[name]
+        axes[0].plot(effective_n.index, effective_n[name], color=color, lw=0.9, label=name)
+        if name in turnover.columns:
+            axes[1].plot(turnover.index, turnover[name], color=color, lw=0.7)
+    axes[0].set_ylabel("Effective number of holdings")
+    axes[1].set_ylabel("Turnover per rebalance (sum of |dw|)")
+    axes[1].set_xlabel("Rebalance date")
+    handles, labels = axes[0].get_legend_handles_labels()
+    fig.legend(handles, labels, loc="outside lower center", ncol=5, fontsize=6.5)
+    return fig
+
+
+def plot_weight_survival(pooled: Mapping[str, np.ndarray], threshold: float = 1e-3) -> Figure:
+    """Share of holdings with weight above ``x`` (log x-axis), one line per strategy.
+
+    Parameters
+    ----------
+    pooled : mapping of str to numpy.ndarray
+        Pooled member weights per strategy (keys of ``METHOD_COLORS``).
+    threshold : float, default 1e-3
+        Left edge of the x-axis (weights at or below it count as no position).
+    """
+    apply_style()
+    fig, ax = plt.subplots(figsize=(FIG_WIDTH_IN, 3.4), layout="constrained")
+    grid = np.logspace(np.log10(threshold), np.log10(0.5), 200)
+    for name, weights in pooled.items():
+        share = [(weights > x).mean() for x in grid]
+        ax.plot(grid, share, color=METHOD_COLORS[name], lw=1.2, label=name)
+    ax.set_xscale("log")
+    ax.set_xlabel("Weight x")
+    ax.set_ylabel("Share of holdings with weight > x")
+    ax.legend(fontsize=6.5, ncol=2)
+    return fig
+
+
+def plot_eigen_vs_performance(
+    diagnostics: pd.DataFrame, performance: pd.DataFrame, estimators: Sequence[str]
+) -> Figure:
+    """Relative realized volatility of denoised strategies against window diagnostics.
+
+    Each panel plots, per holding period, ``log(vol_strategy / vol_GMV-SAMPLE)`` (negative means
+    lower risk than sample GMV) against one window diagnostic, with a least-squares line.
+
+    Parameters
+    ----------
+    diagnostics : pandas.DataFrame
+        Rebalance date x diagnostic (columns ``top_eig_share``, ``rmt_n_signal``).
+    performance : pandas.DataFrame
+        Rebalance date x ``logvol_<strategy>`` columns.
+    estimators : sequence of str
+        Strategies to show (keys of ``METHOD_COLORS``).
+    """
+    apply_style()
+    labels = {
+        "top_eig_share": "Market-mode share (largest eigenvalue / N)",
+        "rmt_n_signal": "RMT signal eigenvalues",
+    }
+    fig, axes = plt.subplots(1, 2, figsize=(FIG_WIDTH_IN, 3.2), sharey=True, layout="constrained")
+    rng = np.random.default_rng(0)
+    index = diagnostics.index.intersection(performance.index)
+    for ax, column in zip(axes, labels, strict=True):
+        x = diagnostics.loc[index, column].to_numpy(dtype=float)
+        jitter = rng.normal(0.0, 0.04, x.size) if column == "rmt_n_signal" else 0.0
+        for name in estimators:
+            y = performance.loc[index, f"logvol_{name}"].to_numpy(dtype=float)
+            ax.scatter(x + jitter, y, s=7, alpha=0.5, color=METHOD_COLORS[name], label=name)
+            if np.ptp(x) > 0:
+                slope, intercept = np.polyfit(x, y, 1)
+                grid = np.linspace(x.min(), x.max(), 20)
+                ax.plot(grid, intercept + slope * grid, color=METHOD_COLORS[name], lw=1.2)
+        ax.axhline(0.0, color=PALETTE["black"], lw=0.6)
+        ax.set_xlabel(labels[column])
+    axes[0].set_ylabel("log(vol / vol of GMV-SAMPLE), 21-day periods")
+    axes[0].legend(fontsize=6.5)
+    return fig
+
+
+def plot_h3_summary(
+    vol_pct: pd.DataFrame, relative_pct: pd.DataFrame, leverage: pd.DataFrame
+) -> Figure:
+    """Long-only versus unconstrained GMV: volatility, advantage over sample, and leverage.
+
+    Parameters
+    ----------
+    vol_pct : pandas.DataFrame
+        Estimator x (``Long-only``, ``Unconstrained``) annualized volatility in percent. Index
+        values are keys of ``ESTIMATOR_COLORS``.
+    relative_pct : pandas.DataFrame
+        Same columns; rows are the non-sample estimators; volatility relative to the sample
+        covariance in percent (negative = lower risk).
+    leverage : pandas.DataFrame
+        Rebalance date x estimator ``sum |w|`` of the unconstrained portfolios.
+    """
+    apply_style()
+    fig, axes = plt.subplots(1, 3, figsize=(FIG_WIDTH_IN, 3.1), layout="constrained")
+    for ax, table, label in (
+        (axes[0], vol_pct, "Realized volatility (%, net)"),
+        (axes[1], relative_pct, "Volatility vs sample GMV (%)"),
+    ):
+        x = np.arange(len(table.index))
+        for offset, column, hatch in ((-0.2, "Long-only", None), (0.2, "Unconstrained", "////")):
+            colors = [ESTIMATOR_COLORS[name] for name in table.index]
+            ax.bar(x + offset, table[column], 0.38, color=colors, hatch=hatch, edgecolor="white")
+        ax.axhline(0.0, color=PALETTE["black"], lw=0.6)
+        ax.set_xticks(x)
+        ax.set_xticklabels(list(table.index), rotation=30, ha="right", fontsize=7)
+        ax.set_ylabel(label)
+    for name in leverage.columns:
+        color = ESTIMATOR_COLORS[name]
+        axes[2].plot(leverage.index, leverage[name], color=color, lw=0.9, label=name)
+    axes[2].set_ylabel("Unconstrained leverage (sum of |w|)")
+    axes[2].tick_params(axis="x", rotation=30)
+    axes[2].legend(fontsize=6.5)
+    axes[0].bar([], [], color="grey", label="Long-only")
+    axes[0].bar([], [], color="grey", hatch="////", edgecolor="white", label="Unconstrained")
+    axes[0].legend(fontsize=6.5, loc="upper left")
+    return fig
+
+
+def plot_simulation_accuracy(summary: pd.DataFrame, distribution: str) -> Figure:
+    """Estimator accuracy against the sample size in the simulation study (step 6.1).
+
+    Four panels with the mean across replications and a confidence band: relative Frobenius error
+    of the covariance, true variance of the long-only and of the unconstrained GMV portfolio as a
+    ratio to the oracle, and L1 distance of the long-only weights to the oracle weights.
+
+    Parameters
+    ----------
+    summary : pandas.DataFrame
+        Output of :func:`pfopt.simulation.run.summarize` (columns ``distribution``, ``T``,
+        ``method``, ``constraint``, ``metric``, ``mean``, ``ci_low``, ``ci_high``). Method names
+        are keys of ``METHOD_COLORS``.
+    distribution : str
+        Distribution to plot.
+    """
+    apply_style()
+    data = summary[summary["distribution"] == distribution]
+    panels = (
+        ("frob_error", "covariance", "Relative Frobenius error", True),
+        ("l1_dist", "long-only", "L1 distance to oracle (long-only)", False),
+        ("var_ratio", "long-only", "True variance / oracle (long-only)", True),
+        ("var_ratio", "unconstrained", "True variance / oracle (unconstrained)", True),
+    )
+    fig, axes = plt.subplots(2, 2, figsize=(FIG_WIDTH_IN, 5.0), layout="constrained")
+    for ax, (metric, constraint, label, log_y) in zip(axes.ravel(), panels, strict=True):
+        cell = data[(data["metric"] == metric) & (data["constraint"] == constraint)]
+        for method, group in cell.groupby("method", sort=False):
+            group = group.sort_values("T")
+            style = _strategy_style(method)
+            marker = _MARKERS[method]
+            ax.plot(group["T"], group["mean"], marker=marker, ms=3.5, lw=1.0, label=method, **style)
+            ax.fill_between(
+                group["T"], group["ci_low"], group["ci_high"], alpha=0.2, color=style["color"], lw=0
+            )
+        ax.set_xscale("log")
+        ticks = sorted(cell["T"].unique())
+        ax.set_xticks(ticks)
+        ax.set_xticklabels([str(t) for t in ticks], fontsize=7)
+        ax.minorticks_off()
+        if log_y:
+            ax.set_yscale("log")
+        ax.set_xlabel("Sample size T (days)")
+        ax.set_ylabel(label, fontsize=7.5)
+    handles, labels = axes[0, 0].get_legend_handles_labels()
+    extra_handles, extra_labels = axes[0, 1].get_legend_handles_labels()
+    seen = dict(zip(labels, handles, strict=True))
+    seen.update(zip(extra_labels, extra_handles, strict=True))
+    fig.legend(list(seen.values()), list(seen), loc="outside lower center", ncol=6, fontsize=6.5)
     return fig

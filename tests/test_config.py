@@ -27,6 +27,7 @@ def test_repo_config_loads_with_plan_defaults() -> None:
     assert cfg.pca.k_rule == "mp"
     assert cfg.hrp.linkage == "single"
     assert cfg.sensitivity.lookback_days == (252, 504, 756)
+    assert cfg.simulation.n_groups == 2 and cfg.simulation.distributions[0] == "gaussian"
     assert cfg.data.stocks_file == "sp500_stocks.csv"
     assert cfg.data.index_columns == ("Date", "S&P500")
     assert cfg.data.start_date == "2010-01-04"
@@ -135,6 +136,15 @@ def test_unknown_key_rejected() -> None:
         ("eda", {"index_vol_window_days": 0}),
         ("data", {"stocks_columns": ["Symbol", "Close"]}),
         ("data", {"index_columns": ["Date"]}),
+        ("simulation", {"n_groups": -1}),
+        ("simulation", {"sample_sizes": [50, 252]}),
+        ("simulation", {"n_reps": 1}),
+        ("simulation", {"distributions": ["laplace"]}),
+        ("simulation", {"t_df": 4.0}),
+        ("simulation", {"group_vols": []}),
+        ("simulation", {"loading_low": 2.0, "loading_high": 1.0}),
+        ("simulation", {"idio_vol_low": 0.0}),
+        ("simulation", {"alpha": 0.0}),
     ],
 )
 def test_invalid_values_rejected(section: str, values: dict) -> None:

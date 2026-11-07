@@ -41,9 +41,7 @@ def _bai_ng_ic2(eigenvalues: np.ndarray, t: int, n: int, kmax: int) -> int:
     return int(np.argmin(ic)) + 1
 
 
-def n_factors(
-    returns: np.ndarray, rule: str = "mp", K: int | None = None, kmax: int = 10
-) -> int:
+def n_factors(returns: np.ndarray, rule: str = "mp", K: int | None = None, kmax: int = 10) -> int:
     """Number of factors ``K`` chosen by the given rule.
 
     Parameters
