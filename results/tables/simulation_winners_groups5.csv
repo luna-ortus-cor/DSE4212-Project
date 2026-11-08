@@ -1,0 +1,17 @@
+distribution,T,constraint,method,mean
+gaussian,126,long-only,GMV-RMT,1.1593906734767732
+gaussian,126,unconstrained,GMV-PCA,1.2950044804502823
+gaussian,252,long-only,GMV-RMT,1.0907848332770314
+gaussian,252,unconstrained,GMV-PCA,1.1597050197584189
+gaussian,504,long-only,GMV-PCA,1.049924486318755
+gaussian,504,unconstrained,GMV-PCA,1.0877510840021687
+gaussian,1000,long-only,GMV-PCA,1.0269793839343142
+gaussian,1000,unconstrained,GMV-PCA,1.0548330410370956
+student_t,126,long-only,GMV-RMT,1.2497361905222162
+student_t,126,unconstrained,GMV-PCA,1.4551842429471449
+student_t,252,long-only,GMV-RMT,1.1519140501324214
+student_t,252,unconstrained,GMV-PCA,1.2658906590487624
+student_t,504,long-only,GMV-RMT,1.088865483310765
+student_t,504,unconstrained,GMV-PCA,1.1538850948493309
+student_t,1000,long-only,GMV-RMT,1.0548784666379072
+student_t,1000,unconstrained,GMV-PCA,1.0996335260340953

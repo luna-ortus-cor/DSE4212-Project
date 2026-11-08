@@ -12,6 +12,10 @@ factor model, every estimator is fitted on the sample, and three accuracy measur
 Methods are the four GMV strategies (sample, Ledoit-Wolf, RMT, PCA covariance), HRP (sample
 covariance) and the equal-weight portfolio. Unconstrained weights exist for the four GMV methods;
 HRP and EW are long-only by construction.
+
+With ``simulation.time_varying`` (step 6.3) the covariance changes over time, so the truth is the
+average conditional covariance over the ``horizon_days`` days after the sample; the oracle
+portfolios are recomputed for that matrix in every replication.
 """
 
 from __future__ import annotations
@@ -29,7 +33,12 @@ from pfopt.config import Config
 from pfopt.estimators.hrp import hrp_weights
 from pfopt.estimators.utils import validate_returns
 from pfopt.optimizers.gmv import gmv_long_only, gmv_unconstrained
-from pfopt.simulation.dgp import FactorModel, make_factor_model, simulate_returns
+from pfopt.simulation.dgp import (
+    FactorModel,
+    make_factor_model,
+    simulate_returns,
+    simulate_time_varying,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -145,7 +154,8 @@ def run_grid(
 
     The generator of replication ``r`` at sample size ``T`` is seeded with ``[seed, 1, T, r]``,
     independent of the grid and the number of replications, and gives the same underlying normal
-    draws for both distributions.
+    draws for both distributions. In the time-varying design the oracle is specific to the
+    replication (it depends on the simulated volatility and loading paths).
 
     Parameters
     ----------
@@ -167,14 +177,20 @@ def run_grid(
     """
     sim = cfg.simulation
     model = true_model(cfg) if model is None else model
-    oracle = oracle_portfolios(model.sigma)
+    oracle = None if sim.time_varying else oracle_portfolios(model.sigma)
     score_rows: list[dict[str, object]] = []
     info_rows: list[dict[str, object]] = []
     for n_obs in sim.sample_sizes:
         for rep in range(sim.n_reps):
             rng = np.random.default_rng([cfg.run.seed, 1, n_obs, rep])
-            x = simulate_returns(model, n_obs, rng, distribution, sim.t_df)
-            rows, info = evaluate_sample(x, oracle, cfg)
+            if sim.time_varying:
+                x, forward = simulate_time_varying(
+                    model, n_obs, sim.horizon_days, rng, sim, distribution
+                )
+                rows, info = evaluate_sample(x, oracle_portfolios(forward), cfg)
+            else:
+                x = simulate_returns(model, n_obs, rng, distribution, sim.t_df)
+                rows, info = evaluate_sample(x, oracle, cfg)
             key = {"distribution": distribution, "T": n_obs, "rep": rep}
             score_rows.extend({**key, **row} for row in rows)
             info_rows.append({**key, **info})

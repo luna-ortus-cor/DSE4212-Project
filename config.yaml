@@ -44,6 +44,7 @@ stats:
   sensitivity_block_lengths: [5, 10, 20]
   references: [GMV-SAMPLE, EW, GMV-LW]
   alpha: 0.05
+  mde_power: 0.8            # step 8.21: power of the minimum detectable effect
 
 regimes:
   covid_start: "2020-02-19"
@@ -93,3 +94,18 @@ simulation:                  # step 6.1: factor-model simulation study (N=100, K
   idio_vol_low: 0.15
   idio_vol_high: 0.45
   alpha: 0.05
+  time_varying: false        # step 6.3: stochastic factor volatility and drifting loadings
+  horizon_days: 21           # forward evaluation period of the time-varying design
+  vol_log_sd: 0.4            # stationary sd of each factor's log volatility
+  vol_persistence: 0.98      # daily autocorrelation of the log volatilities
+  loading_drift_sd: 0.2      # stationary sd of the loading drift
+  loading_persistence: 0.996 # daily autocorrelation of the loading drift
+
+pipeline_check:             # step 8.20: synthetic-panel validation of the backtest pipeline
+  n_symbols: 150            # more than universe.n_assets so the universe has to choose
+  n_days: 2500
+  n_panels: 4
+  dv_persistence: 0.995     # AR(1) of each symbol's log dollar volume
+  dv_sd: 1.0
+  z2_tolerance: 3.0         # accounting check: |mean z^2 - 1| within this many standard errors
+  identity_tolerance: 1.0e-6

@@ -1,0 +1,156 @@
+design: time-varying: factor log-volatility sd 0.4 (persistence 0.98), loading drift sd 0.2 (persistence 0.996); truth = average conditional covariance over the next 21 days
+N=100, true factors K=3 (1 market + 2 group), T in [126, 252, 504, 1000], 200 replications, t df=5; bands are 95% normal intervals; main result: gaussian
+
+true correlation eigenvalues of the K factors: 25.78, 3.38, 1.11; noise bulk level 0.72
+  T=126: MP edge 2.57, factors above it: 2 of 3
+  T=252: MP edge 1.91, factors above it: 2 of 3
+  T=504: MP edge 1.50, factors above it: 2 of 3
+  T=1000: MP edge 1.25, factors above it: 2 of 3
+
+===== gaussian =====
+lowest true-variance ratio over all replications: 1.08521373 (oracle bound holds: True)
+covariance error decreases with T for every estimator: False
+
+relative Frobenius error (mean):
+T            126    252    504    1000
+method                                
+GMV-LW      0.617  0.618  0.594  0.627
+GMV-PCA     0.625  0.635  0.620  0.659
+GMV-RMT     0.572  0.592  0.578  0.618
+GMV-SAMPLE  0.706  0.661  0.621  0.644
+
+true variance / oracle, long-only (mean):
+T            126    252    504    1000
+method                                
+EW          2.292  2.368  2.293  2.254
+GMV-LW      1.402  1.324  1.313  1.333
+GMV-PCA     1.321  1.289  1.308  1.338
+GMV-RMT     1.320  1.292  1.316  1.346
+GMV-SAMPLE  1.420  1.331  1.318  1.337
+HRP         1.738  1.793  1.782  1.802
+
+true variance / oracle, unconstrained (mean):
+T            126    252    504    1000
+method                                
+GMV-LW      1.942  1.724  1.579  1.560
+GMV-PCA     1.494  1.429  1.453  1.527
+GMV-RMT     1.522  1.484  1.513  1.586
+GMV-SAMPLE  5.600  2.030  1.640  1.573
+
+L1 distance to oracle weights, long-only (mean):
+T            126    252    504    1000
+method                                
+EW          1.399  1.426  1.400  1.392
+GMV-LW      0.918  0.848  0.844  0.873
+GMV-PCA     0.837  0.806  0.840  0.882
+GMV-RMT     0.834  0.809  0.848  0.888
+GMV-SAMPLE  0.960  0.867  0.860  0.882
+HRP         1.105  1.125  1.121  1.143
+
+paired log(true var / sample GMV true var), long-only (negative = beats sample; * = interval excludes 0):
+T           126      252      504      1000
+method                                     
+EW       +0.448*  +0.546*  +0.524*  +0.493*
+GMV-LW   -0.013*  -0.005*  -0.004*  -0.003*
+GMV-PCA  -0.072*  -0.032*  -0.008*  +0.001 
+GMV-RMT  -0.072*  -0.029*  -0.002   +0.007*
+HRP      +0.188*  +0.280*  +0.283*  +0.279*
+
+same, unconstrained:
+T           126      252      504      1000
+method                                     
+GMV-LW   -1.041*  -0.163*  -0.038*  -0.009*
+GMV-PCA  -1.302*  -0.352*  -0.123*  -0.033*
+GMV-RMT  -1.282*  -0.314*  -0.083*  +0.004 
+
+detected factors (true K=3): mean RMT n_signal / PCA K / LW shrinkage:
+   T  rmt_n_signal  pca_K  lw_shrinkage
+ 126         1.640  1.640         0.216
+ 252         1.925  1.925         0.101
+ 504         1.995  1.995         0.052
+1000         2.000  2.000         0.027
+
+lowest-mean-variance method per cell:
+   T    constraint  method  mean
+ 126     long-only GMV-RMT 1.320
+ 126 unconstrained GMV-PCA 1.494
+ 252     long-only GMV-PCA 1.289
+ 252 unconstrained GMV-PCA 1.429
+ 504     long-only GMV-PCA 1.308
+ 504 unconstrained GMV-PCA 1.453
+1000     long-only  GMV-LW 1.333
+1000 unconstrained GMV-PCA 1.527
+
+===== student_t =====
+lowest true-variance ratio over all replications: 1.10179255 (oracle bound holds: True)
+covariance error decreases with T for every estimator: False
+
+relative Frobenius error (mean):
+T            126    252    504    1000
+method                                
+GMV-LW      0.674  0.661  0.618  0.636
+GMV-PCA     0.889  0.774  0.706  0.697
+GMV-RMT     0.795  0.704  0.642  0.641
+GMV-SAMPLE  0.924  0.780  0.695  0.676
+
+true variance / oracle, long-only (mean):
+T            126    252    504    1000
+method                                
+EW          2.292  2.368  2.293  2.254
+GMV-LW      1.482  1.391  1.357  1.363
+GMV-PCA     1.418  1.349  1.347  1.363
+GMV-RMT     1.416  1.352  1.350  1.367
+GMV-SAMPLE  1.492  1.393  1.365  1.371
+HRP         1.773  1.807  1.793  1.807
+
+true variance / oracle, unconstrained (mean):
+T            126    252    504    1000
+method                                
+GMV-LW      1.934  1.771  1.651  1.636
+GMV-PCA     1.633  1.527  1.507  1.563
+GMV-RMT     1.642  1.565  1.557  1.615
+GMV-SAMPLE  6.002  2.235  1.780  1.674
+
+L1 distance to oracle weights, long-only (mean):
+T            126    252    504    1000
+method                                
+EW          1.399  1.426  1.400  1.392
+GMV-LW      0.989  0.912  0.895  0.904
+GMV-PCA     0.946  0.887  0.897  0.910
+GMV-RMT     0.943  0.887  0.896  0.916
+GMV-SAMPLE  1.028  0.942  0.921  0.924
+HRP         1.131  1.139  1.132  1.147
+
+paired log(true var / sample GMV true var), long-only (negative = beats sample; * = interval excludes 0):
+T           126      252      504      1000
+method                                     
+EW       +0.399*  +0.501*  +0.489*  +0.468*
+GMV-LW   -0.008   -0.002   -0.006*  -0.005*
+GMV-PCA  -0.050*  -0.031*  -0.013*  -0.006*
+GMV-RMT  -0.052*  -0.030*  -0.011*  -0.003 
+HRP      +0.159*  +0.243*  +0.253*  +0.256*
+
+same, unconstrained:
+T           126      252      504      1000
+method                                     
+GMV-LW   -1.117*  -0.235*  -0.077*  -0.026*
+GMV-PCA  -1.283*  -0.381*  -0.168*  -0.071*
+GMV-RMT  -1.274*  -0.355*  -0.135*  -0.039*
+
+detected factors (true K=3): mean RMT n_signal / PCA K / LW shrinkage:
+   T  rmt_n_signal  pca_K  lw_shrinkage
+ 126         3.285  3.285         0.371
+ 252         3.565  3.565         0.200
+ 504         3.715  3.715         0.118
+1000         3.635  3.635         0.067
+
+lowest-mean-variance method per cell:
+   T    constraint  method  mean
+ 126     long-only GMV-RMT 1.416
+ 126 unconstrained GMV-PCA 1.633
+ 252     long-only GMV-PCA 1.349
+ 252 unconstrained GMV-PCA 1.527
+ 504     long-only GMV-PCA 1.347
+ 504 unconstrained GMV-PCA 1.507
+1000     long-only GMV-PCA 1.363
+1000 unconstrained GMV-PCA 1.563

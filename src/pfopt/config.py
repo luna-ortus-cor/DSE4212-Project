@@ -319,6 +319,8 @@ class StatsConfig:
         Benchmark strategies every other strategy is compared with.
     alpha : float
         Significance level of the confidence intervals and the significance flag.
+    mde_power : float
+        Power used for the minimum detectable effect of the inference upgrade (step 8.21).
     """
 
     block_length: int = 10
@@ -326,6 +328,7 @@ class StatsConfig:
     sensitivity_block_lengths: tuple[int, ...] = (5, 10, 20)
     references: tuple[str, ...] = ("GMV-SAMPLE", "EW", "GMV-LW")
     alpha: float = 0.05
+    mde_power: float = 0.8
 
     def __post_init__(self) -> None:
         if self.block_length < 1 or any(b < 1 for b in self.sensitivity_block_lengths):
@@ -336,6 +339,8 @@ class StatsConfig:
             raise ValueError("references must not be empty")
         if not 0.0 < self.alpha < 1.0:
             raise ValueError(f"alpha must be in (0, 1), got {self.alpha}")
+        if not 0.0 < self.mde_power < 1.0:
+            raise ValueError(f"mde_power must be in (0, 1), got {self.mde_power}")
 
 
 @dataclass(frozen=True)
@@ -414,6 +419,21 @@ class SimulationConfig:
         Bounds of the uniform distribution of annual idiosyncratic volatilities.
     alpha : float
         Significance level of the confidence bands (normal approximation across replications).
+    time_varying : bool
+        If true (step 6.3), the covariance changes over time: every factor has its own
+        stochastic volatility and the loadings drift. The target of every estimator is then the
+        average conditional covariance over the ``horizon_days`` days after the sample.
+    horizon_days : int
+        Length of the forward evaluation period in the time-varying design.
+    vol_log_sd : float
+        Stationary standard deviation of the log volatility of each factor (mean-one variance
+        scale, so the unconditional factor variance is unchanged).
+    vol_persistence : float
+        Daily autocorrelation of the log factor volatilities.
+    loading_drift_sd : float
+        Stationary standard deviation of the loading drift (only non-zero loadings drift).
+    loading_persistence : float
+        Daily autocorrelation of the loading drift.
     """
 
     n_assets: int = 100
@@ -429,6 +449,12 @@ class SimulationConfig:
     idio_vol_low: float = 0.15
     idio_vol_high: float = 0.45
     alpha: float = 0.05
+    time_varying: bool = False
+    horizon_days: int = 21
+    vol_log_sd: float = 0.4
+    vol_persistence: float = 0.98
+    loading_drift_sd: float = 0.2
+    loading_persistence: float = 0.996
 
     def __post_init__(self) -> None:
         if self.n_groups < 0 or self.n_assets < 2 * max(self.n_groups, 1):
@@ -449,6 +475,53 @@ class SimulationConfig:
             raise ValueError("need 0 < idio_vol_low <= idio_vol_high")
         if not 0.0 < self.alpha < 1.0:
             raise ValueError(f"alpha must be in (0, 1), got {self.alpha}")
+        if self.horizon_days < 1:
+            raise ValueError(f"horizon_days must be >= 1, got {self.horizon_days}")
+        if self.vol_log_sd < 0 or self.loading_drift_sd < 0:
+            raise ValueError("vol_log_sd and loading_drift_sd must be >= 0")
+        if not (0.0 <= self.vol_persistence < 1.0 and 0.0 <= self.loading_persistence < 1.0):
+            raise ValueError("persistence parameters must be in [0, 1)")
+
+
+@dataclass(frozen=True)
+class PipelineCheckConfig:
+    """Synthetic-panel validation of the backtest pipeline (PLAN.md step 8.20).
+
+    Attributes
+    ----------
+    n_symbols : int
+        Symbols in each synthetic panel (more than ``universe.n_assets``, so the point-in-time
+        universe has to choose).
+    n_days : int
+        Trading days of each panel.
+    n_panels : int
+        Independent panels (each with its own true model and returns).
+    dv_persistence, dv_sd : float
+        Daily autocorrelation and stationary standard deviation of every symbol's log dollar
+        volume (an AR(1)), which makes the top-N membership change over time.
+    z2_tolerance : float
+        The accounting check passes if the mean standardized squared return is within this many
+        standard errors of 1.
+    identity_tolerance : float
+        The engine/simulation-study identity check passes if the true-variance ratios differ by
+        less than this.
+    """
+
+    n_symbols: int = 150
+    n_days: int = 2500
+    n_panels: int = 4
+    dv_persistence: float = 0.995
+    dv_sd: float = 1.0
+    z2_tolerance: float = 3.0
+    identity_tolerance: float = 1e-6
+
+    def __post_init__(self) -> None:
+        if self.n_symbols < 4 or self.n_days < 10 or self.n_panels < 2:
+            raise ValueError("need n_symbols >= 4, n_days >= 10 and n_panels >= 2")
+        if not 0.0 <= self.dv_persistence < 1.0 or self.dv_sd < 0:
+            raise ValueError("need dv_persistence in [0, 1) and dv_sd >= 0")
+        if self.z2_tolerance <= 0 or self.identity_tolerance <= 0:
+            raise ValueError("tolerances must be positive")
 
 
 @dataclass(frozen=True)
@@ -467,6 +540,7 @@ class Config:
     hrp: HRPConfig = field(default_factory=HRPConfig)
     sensitivity: SensitivityConfig = field(default_factory=SensitivityConfig)
     simulation: SimulationConfig = field(default_factory=SimulationConfig)
+    pipeline_check: PipelineCheckConfig = field(default_factory=PipelineCheckConfig)
 
     def __post_init__(self) -> None:
         n, t = self.universe.n_assets, self.universe.lookback_days

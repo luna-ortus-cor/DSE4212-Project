@@ -41,6 +41,8 @@ def test_repo_config_loads_with_plan_defaults() -> None:
     assert cfg.stats.block_length == 10 and cfg.stats.n_boot == 5000
     assert cfg.stats.sensitivity_block_lengths == (5, 10, 20)
     assert cfg.stats.references == ("GMV-SAMPLE", "EW", "GMV-LW")
+    assert cfg.stats.mde_power == 0.8
+    assert cfg.pipeline_check.n_symbols == 150 and cfg.pipeline_check.n_panels == 4
 
 
 def test_unquoted_yaml_date_rejected(tmp_path: Path) -> None:
@@ -130,6 +132,10 @@ def test_unknown_key_rejected() -> None:
         ("stats", {"n_boot": 0}),
         ("stats", {"references": []}),
         ("stats", {"alpha": 1.0}),
+        ("stats", {"mde_power": 1.0}),
+        ("pipeline_check", {"n_panels": 1}),
+        ("pipeline_check", {"dv_persistence": 1.0}),
+        ("pipeline_check", {"z2_tolerance": 0.0}),
         ("eda", {"frontier_horizon_days": 1}),
         ("eda", {"frontier_points": 1}),
         ("backtest", {"mu_convention": "geometric"}),
@@ -145,6 +151,10 @@ def test_unknown_key_rejected() -> None:
         ("simulation", {"loading_low": 2.0, "loading_high": 1.0}),
         ("simulation", {"idio_vol_low": 0.0}),
         ("simulation", {"alpha": 0.0}),
+        ("simulation", {"horizon_days": 0}),
+        ("simulation", {"vol_log_sd": -0.1}),
+        ("simulation", {"vol_persistence": 1.0}),
+        ("simulation", {"loading_persistence": -0.5}),
     ],
 )
 def test_invalid_values_rejected(section: str, values: dict) -> None:

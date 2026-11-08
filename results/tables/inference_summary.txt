@@ -1,0 +1,67 @@
+3263 daily net returns, block length 10, B=5000, alpha=0.05, power 0.8; * = significant after Holm within each (reference, test) family
+48 comparisons; significant at alpha: percentile 24, studentized 24, Holm 23, BH 23
+mde = true difference detected with the stated power (Sharpe units, or change of the volatility ratio); a smaller non-significant difference is not evidence of equality
+
+Sharpe difference vs GMV-SAMPLE: estimate [CI] (se), p / Holm / BH, detectable
+  EW            0.25 [ -0.12,   0.62] (se 0.19)  p=0.185 / 1.000 / 0.369    mde 0.52
+  GMV-LW        0.01 [ -0.01,   0.04] (se 0.01)  p=0.237 / 1.000 / 0.380    mde 0.03
+  GMV-PCA      -0.02 [ -0.14,   0.09] (se 0.06)  p=0.685 / 1.000 / 0.685    mde 0.17
+  GMV-RMT      -0.08 [ -0.17,   0.01] (se 0.05)  p=0.088 / 0.707 / 0.369    mde 0.13
+  HRP-RMT       0.20 [ -0.09,   0.48] (se 0.14)  p=0.162 / 1.000 / 0.369    mde 0.40
+  HRP           0.19 [ -0.09,   0.47] (se 0.14)  p=0.174 / 1.000 / 0.369    mde 0.39
+  MV-RMT        0.15 [ -0.30,   0.61] (se 0.22)  p=0.519 / 1.000 / 0.593    mde 0.63
+  MV-SAMPLE     0.17 [ -0.28,   0.63] (se 0.22)  p=0.462 / 1.000 / 0.593    mde 0.63
+
+Volatility ratio vs GMV-SAMPLE: ratio [CI], p / Holm / BH, detectable change
+  EW           1.333 [ 1.180,  1.507]  p=0.000 / 0.002 / 0.000 *  mde 11.9%
+  GMV-LW       0.994 [ 0.990,  0.997]  p=0.001 / 0.002 / 0.001 *  mde 0.4%
+  GMV-PCA      1.033 [ 1.024,  1.043]  p=0.000 / 0.002 / 0.000 *  mde 1.3%
+  GMV-RMT      1.045 [ 0.994,  1.097]  p=0.060 / 0.060 / 0.060    mde 3.6%
+  HRP-RMT      1.149 [ 1.082,  1.221]  p=0.000 / 0.002 / 0.000 *  mde 6.9%
+  HRP          1.140 [ 1.066,  1.218]  p=0.000 / 0.002 / 0.000 *  mde 7.4%
+  MV-RMT       1.547 [ 1.268,  1.887]  p=0.000 / 0.002 / 0.000 *  mde 19.0%
+  MV-SAMPLE    1.527 [ 1.241,  1.878]  p=0.000 / 0.002 / 0.000 *  mde 19.6%
+
+Sharpe difference vs EW: estimate [CI] (se), p / Holm / BH, detectable
+  GMV-LW       -0.23 [ -0.60,   0.13] (se 0.18)  p=0.200 / 1.000 / 0.400    mde 0.51
+  GMV-PCA      -0.27 [ -0.69,   0.15] (se 0.21)  p=0.195 / 1.000 / 0.400    mde 0.59
+  GMV-RMT      -0.33 [ -0.72,   0.06] (se 0.20)  p=0.092 / 0.736 / 0.400    mde 0.55
+  GMV-SAMPLE   -0.25 [ -0.62,   0.12] (se 0.19)  p=0.185 / 1.000 / 0.400    mde 0.52
+  HRP-RMT      -0.05 [ -0.17,   0.07] (se 0.06)  p=0.405 / 1.000 / 0.540    mde 0.17
+  HRP          -0.06 [ -0.18,   0.06] (se 0.06)  p=0.349 / 1.000 / 0.540    mde 0.18
+  MV-RMT       -0.10 [ -0.55,   0.36] (se 0.23)  p=0.679 / 1.000 / 0.749    mde 0.64
+  MV-SAMPLE    -0.07 [ -0.53,   0.38] (se 0.23)  p=0.749 / 1.000 / 0.749    mde 0.64
+
+Volatility ratio vs EW: ratio [CI], p / Holm / BH, detectable change
+  GMV-LW       0.746 [ 0.657,  0.847]  p=0.000 / 0.002 / 0.000 *  mde 12.0%
+  GMV-PCA      0.775 [ 0.684,  0.879]  p=0.000 / 0.002 / 0.000 *  mde 12.5%
+  GMV-RMT      0.784 [ 0.655,  0.937]  p=0.012 / 0.012 / 0.012 *  mde 15.3%
+  GMV-SAMPLE   0.750 [ 0.664,  0.848]  p=0.000 / 0.002 / 0.000 *  mde 11.9%
+  HRP-RMT      0.862 [ 0.802,  0.926]  p=0.001 / 0.002 / 0.001 *  mde 5.5%
+  HRP          0.855 [ 0.805,  0.908]  p=0.000 / 0.002 / 0.000 *  mde 5.0%
+  MV-RMT       1.161 [ 1.074,  1.255]  p=0.001 / 0.002 / 0.001 *  mde 10.7%
+  MV-SAMPLE    1.145 [ 1.056,  1.242]  p=0.002 / 0.003 / 0.002 *  mde 11.0%
+
+Sharpe difference vs GMV-LW: estimate [CI] (se), p / Holm / BH, detectable
+  EW            0.23 [ -0.13,   0.60] (se 0.18)  p=0.200 / 1.000 / 0.380    mde 0.51
+  GMV-PCA      -0.04 [ -0.15,   0.08] (se 0.06)  p=0.523 / 1.000 / 0.557    mde 0.17
+  GMV-RMT      -0.09 [ -0.19,  -0.00] (se 0.05)  p=0.049 / 0.390 / 0.380    mde 0.14
+  GMV-SAMPLE   -0.01 [ -0.04,   0.01] (se 0.01)  p=0.237 / 1.000 / 0.380    mde 0.03
+  HRP-RMT       0.18 [ -0.09,   0.46] (se 0.14)  p=0.176 / 1.000 / 0.380    mde 0.38
+  HRP           0.18 [ -0.10,   0.45] (se 0.14)  p=0.192 / 1.000 / 0.380    mde 0.38
+  MV-RMT        0.14 [ -0.32,   0.59] (se 0.22)  p=0.557 / 1.000 / 0.557    mde 0.63
+  MV-SAMPLE     0.16 [ -0.30,   0.62] (se 0.23)  p=0.499 / 1.000 / 0.557    mde 0.63
+
+Volatility ratio vs GMV-LW: ratio [CI], p / Holm / BH, detectable change
+  EW           1.341 [ 1.181,  1.523]  p=0.000 / 0.002 / 0.000 *  mde 12.0%
+  GMV-PCA      1.040 [ 1.030,  1.049]  p=0.000 / 0.002 / 0.000 *  mde 1.3%
+  GMV-RMT      1.051 [ 1.001,  1.104]  p=0.047 / 0.047 / 0.047 *  mde 3.5%
+  GMV-SAMPLE   1.006 [ 1.003,  1.010]  p=0.001 / 0.002 / 0.001 *  mde 0.4%
+  HRP-RMT      1.156 [ 1.089,  1.227]  p=0.000 / 0.002 / 0.000 *  mde 6.9%
+  HRP          1.147 [ 1.072,  1.226]  p=0.000 / 0.002 / 0.000 *  mde 7.4%
+  MV-RMT       1.557 [ 1.273,  1.904]  p=0.000 / 0.002 / 0.000 *  mde 19.2%
+  MV-SAMPLE    1.536 [ 1.245,  1.895]  p=0.000 / 0.002 / 0.000 *  mde 19.8%
+
+tests whose significance differs between percentile and studentized: 2 of 48
+  log_var_ratio: GMV-RMT vs GMV-SAMPLE
+  sharpe_diff: GMV-RMT vs GMV-LW

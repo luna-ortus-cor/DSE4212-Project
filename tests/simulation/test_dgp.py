@@ -97,3 +97,94 @@ def test_invalid_arguments_rejected() -> None:
         simulate_returns(m, 10, rng, "student_t", df=2.0)
     with pytest.raises(ValueError, match="n_obs"):
         simulate_returns(m, 0, rng)
+
+
+# ---- time-varying design (step 6.3) --------------------------------------------------------
+TV = SimulationConfig(
+    n_assets=12, n_groups=2, sample_sizes=(30,), n_reps=2, time_varying=True, horizon_days=5
+)
+
+
+def test_ar1_paths_have_the_requested_variance_and_autocorrelation() -> None:
+    from pfopt.simulation.dgp import ar1_paths
+
+    paths = ar1_paths(20_000, 3, 0.9, 0.4, np.random.default_rng(1))
+    assert paths.shape == (20_000, 3)
+    np.testing.assert_allclose(paths.std(axis=0), 0.4, rtol=0.1)
+    for j in range(3):
+        assert np.corrcoef(paths[1:, j], paths[:-1, j])[0, 1] == pytest.approx(0.9, abs=0.03)
+
+
+def test_loading_drift_keeps_zeros_and_has_the_requested_spread() -> None:
+    from pfopt.simulation.dgp import loading_paths
+
+    m = model()
+    paths = loading_paths(m, 5_000, 0.95, 0.2, np.random.default_rng(2))
+    assert paths.shape == (5_000, 12, 3)
+    zero = m.loadings == 0.0
+    assert (paths[:, zero] == 0.0).all()
+    deviation = (paths - m.loadings)[:, ~zero]
+    assert deviation.std() == pytest.approx(0.2, rel=0.15)
+
+
+def test_forward_covariance_equals_the_static_truth_without_time_variation() -> None:
+    from pfopt.simulation.dgp import simulate_time_varying
+
+    flat = SimulationConfig(
+        n_assets=12, n_groups=2, sample_sizes=(30,), n_reps=2, time_varying=True,
+        vol_log_sd=0.0, loading_drift_sd=0.0,
+    )  # fmt: skip
+    m = model()
+    x, forward = simulate_time_varying(m, 40, 7, np.random.default_rng(3), flat)
+    assert x.shape == (40, 12)
+    np.testing.assert_allclose(forward, m.sigma, atol=1e-15)
+
+
+def test_forward_covariance_is_valid_and_averages_to_the_unconditional_one() -> None:
+    from pfopt.simulation.dgp import simulate_time_varying
+
+    m = model()
+    draws = [simulate_time_varying(m, 10, 5, np.random.default_rng(i), TV)[1] for i in range(1500)]
+    for forward in draws[:5]:
+        np.testing.assert_allclose(forward, forward.T)
+        assert np.linalg.eigvalsh(forward).min() > 0
+    assert not np.allclose(draws[0], m.sigma)
+    mean = np.mean(draws, axis=0)
+    # the loading drift adds tau^2 * factor variance to the diagonal, so compare off the diagonal
+    off = ~np.eye(12, dtype=bool)
+    assert np.linalg.norm((mean - m.sigma)[off]) / np.linalg.norm(m.sigma[off]) < 0.1
+
+
+def test_time_varying_returns_cluster_in_volatility_and_static_ones_do_not() -> None:
+    from pfopt.simulation.dgp import simulate_time_varying
+
+    cfg = SimulationConfig(
+        n_assets=12, n_groups=2, sample_sizes=(30,), n_reps=2, time_varying=True, horizon_days=1
+    )
+    m = model()
+    tv, _ = simulate_time_varying(m, 200_000, 1, np.random.default_rng(4), cfg)
+    static = simulate_returns(m, 200_000, np.random.default_rng(4))
+
+    def acf1(x: np.ndarray) -> float:
+        market = (x.mean(axis=1)) ** 2
+        return float(np.corrcoef(market[1:], market[:-1])[0, 1])
+
+    assert acf1(tv) > 0.05 and abs(acf1(static)) < 0.03
+
+
+def test_time_varying_is_reproducible_and_distributions_share_the_normals() -> None:
+    from pfopt.simulation.dgp import simulate_time_varying
+
+    m = model()
+    a = simulate_time_varying(m, 30, 5, np.random.default_rng(5), TV)
+    b = simulate_time_varying(m, 30, 5, np.random.default_rng(5), TV)
+    np.testing.assert_array_equal(a[0], b[0])
+    np.testing.assert_array_equal(a[1], b[1])
+    heavy = simulate_time_varying(m, 30, 5, np.random.default_rng(5), TV, "student_t")
+    np.testing.assert_array_equal(a[1], heavy[1])  # the target ignores the day scale
+    ratio = heavy[0] / a[0]
+    np.testing.assert_allclose(ratio, np.repeat(ratio[:, :1], 12, axis=1))
+    with pytest.raises(ValueError, match="unknown distribution"):
+        simulate_time_varying(m, 30, 5, np.random.default_rng(5), TV, "laplace")
+    with pytest.raises(ValueError, match="horizon"):
+        simulate_time_varying(m, 30, 0, np.random.default_rng(5), TV)

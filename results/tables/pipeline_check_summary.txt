@@ -1,0 +1,30 @@
+4 synthetic panels of 150 symbols x 2500 days; universe N=100, T=504, about 96 rebalance dates per panel; step 6.1 factor model, K=3
+VERDICT: accounting and identity checks PASS
+
+1. accounting: mean of r^2 / (w' Sigma w) should be 1 (pass if |z| <= 3); realized/predicted = realized volatility over the mean volatility forecast:
+  strategy  n_panels  mean_z2     se       z  passes  realized_over_true  realized_over_predicted
+        EW         4   0.9829 0.0157 -1.0879    True              0.9912                      NaN
+GMV-SAMPLE         4   0.9890 0.0155 -0.7098    True              0.9949                   1.0569
+    GMV-LW         4   0.9880 0.0155 -0.7719    True              0.9944                   1.0657
+   GMV-RMT         4   0.9901 0.0156 -0.6362    True              0.9955                   1.0319
+   GMV-PCA         4   0.9892 0.0155 -0.6966    True              0.9950                   1.0497
+       HRP         4   0.9833 0.0157 -1.0665    True              0.9916                   1.0116
+
+2. identity with the simulation study (pass if max |diff| <= 1e-06):
+  strategy  max_abs_diff  passes
+        EW      8.88e-16    True
+GMV-SAMPLE      6.66e-16    True
+    GMV-LW      6.66e-16    True
+   GMV-RMT      4.44e-16    True
+   GMV-PCA      6.66e-16    True
+       HRP      8.88e-16    True
+
+3. ranking: mean log(true variance / sample GMV true variance) over rebalance dates (negative = beats sample); 95% t-interval across panels; study_6_1 = same quantity from step 6.1 at the same T (Gaussian, long-only, different random model):
+            mean_log_ratio      se  ci_low  ci_high  n_panels  mean_var_ratio  mean_l1_dist  study_6_1
+strategy                                                                                              
+EW                  0.5959  0.0199  0.5327   0.6591         4          1.9194        1.4986     0.5811
+GMV-SAMPLE          0.0000  0.0000  0.0000   0.0000         4          1.0565        0.4392     0.0000
+GMV-LW              0.0004  0.0008 -0.0020   0.0028         4          1.0570        0.4382    -0.0004
+GMV-RMT            -0.0048  0.0025 -0.0128   0.0032         4          1.0514        0.4470    -0.0048
+GMV-PCA            -0.0115  0.0003 -0.0126  -0.0104         4          1.0444        0.3919    -0.0119
+HRP                 0.3904  0.0113  0.3544   0.4264         4          1.5619        1.1940     0.3713

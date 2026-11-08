@@ -159,3 +159,18 @@ def test_best_rates_sum_to_one_in_every_cell(grid) -> None:
     paired = paired_vs_sample(grid[0])
     totals = paired.groupby(["distribution", "T", "constraint"])["best_rate"].sum()
     np.testing.assert_allclose(totals.to_numpy(), 1.0)
+
+
+def test_time_varying_grid_has_a_replication_specific_oracle(model) -> None:
+    tv_sim = dataclasses.replace(SIM, time_varying=True, horizon_days=5, n_reps=3)
+    tv_cfg = dataclasses.replace(CFG, simulation=tv_sim)
+    scores, info = run_grid(tv_cfg, "gaussian", model)
+    assert len(scores) == 2 * 3 * 14 and len(info) == 2 * 3
+    assert scores["var_ratio"].min() >= 1 - 1e-6
+    same_size = dataclasses.replace(CFG, simulation=dataclasses.replace(SIM, n_reps=3))
+    static, _ = run_grid(same_size, "gaussian", model)
+    assert not np.allclose(
+        scores["frob_error"].to_numpy(dtype=float),
+        static["frob_error"].to_numpy(dtype=float),
+        equal_nan=True,
+    )

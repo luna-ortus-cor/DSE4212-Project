@@ -11,12 +11,19 @@ Raw scores are cached in ``results/cache/simulation/<key>``; ``--force`` recompu
 ``simulation_detection.csv`` and ``simulation_summary.txt`` to ``results/tables`` and the figures
 ``sim_gaussian`` / ``sim_student_t`` to ``results/figures``.
 
-Usage: ``python scripts/10_simulation.py --config config.yaml [--force]``
+Scenario runs: ``--n-groups 5`` (step 6.2) replaces ``simulation.n_groups``; ``--time-varying``
+(step 6.3) switches on stochastic factor volatility and drifting loadings. Every output then gets
+a suffix (``_groups5``, ``_tv``, ``_groups5_tv``, or ``--tag NAME``), leaving the baseline files
+untouched.
+
+Usage: ``python scripts/10_simulation.py --config config.yaml [--force] [--n-groups G]
+[--time-varying] [--tag T]``
 """
 
 from __future__ import annotations
 
 import argparse
+import dataclasses
 import hashlib
 import json
 import logging
@@ -43,6 +50,14 @@ from pfopt.viz.style import save_figure
 
 logger = logging.getLogger("simulation")
 ORACLE_TOLERANCE = 1e-6
+TIME_VARYING_FIELDS = (
+    "time_varying",
+    "horizon_days",
+    "vol_log_sd",
+    "vol_persistence",
+    "loading_drift_sd",
+    "loading_persistence",
+)
 
 
 def _cache_key(cfg: Config) -> str:
@@ -50,6 +65,9 @@ def _cache_key(cfg: Config) -> str:
     full = cfg.to_dict()
     keys = ("simulation", "pca", "hrp")
     payload = {k: full[k] for k in keys}
+    if not cfg.simulation.time_varying:  # keeps the baseline cache valid when the 6.3 fields change
+        for name in TIME_VARYING_FIELDS:
+            payload["simulation"].pop(name)
     payload["run"] = {"seed": cfg.run.seed, "annualization": cfg.run.annualization}
     return hashlib.sha256(json.dumps(payload, sort_keys=True).encode()).hexdigest()[:12]
 
@@ -72,6 +90,29 @@ def _run_or_load(cfg: Config, cache: Path, force: bool) -> tuple[pd.DataFrame, p
     out[0].to_parquet(scores_path)
     out[1].to_parquet(info_path)
     return out
+
+
+def _detectability(sigma: np.ndarray, k_true: int, sizes: tuple[int, ...]) -> list[str]:
+    """True correlation eigenvalues against the Marchenko-Pastur edge of the noise bulk.
+
+    The bulk level is the mean of the eigenvalues beyond the first ``k_true``; the edge at sample
+    size ``T`` is ``bulk * (1 + sqrt(N / T))^2``. A factor whose eigenvalue is below the edge cannot
+    be told apart from noise by the MP rule.
+    """
+    n = sigma.shape[0]
+    scale = np.sqrt(np.diag(sigma))
+    eigenvalues = np.sort(np.linalg.eigvalsh(sigma / np.outer(scale, scale)))[::-1]
+    bulk = float(eigenvalues[k_true:].mean())
+    lines = [
+        "true correlation eigenvalues of the K factors: "
+        + ", ".join(f"{v:.2f}" for v in eigenvalues[:k_true])
+        + f"; noise bulk level {bulk:.2f}"
+    ]
+    for n_obs in sizes:
+        edge = bulk * (1.0 + np.sqrt(n / n_obs)) ** 2
+        above = int((eigenvalues[:k_true] > edge).sum())
+        lines.append(f"  T={n_obs}: MP edge {edge:.2f}, factors above it: {above} of {k_true}")
+    return lines
 
 
 def _pivot(summary: pd.DataFrame, dist: str, constraint: str, metric: str) -> pd.DataFrame:
@@ -99,12 +140,29 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Factor-model simulation study.")
     parser.add_argument("--config", default="config.yaml", help="path to config.yaml")
     parser.add_argument("--force", action="store_true", help="recompute the simulation")
+    parser.add_argument("--n-groups", type=int, help="override simulation.n_groups (scenario run)")
+    parser.add_argument("--time-varying", action="store_true", help="time-varying covariance")
+    parser.add_argument("--tag", help="output suffix (default built from the scenario flags)")
     args = parser.parse_args()
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
     matplotlib.use("Agg")
 
     config_path = Path(args.config).resolve()
     cfg = load_config(config_path)
+    if args.n_groups is not None:
+        sim_cfg = dataclasses.replace(cfg.simulation, n_groups=args.n_groups)
+        cfg = dataclasses.replace(cfg, simulation=sim_cfg)
+    if args.time_varying:
+        cfg = dataclasses.replace(
+            cfg, simulation=dataclasses.replace(cfg.simulation, time_varying=True)
+        )
+    parts = [f"groups{args.n_groups}"] if args.n_groups is not None else []
+    parts += ["tv"] if args.time_varying else []
+    tag = args.tag or "_".join(parts)
+
+    def named(base: str) -> str:
+        return f"{base}_{tag}" if tag else base
+
     root, sim = config_path.parent, cfg.simulation
     cache = root / cfg.paths.cache_dir / "simulation" / _cache_key(cfg)
     scores, detection = _run_or_load(cfg, cache, args.force)
@@ -119,21 +177,31 @@ def main() -> None:
     )
     tables, figures = root / cfg.paths.tables_dir, root / cfg.paths.figures_dir
     tables.mkdir(parents=True, exist_ok=True)
-    summary.to_csv(tables / "simulation_summary.csv", index=False)
-    paired.to_csv(tables / "simulation_paired.csv", index=False)
-    winners.to_csv(tables / "simulation_winners.csv", index=False)
-    detect.to_csv(tables / "simulation_detection.csv", index=False)
+    summary.to_csv(tables / f"{named('simulation_summary')}.csv", index=False)
+    paired.to_csv(tables / f"{named('simulation_paired')}.csv", index=False)
+    winners.to_csv(tables / f"{named('simulation_winners')}.csv", index=False)
+    detect.to_csv(tables / f"{named('simulation_detection')}.csv", index=False)
     for dist in sim.distributions:
-        name = "sim_gaussian" if dist == "gaussian" else "sim_student_t"
-        save_figure(plot_simulation_accuracy(summary, dist), name, figures)
+        base = "sim_gaussian" if dist == "gaussian" else "sim_student_t"
+        save_figure(plot_simulation_accuracy(summary, dist), named(base), figures)
 
     true_k = 1 + sim.n_groups
+    design = (
+        f"time-varying: factor log-volatility sd {sim.vol_log_sd:g} (persistence "
+        f"{sim.vol_persistence:g}), loading drift sd {sim.loading_drift_sd:g} (persistence "
+        f"{sim.loading_persistence:g}); truth = average conditional covariance over the next "
+        f"{sim.horizon_days} days"
+        if sim.time_varying
+        else "stationary covariance"
+    )
     lines = [
+        f"design: {design}",
         f"N={sim.n_assets}, true factors K={true_k} (1 market + {sim.n_groups} group), "
         f"T in {list(sim.sample_sizes)}, {sim.n_reps} replications, t df={sim.t_df:g}; "
         f"bands are {100 * (1 - sim.alpha):.0f}% normal intervals; "
         f"main result: {sim.distributions[0]}",
     ]
+    lines += ["", *_detectability(true_model(cfg).sigma, true_k, sim.sample_sizes)]
     for dist in sim.distributions:
         weights = scores[(scores["distribution"] == dist) & scores["var_ratio"].notna()]
         lowest = float(weights["var_ratio"].min())
@@ -177,8 +245,9 @@ def main() -> None:
             .round(3)
             .to_string(index=False),
         ]
-    (tables / "simulation_summary.txt").write_text("\n".join(lines) + "\n", encoding="utf-8")
-    logger.info("summary written to %s", tables / "simulation_summary.txt")
+    summary_path = tables / f"{named('simulation_summary')}.txt"
+    summary_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    logger.info("summary written to %s", summary_path)
 
 
 if __name__ == "__main__":
