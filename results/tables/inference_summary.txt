@@ -65,3 +65,10 @@ Volatility ratio vs GMV-LW: ratio [CI], p / Holm / BH, detectable change
 tests whose significance differs between percentile and studentized: 2 of 48
   log_var_ratio: GMV-RMT vs GMV-SAMPLE
   sharpe_diff: GMV-RMT vs GMV-LW
+
+BLOCK-LENGTH SENSITIVITY (lengths 5, 10, 20): comparisons significant after Holm at
+  5: 24, 10: 23, 20: 22 of 48
+  Holm verdict differs across lengths: 2 of 48
+    log_var_ratio: GMV-RMT vs GMV-LW  Holm p 5: 0.012, 10: 0.047, 20: 0.172
+    log_var_ratio: GMV-RMT vs GMV-SAMPLE  Holm p 5: 0.022, 10: 0.060, 20: 0.201
+  standard error, largest / smallest across lengths: median 1.15, max 1.76

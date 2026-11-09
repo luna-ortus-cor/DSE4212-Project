@@ -1,0 +1,91 @@
+\begin{table}[t]
+\centering\footnotesize
+\caption{Extension 8.2: simulation, true GMV variance against the sample covariance.}\label{tab:nls_simulation}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lrllrrrrr}
+\toprule
+distribution & T & constraint & method & mean\_log\_ratio & ci\_low & ci\_high & beats\_sample & best\_rate \\
+\midrule
+stationary & 126.000 & long-only & GMV-LW & -0.013 & -0.016 & -0.011 & 0.755 & 0.020 \\
+stationary & 126.000 & long-only & GMV-NLS & 0.002 & -0.003 & 0.007 & 0.480 & 0.005 \\
+stationary & 126.000 & long-only & GMV-PCA & -0.064 & -0.069 & -0.059 & 0.990 & 0.350 \\
+stationary & 126.000 & long-only & GMV-RMT & -0.068 & -0.073 & -0.063 & 0.990 & 0.625 \\
+stationary & 126.000 & long-only & GMV-SAMPLE & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 \\
+stationary & 126.000 & unconstrained & GMV-LW & -1.090 & -1.124 & -1.057 & 1.000 & 0.000 \\
+stationary & 126.000 & unconstrained & GMV-NLS & -1.178 & -1.212 & -1.144 & 1.000 & 0.005 \\
+stationary & 126.000 & unconstrained & GMV-PCA & -1.369 & -1.404 & -1.334 & 1.000 & 0.940 \\
+stationary & 126.000 & unconstrained & GMV-RMT & -1.339 & -1.374 & -1.305 & 1.000 & 0.055 \\
+stationary & 126.000 & unconstrained & GMV-SAMPLE & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 \\
+stationary & 252.000 & long-only & GMV-LW & -0.003 & -0.004 & -0.002 & 0.630 & 0.035 \\
+stationary & 252.000 & long-only & GMV-NLS & 0.013 & 0.011 & 0.015 & 0.185 & 0.005 \\
+stationary & 252.000 & long-only & GMV-PCA & -0.026 & -0.029 & -0.024 & 0.945 & 0.485 \\
+stationary & 252.000 & long-only & GMV-RMT & -0.025 & -0.028 & -0.022 & 0.890 & 0.450 \\
+stationary & 252.000 & long-only & GMV-SAMPLE & 0.000 & 0.000 & 0.000 & 0.000 & 0.025 \\
+stationary & 252.000 & unconstrained & GMV-LW & -0.172 & -0.179 & -0.166 & 1.000 & 0.000 \\
+stationary & 252.000 & unconstrained & GMV-NLS & -0.236 & -0.246 & -0.226 & 1.000 & 0.000 \\
+stationary & 252.000 & unconstrained & GMV-PCA & -0.373 & -0.384 & -0.363 & 1.000 & 0.995 \\
+stationary & 252.000 & unconstrained & GMV-RMT & -0.333 & -0.344 & -0.323 & 1.000 & 0.005 \\
+stationary & 252.000 & unconstrained & GMV-SAMPLE & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 \\
+stationary & 504.000 & long-only & GMV-LW & -4.3e-04 & -8.2e-04 & -4.1e-05 & 0.555 & 0.065 \\
+stationary & 504.000 & long-only & GMV-NLS & 0.008 & 0.007 & 0.009 & 0.160 & 0.015 \\
+stationary & 504.000 & long-only & GMV-PCA & -0.012 & -0.013 & -0.011 & 0.895 & 0.740 \\
+stationary & 504.000 & long-only & GMV-RMT & -0.005 & -0.007 & -0.003 & 0.600 & 0.125 \\
+stationary & 504.000 & long-only & GMV-SAMPLE & 0.000 & 0.000 & 0.000 & 0.000 & 0.055 \\
+stationary & 504.000 & unconstrained & GMV-LW & -0.036 & -0.037 & -0.034 & 1.000 & 0.000 \\
+stationary & 504.000 & unconstrained & GMV-NLS & -0.061 & -0.064 & -0.058 & 0.995 & 0.000 \\
+stationary & 504.000 & unconstrained & GMV-PCA & -0.131 & -0.135 & -0.127 & 1.000 & 1.000 \\
+stationary & 504.000 & unconstrained & GMV-RMT & -0.089 & -0.093 & -0.085 & 1.000 & 0.000 \\
+stationary & 504.000 & unconstrained & GMV-SAMPLE & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 \\
+stationary & 1000.000 & long-only & GMV-LW & -1.4e-04 & -2.7e-04 & 1.2e-06 & 0.525 & 0.120 \\
+stationary & 1000.000 & long-only & GMV-NLS & 0.002 & 0.002 & 0.003 & 0.220 & 0.040 \\
+stationary & 1000.000 & long-only & GMV-PCA & -0.004 & -0.005 & -0.003 & 0.770 & 0.730 \\
+stationary & 1000.000 & long-only & GMV-RMT & 0.007 & 0.006 & 0.008 & 0.185 & 0.015 \\
+stationary & 1000.000 & long-only & GMV-SAMPLE & 0.000 & 0.000 & 0.000 & 0.000 & 0.095 \\
+stationary & 1000.000 & unconstrained & GMV-LW & -0.008 & -0.009 & -0.008 & 1.000 & 0.005 \\
+stationary & 1000.000 & unconstrained & GMV-NLS & -0.017 & -0.019 & -0.016 & 0.990 & 0.055 \\
+stationary & 1000.000 & unconstrained & GMV-PCA & -0.037 & -0.040 & -0.035 & 0.985 & 0.940 \\
+stationary & 1000.000 & unconstrained & GMV-RMT & 0.006 & 0.003 & 0.008 & 0.355 & 0.000 \\
+stationary & 1000.000 & unconstrained & GMV-SAMPLE & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 \\
+time-varying & 126.000 & long-only & GMV-LW & -0.013 & -0.021 & -0.005 & 0.625 & 0.050 \\
+time-varying & 126.000 & long-only & GMV-NLS & 0.003 & -0.008 & 0.013 & 0.510 & 0.055 \\
+time-varying & 126.000 & long-only & GMV-PCA & -0.072 & -0.079 & -0.064 & 0.905 & 0.415 \\
+time-varying & 126.000 & long-only & GMV-RMT & -0.072 & -0.080 & -0.064 & 0.885 & 0.425 \\
+time-varying & 126.000 & long-only & GMV-SAMPLE & 0.000 & 0.000 & 0.000 & 0.000 & 0.055 \\
+time-varying & 126.000 & unconstrained & GMV-LW & -1.041 & -1.080 & -1.001 & 0.995 & 0.010 \\
+time-varying & 126.000 & unconstrained & GMV-NLS & -1.128 & -1.171 & -1.085 & 0.995 & 0.015 \\
+time-varying & 126.000 & unconstrained & GMV-PCA & -1.302 & -1.344 & -1.260 & 1.000 & 0.690 \\
+time-varying & 126.000 & unconstrained & GMV-RMT & -1.282 & -1.322 & -1.241 & 1.000 & 0.285 \\
+time-varying & 126.000 & unconstrained & GMV-SAMPLE & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 \\
+time-varying & 252.000 & long-only & GMV-LW & -0.005 & -0.008 & -7.0e-04 & 0.580 & 0.135 \\
+time-varying & 252.000 & long-only & GMV-NLS & 0.008 & 0.001 & 0.015 & 0.430 & 0.110 \\
+time-varying & 252.000 & long-only & GMV-PCA & -0.032 & -0.038 & -0.026 & 0.780 & 0.325 \\
+time-varying & 252.000 & long-only & GMV-RMT & -0.029 & -0.036 & -0.023 & 0.740 & 0.375 \\
+time-varying & 252.000 & long-only & GMV-SAMPLE & 0.000 & 0.000 & 0.000 & 0.000 & 0.055 \\
+time-varying & 252.000 & unconstrained & GMV-LW & -0.163 & -0.175 & -0.151 & 0.965 & 0.010 \\
+time-varying & 252.000 & unconstrained & GMV-NLS & -0.223 & -0.243 & -0.204 & 0.935 & 0.060 \\
+time-varying & 252.000 & unconstrained & GMV-PCA & -0.352 & -0.371 & -0.332 & 0.990 & 0.815 \\
+time-varying & 252.000 & unconstrained & GMV-RMT & -0.314 & -0.332 & -0.296 & 0.990 & 0.110 \\
+time-varying & 252.000 & unconstrained & GMV-SAMPLE & 0.000 & 0.000 & 0.000 & 0.000 & 0.005 \\
+time-varying & 504.000 & long-only & GMV-LW & -0.004 & -0.006 & -0.002 & 0.665 & 0.150 \\
+time-varying & 504.000 & long-only & GMV-NLS & 0.002 & -0.003 & 0.006 & 0.505 & 0.240 \\
+time-varying & 504.000 & long-only & GMV-PCA & -0.008 & -0.011 & -0.004 & 0.595 & 0.270 \\
+time-varying & 504.000 & long-only & GMV-RMT & -0.002 & -0.007 & 0.002 & 0.585 & 0.240 \\
+time-varying & 504.000 & long-only & GMV-SAMPLE & 0.000 & 0.000 & 0.000 & 0.000 & 0.100 \\
+time-varying & 504.000 & unconstrained & GMV-LW & -0.038 & -0.043 & -0.033 & 0.905 & 0.030 \\
+time-varying & 504.000 & unconstrained & GMV-NLS & -0.064 & -0.074 & -0.054 & 0.815 & 0.150 \\
+time-varying & 504.000 & unconstrained & GMV-PCA & -0.123 & -0.135 & -0.112 & 0.935 & 0.745 \\
+time-varying & 504.000 & unconstrained & GMV-RMT & -0.083 & -0.095 & -0.072 & 0.855 & 0.055 \\
+time-varying & 504.000 & unconstrained & GMV-SAMPLE & 0.000 & 0.000 & 0.000 & 0.000 & 0.020 \\
+time-varying & 1000.000 & long-only & GMV-LW & -0.003 & -0.004 & -0.002 & 0.695 & 0.100 \\
+time-varying & 1000.000 & long-only & GMV-NLS & -0.003 & -0.006 & -5.0e-04 & 0.585 & 0.365 \\
+time-varying & 1000.000 & long-only & GMV-PCA & 7.4e-04 & -0.002 & 0.004 & 0.470 & 0.205 \\
+time-varying & 1000.000 & long-only & GMV-RMT & 0.007 & 0.003 & 0.011 & 0.425 & 0.235 \\
+time-varying & 1000.000 & long-only & GMV-SAMPLE & 0.000 & 0.000 & 0.000 & 0.000 & 0.095 \\
+time-varying & 1000.000 & unconstrained & GMV-LW & -0.009 & -0.012 & -0.007 & 0.775 & 0.080 \\
+time-varying & 1000.000 & unconstrained & GMV-NLS & -0.019 & -0.024 & -0.014 & 0.745 & 0.355 \\
+time-varying & 1000.000 & unconstrained & GMV-PCA & -0.033 & -0.043 & -0.023 & 0.715 & 0.480 \\
+time-varying & 1000.000 & unconstrained & GMV-RMT & 0.004 & -0.006 & 0.014 & 0.490 & 0.025 \\
+time-varying & 1000.000 & unconstrained & GMV-SAMPLE & 0.000 & 0.000 & 0.000 & 0.000 & 0.060 \\
+\bottomrule
+\end{tabular}}
+\end{table}

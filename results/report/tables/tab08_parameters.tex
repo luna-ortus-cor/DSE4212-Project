@@ -27,6 +27,7 @@ stats & n\_boot & 5000 \\
 stats & sensitivity\_block\_lengths & [5, 10, 20] \\
 stats & references & [GMV-SAMPLE, EW, GMV-LW] \\
 stats & alpha & 0.05 \\
+stats & mde\_power & 0.8 \\
 regimes & covid\_start & 2020-02-19 \\
 regimes & covid\_end & 2020-12-31 \\
 regimes & stress\_year & 2022 \\
@@ -62,6 +63,33 @@ simulation & loading\_high & 1.5 \\
 simulation & idio\_vol\_low & 0.15 \\
 simulation & idio\_vol\_high & 0.45 \\
 simulation & alpha & 0.05 \\
+simulation & time\_varying & False \\
+simulation & horizon\_days & 21 \\
+simulation & vol\_log\_sd & 0.4 \\
+simulation & vol\_persistence & 0.98 \\
+simulation & loading\_drift\_sd & 0.2 \\
+simulation & loading\_persistence & 0.996 \\
+pipeline\_check & n\_symbols & 150 \\
+pipeline\_check & n\_days & 2500 \\
+pipeline\_check & n\_panels & 4 \\
+pipeline\_check & dv\_persistence & 0.995 \\
+pipeline\_check & dv\_sd & 1.0 \\
+pipeline\_check & z2\_tolerance & 3.0 \\
+pipeline\_check & identity\_tolerance & 1e-06 \\
+nonstationarity & halflives & [126, 63] \\
+nonstationarity & calibration\_block\_days & 21 \\
+nonstationarity & sim\_sample\_sizes & [252, 504] \\
+nonstationarity & sim\_n\_reps & 100 \\
+residual & n\_perm & 200 \\
+residual & sim\_n\_groups & 10 \\
+residual & sim\_group\_vol & 0.08 \\
+residual & sim\_label\_error & 0.2 \\
+residual & sim\_sample\_sizes & [252, 504] \\
+residual & sim\_n\_reps & 100 \\
+residual & n\_placebo & 20 \\
+forecast & n\_portfolios & 500 \\
+forecast & dirichlet\_alphas & [1.0, 0.1] \\
+forecast & hac\_lag & 3 \\
 \bottomrule
 \end{tabular}}
 \end{table}

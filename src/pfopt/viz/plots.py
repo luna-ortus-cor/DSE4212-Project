@@ -723,3 +723,45 @@ def plot_simulation_accuracy(summary: pd.DataFrame, distribution: str) -> Figure
     seen.update(zip(extra_labels, extra_handles, strict=True))
     fig.legend(list(seen.values()), list(seen), loc="outside lower center", ncol=6, fontsize=6.5)
     return fig
+
+
+def plot_residual_timeseries(frame: pd.DataFrame) -> Figure:
+    """Sector structure of the PCA residual over the rebalance dates (step 8.23).
+
+    Parameters
+    ----------
+    frame : pandas.DataFrame
+        Output of :func:`pfopt.backtest.residual.residual_diagnostics` (columns ``raw_gap``,
+        ``resid_gap``, ``perm_null_mean``, ``perm_null_sd``, ``k_factors``, ``resid_n_signal``,
+        ``resid_sector_share``, ``sector_share_null``).
+    """
+    apply_style()
+    fig, axes = plt.subplots(3, 1, figsize=(FIG_WIDTH_IN, 5.6), sharex=True)
+    axes[0].plot(frame.index, frame["raw_gap"], color=PALETTE["black"], label="Sample correlation")
+    axes[0].plot(frame.index, frame["resid_gap"], color=PALETTE["orange"], label="PCA residual")
+    low = frame["perm_null_mean"] - 2.0 * frame["perm_null_sd"]
+    high = frame["perm_null_mean"] + 2.0 * frame["perm_null_sd"]
+    axes[0].fill_between(frame.index, low, high, color=PALETTE["blue"], alpha=0.25, lw=0)
+    axes[0].plot([], [], color=PALETTE["blue"], alpha=0.5, lw=6, label="Shuffled labels (±2 sd)")
+    axes[0].set_ylabel("Same-sector minus\ncross-sector correlation")
+    axes[0].legend(loc="upper right", ncol=3, fontsize=6.5)
+    axes[1].step(frame.index, frame["k_factors"], where="post", color=PALETTE["blue"], label="K")
+    axes[1].step(
+        frame.index,
+        frame["resid_n_signal"],
+        where="post",
+        color=PALETTE["orange"],
+        label="Residual eigenvalues above MP edge",
+    )
+    axes[1].set_ylabel("Count")
+    axes[1].set_ylim(bottom=0)
+    axes[1].legend(loc="upper right", ncol=2, fontsize=6.5)
+    axes[2].plot(frame.index, frame["resid_sector_share"], color=PALETTE["green"], label="Observed")
+    axes[2].plot(
+        frame.index, frame["sector_share_null"], color=PALETTE["black"], ls="--", label="Random"
+    )
+    axes[2].set_ylabel("Sector share of\nresidual eigenvectors")
+    axes[2].set_ylim(bottom=0)
+    axes[2].legend(loc="upper right", ncol=2, fontsize=6.5)
+    axes[-1].set_xlabel("Date")
+    return fig

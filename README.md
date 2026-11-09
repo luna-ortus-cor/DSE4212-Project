@@ -4,7 +4,7 @@ DSE4212/QF4212 Project 2 ("Portfolio Optimization Beyond Markowitz"): classical 
 portfolios against RMT-denoised, PCA-factor and HRP portfolios (with Ledoit-Wolf shrinkage and 1/N as baselines),
 compared by a rolling out-of-sample backtest on the supplied daily S&P 500 data.
 
-Status: the analysis pipeline (steps 0.1 to 6.3 and the extensions 8.20 and 8.21) is implemented. The final notebook
+Status: the analysis pipeline (steps 0.1 to 6.3 and the extensions 8.2, 8.7, 8.18 and 8.20 to 8.25) is implemented. The final notebook
 (7.2) and the packaging and full run-order documentation (7.3) are not done yet. `PLAN.md` holds the methodology,
 `PROGRESS.md` the step log with results, and `CLAUDE.md` the working rules.
 
@@ -56,7 +56,14 @@ Run from the repository root; every script takes `--config config.yaml`. Expensi
 | 14 | `10_simulation.py` | 6.1 to 6.3 | Factor-model simulation; `--n-groups G` and `--time-varying` give scenarios |
 | 15 | `12_pipeline_check.py` | 8.20 | Backtest pipeline validated on synthetic panels |
 | 16 | `13_inference.py` | 8.21 | Studentized bootstrap, Holm / BH, detectable effects |
-| 17 | `11_make_report_assets.py` | 7.1 | Re-runs the stage scripts and exports all figures and tables to `results/report/` |
+| 17 | `14_nonstationarity.py` | 8.22 | EWMA strategies, volatility calibration, simulated positive control |
+| 18 | `15_residual_structure.py` | 8.23 | Sector blocks left in the PCA residual correlation |
+| 19 | `16_sector_block.py` | 8.24 | PCA plus sector-block covariance, with simulated controls |
+| 20 | `17_sector_placebo.py` | 8.25 | Random-label placebo for the sector blocks on the real data |
+| 21 | `18_risk_based.py` | 8.7 | Inverse-volatility and equal-risk-contribution portfolios |
+| 22 | `19_nonlinear_shrinkage.py` | 8.2 | Quadratic-inverse (nonlinear) shrinkage against RMT clipping, with simulation |
+| 23 | `20_forecast_loss.py` | 8.18 | Covariance forecast loss on random portfolios |
+| 24 | `11_make_report_assets.py` | 7.1 | Re-runs the stage scripts and exports all figures and tables to `results/report/` |
 
 Outputs: tables in `results/tables/` (CSV plus a short `*_summary.txt` per stage), figures in `results/figures/`
 (300 dpi PNG and PDF, width at most 6.3 in), report-ready copies and `manifest.csv` in `results/report/`.
@@ -68,10 +75,11 @@ config.yaml            all parameters (windows, universe, costs, seeds, simulati
 src/pfopt/
   config.py            load and validate the configuration
   data/                loader, audit, cleaning, point-in-time universe, EDA helpers
-  estimators/          sample + Ledoit-Wolf, RMT, PCA factor, HRP, expected returns
+  estimators/          sample + Ledoit-Wolf, RMT, nonlinear shrinkage, PCA factor, sector-block, HRP, EWMA, expected returns
   optimizers/          long-only and unconstrained GMV, max-Sharpe Markowitz
   backtest/            engine, strategies, metrics, covariance quality, bootstrap stats,
-                       inference (8.21), regimes, sensitivity, structure, unconstrained
+                       inference (8.21), EWMA strategies (8.22), regimes, sensitivity, structure,
+                       unconstrained
   simulation/          factor-model DGP (static and time-varying), study runner,
                        synthetic-panel pipeline check (8.20)
   report/              figure and table registries for the report
@@ -88,7 +96,7 @@ Real data (172 priced names, top-100 universe, 156 monthly rebalances, 10 bps co
 - No Sharpe-ratio difference is statistically detectable. The test could only detect a gap of about 0.5 to 0.6
   against equal weight, so this is lack of power, not evidence of equality.
 - Denoising did not help: PCA has 3.3% higher volatility than sample GMV (significant), RMT 4.5% higher (not
-  significant, p = 0.060), and Ledoit-Wolf is indistinguishable in practice.
+  significant at block 10, p = 0.060; significant at block 5 and not at 20, so only suggestive), and Ledoit-Wolf is indistinguishable in practice.
 - The long-only constraint already regularizes: without it, leverage is 2.7 to 3.7, turnover 6 to 12 times higher,
   and hypothesis H3 holds only for Ledoit-Wolf.
 

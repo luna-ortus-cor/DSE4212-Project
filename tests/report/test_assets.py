@@ -77,6 +77,12 @@ def test_figure_and_table_specs_are_unique_and_cover_the_plan() -> None:
     assert len({t.key for t in TABLES}) == len(TABLES)
 
 
+def test_extension_tables_are_registered_in_the_appendix() -> None:
+    extension = [t for t in TABLES if t.source.startswith(("pipeline_", "inference_", "nonstat_"))]
+    assert len(extension) == 9
+    assert all(t.role == "appendix" for t in extension)
+
+
 def test_build_table_filters_selects_and_names_the_index(tmp_path) -> None:
     pd.DataFrame(
         {"basis": ["net", "gross", "net"], "strategy": ["A", "A", "B"], "x": [1.0, 2.0, 3.0]}

@@ -1,0 +1,32 @@
+155 rebalance dates with a full 21-day holding period, T=504, N=100; 500 random long-only portfolios per Dirichlet family and date (identical for every estimator)
+QLIKE = RV/F - log(RV/F) - 1 (lower is better); bias = mean log(F/RV) (negative = risk under-forecast); diff = QLIKE minus the sample covariance's, Newey-West lag 3, * = significant after Holm within the family
+
+equal weight (one portfolio); reference Sample:
+             mean_qlike  mean_log_bias     diff  p_holm
+estimator                                              
+Ledoit-Wolf      0.6798         0.4848  +0.0081     1.0
+NLS              0.6771         0.5001  +0.0054     1.0
+PCA              0.6676         0.5332  -0.0041     1.0
+PCA-SECTOR       0.6658         0.5410  -0.0059     1.0
+RMT              0.6702         0.5201  -0.0016     1.0
+Sample           0.6717         0.5193  +0.0000     NaN
+
+Dirichlet(1); reference Sample:
+             mean_qlike  mean_log_bias     diff  p_holm
+estimator                                              
+Ledoit-Wolf      0.6624         0.4711  +0.0076     1.0
+NLS              0.6600         0.4859  +0.0051     1.0
+PCA              0.6509         0.5178  -0.0039     1.0
+PCA-SECTOR       0.6491         0.5255  -0.0057     1.0
+RMT              0.6535         0.5054  -0.0014     1.0
+Sample           0.6548         0.5045  +0.0000     NaN
+
+Dirichlet(0.1); reference Sample:
+             mean_qlike  mean_log_bias     diff  p_holm
+estimator                                              
+Ledoit-Wolf      0.5785         0.4044  +0.0048  1.0000
+NLS              0.5767         0.4172  +0.0030  1.0000
+PCA              0.5706         0.4400  -0.0030  1.0000
+PCA-SECTOR       0.5691         0.4465  -0.0046  1.0000
+RMT              0.5722         0.4309  -0.0014  0.7665
+Sample           0.5737         0.4304  +0.0000     NaN

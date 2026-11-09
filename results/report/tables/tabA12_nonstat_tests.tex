@@ -1,0 +1,53 @@
+\begin{table}[t]
+\centering\footnotesize
+\caption{Extension 8.22: studentized tests of the EWMA strategies.}\label{tab:nonstat_tests}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lllrrrrrr}
+\toprule
+reference & strategy & test & estimate & ci\_low & ci\_high & p\_value & p\_holm & mde \\
+\midrule
+GMV-SAMPLE & GMV-LW & sharpe\_diff & 0.014 & -0.010 & 0.038 & 0.237 & 0.949 & 0.033 \\
+GMV-SAMPLE & GMV-LW & log\_var\_ratio & -0.012 & -0.019 & -0.005 & 6.0e-04 & 0.004 & 0.008 \\
+GMV-SAMPLE & GMV-RMT & sharpe\_diff & -0.081 & -0.173 & 0.011 & 0.088 & 0.619 & 0.133 \\
+GMV-SAMPLE & GMV-RMT & log\_var\_ratio & 0.087 & -0.011 & 0.186 & 0.060 & 0.302 & 0.070 \\
+GMV-SAMPLE & GMV-PCA & sharpe\_diff & -0.023 & -0.137 & 0.091 & 0.685 & 1.000 & 0.166 \\
+GMV-SAMPLE & GMV-PCA & log\_var\_ratio & 0.066 & 0.047 & 0.084 & 2.0e-04 & 0.001 & 0.026 \\
+GMV-SAMPLE & GMV-EWMA126 & sharpe\_diff & 0.083 & -0.028 & 0.195 & 0.142 & 0.798 & 0.153 \\
+GMV-SAMPLE & GMV-EWMA126 & log\_var\_ratio & -0.078 & -0.275 & 0.118 & 0.176 & 0.704 & 0.109 \\
+GMV-SAMPLE & GMV-EWMA126-RMT & sharpe\_diff & -0.012 & -0.140 & 0.115 & 0.844 & 1.000 & 0.177 \\
+GMV-SAMPLE & GMV-EWMA126-RMT & log\_var\_ratio & -0.010 & -0.032 & 0.013 & 0.417 & 0.704 & 0.030 \\
+GMV-SAMPLE & GMV-EWMA63 & sharpe\_diff & 0.144 & -0.045 & 0.333 & 0.133 & 0.798 & 0.255 \\
+GMV-SAMPLE & GMV-EWMA63 & log\_var\_ratio & -0.112 & -0.475 & 0.251 & 0.215 & 0.704 & 0.186 \\
+GMV-SAMPLE & GMV-EWMA63-RMT & sharpe\_diff & 0.081 & -0.095 & 0.256 & 0.370 & 1.000 & 0.244 \\
+GMV-SAMPLE & GMV-EWMA63-RMT & log\_var\_ratio & -0.057 & -0.171 & 0.057 & 0.211 & 0.704 & 0.098 \\
+GMV-EWMA126 & GMV-SAMPLE & sharpe\_diff & -0.083 & -0.195 & 0.028 & 0.142 & 0.709 & 0.153 \\
+GMV-EWMA126 & GMV-SAMPLE & log\_var\_ratio & 0.078 & -0.118 & 0.275 & 0.176 & 0.704 & 0.109 \\
+GMV-EWMA126 & GMV-LW & sharpe\_diff & -0.069 & -0.183 & 0.044 & 0.226 & 0.709 & 0.153 \\
+GMV-EWMA126 & GMV-LW & log\_var\_ratio & 0.066 & -0.145 & 0.277 & 0.217 & 0.704 & 0.109 \\
+GMV-EWMA126 & GMV-RMT & sharpe\_diff & -0.164 & -0.311 & -0.018 & 0.029 & 0.202 & 0.203 \\
+GMV-EWMA126 & GMV-RMT & log\_var\_ratio & 0.166 & -0.281 & 0.612 & 0.118 & 0.632 & 0.176 \\
+GMV-EWMA126 & GMV-PCA & sharpe\_diff & -0.107 & -0.264 & 0.051 & 0.176 & 0.709 & 0.218 \\
+GMV-EWMA126 & GMV-PCA & log\_var\_ratio & 0.144 & -0.018 & 0.306 & 0.070 & 0.491 & 0.119 \\
+GMV-EWMA126 & GMV-EWMA126-RMT & sharpe\_diff & -0.096 & -0.197 & 0.005 & 0.061 & 0.366 & 0.143 \\
+GMV-EWMA126 & GMV-EWMA126-RMT & log\_var\_ratio & 0.069 & -0.076 & 0.214 & 0.221 & 0.704 & 0.096 \\
+GMV-EWMA126 & GMV-EWMA63 & sharpe\_diff & 0.061 & -0.033 & 0.155 & 0.196 & 0.709 & 0.126 \\
+GMV-EWMA126 & GMV-EWMA63 & log\_var\_ratio & -0.034 & -0.163 & 0.096 & 0.321 & 0.704 & 0.078 \\
+GMV-EWMA126 & GMV-EWMA63-RMT & sharpe\_diff & -0.003 & -0.120 & 0.115 & 0.962 & 0.962 & 0.167 \\
+GMV-EWMA126 & GMV-EWMA63-RMT & log\_var\_ratio & 0.021 & -0.005 & 0.048 & 0.105 & 0.632 & 0.034 \\
+GMV-EWMA63 & GMV-SAMPLE & sharpe\_diff & -0.144 & -0.333 & 0.045 & 0.133 & 0.616 & 0.255 \\
+GMV-EWMA63 & GMV-SAMPLE & log\_var\_ratio & 0.112 & -0.251 & 0.475 & 0.215 & 1.000 & 0.186 \\
+GMV-EWMA63 & GMV-LW & sharpe\_diff & -0.130 & -0.320 & 0.059 & 0.171 & 0.616 & 0.252 \\
+GMV-EWMA63 & GMV-LW & log\_var\_ratio & 0.100 & -0.287 & 0.486 & 0.247 & 1.000 & 0.186 \\
+GMV-EWMA63 & GMV-RMT & sharpe\_diff & -0.225 & -0.438 & -0.012 & 0.040 & 0.283 & 0.292 \\
+GMV-EWMA63 & GMV-RMT & log\_var\_ratio & 0.199 & -0.434 & 0.833 & 0.156 & 0.942 & 0.252 \\
+GMV-EWMA63 & GMV-PCA & sharpe\_diff & -0.168 & -0.384 & 0.048 & 0.123 & 0.616 & 0.293 \\
+GMV-EWMA63 & GMV-PCA & log\_var\_ratio & 0.177 & -0.155 & 0.510 & 0.135 & 0.942 & 0.195 \\
+GMV-EWMA63 & GMV-EWMA126 & sharpe\_diff & -0.061 & -0.155 & 0.033 & 0.196 & 0.616 & 0.126 \\
+GMV-EWMA63 & GMV-EWMA126 & log\_var\_ratio & 0.034 & -0.096 & 0.163 & 0.321 & 1.000 & 0.078 \\
+GMV-EWMA63 & GMV-EWMA126-RMT & sharpe\_diff & -0.157 & -0.309 & -0.005 & 0.043 & 0.283 & 0.209 \\
+GMV-EWMA63 & GMV-EWMA126-RMT & log\_var\_ratio & 0.102 & -0.251 & 0.456 & 0.268 & 1.000 & 0.172 \\
+GMV-EWMA63 & GMV-EWMA63-RMT & sharpe\_diff & -0.064 & -0.182 & 0.054 & 0.285 & 0.616 & 0.166 \\
+GMV-EWMA63 & GMV-EWMA63-RMT & log\_var\_ratio & 0.055 & -0.084 & 0.194 & 0.295 & 1.000 & 0.097 \\
+\bottomrule
+\end{tabular}}
+\end{table}

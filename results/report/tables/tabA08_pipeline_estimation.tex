@@ -1,0 +1,17 @@
+\begin{table}[t]
+\centering\footnotesize
+\caption{Extension 8.20: estimator ranking of the engine on synthetic panels.}\label{tab:pipeline_estimation}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lrrrrrrr}
+\toprule
+strategy & mean\_log\_ratio & se & ci\_low & ci\_high & n\_panels & mean\_var\_ratio & mean\_l1\_dist \\
+\midrule
+EW & 0.596 & 0.020 & 0.533 & 0.659 & 4 & 1.919 & 1.499 \\
+GMV-SAMPLE & 0.000 & 0.000 & 0.000 & 0.000 & 4 & 1.057 & 0.439 \\
+GMV-LW & 4.0e-04 & 7.6e-04 & -0.002 & 0.003 & 4 & 1.057 & 0.438 \\
+GMV-RMT & -0.005 & 0.003 & -0.013 & 0.003 & 4 & 1.051 & 0.447 \\
+GMV-PCA & -0.012 & 3.4e-04 & -0.013 & -0.010 & 4 & 1.044 & 0.392 \\
+HRP & 0.390 & 0.011 & 0.354 & 0.426 & 4 & 1.562 & 1.194 \\
+\bottomrule
+\end{tabular}}
+\end{table}

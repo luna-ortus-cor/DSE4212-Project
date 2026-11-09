@@ -1,0 +1,29 @@
+3263 daily net returns, 156 rebalances, window T=504, N=100; long-only, no weight cap
+ERC Newton iterations per rebalance: mean 9.1, max 17
+
+REAL DATA (net of costs)
+            ann_vol  ann_return  sharpe  max_drawdown  annual_turnover  mean_pred_vol  realized_over_pred
+strategy                                                                                                 
+IVOL          0.163       0.153   0.954        -0.372            0.826          0.163               0.998
+ERC-SAMPLE    0.157       0.152   0.980        -0.364            0.886          0.156               1.006
+ERC-LW        0.157       0.152   0.980        -0.364            0.885          0.154               1.024
+ERC-RMT       0.158       0.151   0.970        -0.366            0.876          0.157               1.004
+ERC-PCA       0.156       0.151   0.977        -0.364            0.897          0.155               1.007
+EW            0.174       0.170   0.993        -0.376            0.869            NaN                 NaN
+GMV-SAMPLE    0.130       0.093   0.744        -0.333            2.397          0.110               1.187
+
+volatility ratios (studentized block bootstrap, block 10, B=5000; * = significant after Holm within the reference):
+against ERC-SAMPLE:
+  IVOL        vs ERC-SAMPLE vol ratio  1.036 [ 1.029,  1.042] p=0.000 Holm 0.001 * detectable 0.8% | Sharpe diff -0.03 [-0.06, +0.01]
+  ERC-LW      vs ERC-SAMPLE vol ratio  1.000 [ 1.000,  1.001] p=0.000 Holm 0.001 * detectable 0.0% | Sharpe diff +0.00 [-0.00, +0.00]
+  ERC-RMT     vs ERC-SAMPLE vol ratio  1.006 [ 1.004,  1.008] p=0.000 Holm 0.001 * detectable 0.3% | Sharpe diff -0.01 [-0.02, +0.00]
+  ERC-PCA     vs ERC-SAMPLE vol ratio  0.995 [ 0.992,  0.998] p=0.003 Holm 0.003 * detectable 0.3% | Sharpe diff -0.00 [-0.01, +0.00]
+  EW          vs ERC-SAMPLE vol ratio  1.105 [ 1.058,  1.154] p=0.000 Holm 0.001 * detectable 3.3% | Sharpe diff +0.01 [-0.06, +0.09]
+  GMV-SAMPLE  vs ERC-SAMPLE vol ratio  0.829 [ 0.765,  0.899] p=0.000 Holm 0.001 * detectable 8.7% | Sharpe diff -0.24 [-0.55, +0.08]
+against IVOL:
+  ERC-SAMPLE  vs IVOL       vol ratio  0.965 [ 0.960,  0.971] p=0.000 Holm 0.001 * detectable 0.8% | Sharpe diff +0.03 [-0.01, +0.06]
+  ERC-LW      vs IVOL       vol ratio  0.966 [ 0.960,  0.972] p=0.000 Holm 0.001 * detectable 0.7% | Sharpe diff +0.03 [-0.01, +0.06]
+  ERC-RMT     vs IVOL       vol ratio  0.971 [ 0.964,  0.978] p=0.000 Holm 0.001 * detectable 0.8% | Sharpe diff +0.02 [-0.02, +0.05]
+  ERC-PCA     vs IVOL       vol ratio  0.961 [ 0.953,  0.969] p=0.000 Holm 0.001 * detectable 1.0% | Sharpe diff +0.02 [-0.02, +0.06]
+  EW          vs IVOL       vol ratio  1.067 [ 1.029,  1.107] p=0.009 Holm 0.009 * detectable 2.7% | Sharpe diff +0.04 [-0.01, +0.09]
+  GMV-SAMPLE  vs IVOL       vol ratio  0.801 [ 0.734,  0.873] p=0.000 Holm 0.001 * detectable 9.3% | Sharpe diff -0.21 [-0.55, +0.13]

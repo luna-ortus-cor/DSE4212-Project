@@ -1,0 +1,61 @@
+3263 daily net returns, 156 rebalances, window T=504, N=100; QIS bandwidth h mean 0.064, condition number mean 615
+
+REAL DATA (long-only GMV, net of costs)
+            ann_vol  ann_return  sharpe  max_drawdown  annual_turnover  mean_pred_vol  realized_over_pred
+strategy                                                                                                 
+GMV-SAMPLE    0.130       0.093   0.744        -0.333            2.397          0.110               1.187
+GMV-LW        0.130       0.094   0.758        -0.335            2.262          0.109               1.185
+GMV-RMT       0.136       0.084   0.663        -0.362            2.195          0.111               1.226
+GMV-PCA       0.135       0.092   0.721        -0.343            2.175          0.102               1.319
+GMV-NLS       0.130       0.093   0.751        -0.336            2.185          0.110               1.185
+
+volatility ratios (studentized block bootstrap, block 10, B=5000; * = significant after Holm within the reference):
+  GMV-NLS     vs GMV-SAMPLE vol ratio  0.996 [ 0.991,  1.001] p=0.103 Holm 0.121   detectable 0.5% | Sharpe diff +0.01 [-0.02, +0.04]
+  GMV-NLS     vs GMV-RMT    vol ratio  0.953 [ 0.910,  0.999] p=0.048 Holm 0.190   detectable 3.3% | Sharpe diff +0.09 [-0.00, +0.18]
+
+SIMULATION (known factor model, 200 replications; paired log true variance ratio against GMV-SAMPLE, negative = lower true variance; * = interval excludes 0):
+stationary, long-only GMV, against GMV-SAMPLE:
+T           126      252      504      1000
+method                                     
+GMV-LW   -0.013*  -0.003*  -0.000*  -0.000 
+GMV-NLS  +0.002   +0.013*  +0.008*  +0.002*
+GMV-PCA  -0.064*  -0.026*  -0.012*  -0.004*
+GMV-RMT  -0.068*  -0.025*  -0.005*  +0.007*
+
+stationary, unconstrained GMV, against GMV-SAMPLE:
+T           126      252      504      1000
+method                                     
+GMV-LW   -1.090*  -0.172*  -0.036*  -0.008*
+GMV-NLS  -1.178*  -0.236*  -0.061*  -0.017*
+GMV-PCA  -1.369*  -0.373*  -0.131*  -0.037*
+GMV-RMT  -1.339*  -0.333*  -0.089*  +0.006*
+
+time-varying, long-only GMV, against GMV-SAMPLE:
+T           126      252      504      1000
+method                                     
+GMV-LW   -0.013*  -0.005*  -0.004*  -0.003*
+GMV-NLS  +0.003   +0.008*  +0.002   -0.003*
+GMV-PCA  -0.072*  -0.032*  -0.008*  +0.001 
+GMV-RMT  -0.072*  -0.029*  -0.002   +0.007*
+
+time-varying, unconstrained GMV, against GMV-SAMPLE:
+T           126      252      504      1000
+method                                     
+GMV-LW   -1.041*  -0.163*  -0.038*  -0.009*
+GMV-NLS  -1.128*  -0.223*  -0.064*  -0.019*
+GMV-PCA  -1.302*  -0.352*  -0.123*  -0.033*
+GMV-RMT  -1.282*  -0.314*  -0.083*  +0.004 
+
+mean relative Frobenius error of the covariance:
+T                         126    252    504    1000
+distribution method                                
+stationary   GMV-LW      0.363  0.265  0.189  0.135
+             GMV-NLS     0.307  0.231  0.169  0.124
+             GMV-PCA     0.290  0.217  0.155  0.119
+             GMV-RMT     0.263  0.202  0.154  0.128
+             GMV-SAMPLE  0.383  0.275  0.192  0.136
+time-varying GMV-LW      0.617  0.618  0.594  0.627
+             GMV-NLS     0.572  0.594  0.587  0.628
+             GMV-PCA     0.625  0.635  0.620  0.659
+             GMV-RMT     0.572  0.592  0.578  0.618
+             GMV-SAMPLE  0.706  0.661  0.621  0.644

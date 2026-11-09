@@ -51,6 +51,15 @@ STAGES = (
     "08_structure.py",
     "09_unconstrained.py",
     "10_simulation.py",
+    "12_pipeline_check.py",
+    "13_inference.py",
+    "14_nonstationarity.py",
+    "15_residual_structure.py",
+    "16_sector_block.py",
+    "17_sector_placebo.py",
+    "18_risk_based.py",
+    "19_nonlinear_shrinkage.py",
+    "20_forecast_loss.py",
 )
 
 

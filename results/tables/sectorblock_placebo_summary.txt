@@ -1,0 +1,11 @@
+20 random-label draws (known labels shuffled among members at every rebalance; group sizes and unknown members kept); true labels = the 8.24 strategy GMV-PCA-SECTOR
+
+volatility ratio against GMV-PCA (below 1 = lower volatility than PCA):
+  true sector labels   0.976
+  random labels        mean 0.996, min 0.986, max 0.999
+volatility ratio against GMV-SAMPLE:
+  true sector labels   1.009
+  random labels        mean 1.029, min 1.019, max 1.032
+
+share of the true-label gain over PCA reached by random labels (mean): 18%
+rank p-value (random labelling at least as good as the true one): 0.048 (smallest possible 0.048; a single data path, draws share the same returns)

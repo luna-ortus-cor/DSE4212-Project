@@ -1,0 +1,19 @@
+\begin{table}[t]
+\centering\footnotesize
+\caption{Extension 8.22: EWMA strategies against sample GMV, net of costs.}\label{tab:nonstat_metrics}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lrrrrrrr}
+\toprule
+strategy & ann\_vol & ann\_return & sharpe & max\_drawdown & annual\_turnover & mean\_pred\_vol & realized\_over\_pred \\
+\midrule
+GMV-SAMPLE & 0.130 & 0.093 & 0.744 & -0.333 & 2.397 & 0.110 & 1.187 \\
+GMV-LW & 0.130 & 0.094 & 0.758 & -0.335 & 2.262 & 0.109 & 1.185 \\
+GMV-RMT & 0.136 & 0.084 & 0.663 & -0.362 & 2.195 & 0.111 & 1.226 \\
+GMV-PCA & 0.135 & 0.092 & 0.721 & -0.343 & 2.175 & 0.102 & 1.319 \\
+GMV-EWMA126 & 0.125 & 0.101 & 0.828 & -0.295 & 3.490 & 0.106 & 1.183 \\
+GMV-EWMA126-RMT & 0.130 & 0.090 & 0.732 & -0.312 & 3.141 & 0.107 & 1.214 \\
+GMV-EWMA63 & 0.123 & 0.107 & 0.889 & -0.255 & 5.545 & 0.100 & 1.231 \\
+GMV-EWMA63-RMT & 0.127 & 0.101 & 0.825 & -0.282 & 4.938 & 0.101 & 1.257 \\
+\bottomrule
+\end{tabular}}
+\end{table}

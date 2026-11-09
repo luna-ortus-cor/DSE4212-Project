@@ -1,0 +1,41 @@
+3263 daily net returns, 156 rebalances, window T=504, N=100; sector labels are a current snapshot used as labels only (100 of 100 members have a known sector on average)
+K (same rule as PCA): mean 4.1; share of the residual's squared off-diagonal mass inside the kept blocks: mean 0.26
+
+REAL DATA (long-only GMV, net of costs)
+                ann_vol  ann_return  sharpe  max_drawdown  annual_turnover  mean_pred_vol  realized_over_pred
+strategy                                                                                                     
+GMV-SAMPLE        0.130       0.093   0.744        -0.333            2.397          0.110               1.187
+GMV-LW            0.130       0.094   0.758        -0.335            2.262          0.109               1.185
+GMV-RMT           0.136       0.084   0.663        -0.362            2.195          0.111               1.226
+GMV-PCA           0.135       0.092   0.721        -0.343            2.175          0.102               1.319
+GMV-PCA-SECTOR    0.131       0.094   0.753        -0.332            2.233          0.107               1.233
+
+volatility ratios (studentized block bootstrap, block 10, B=5000; * = significant after Holm within the reference):
+  GMV-PCA-SECTOR  vs GMV-PCA    vol ratio  0.976 [ 0.969,  0.983] p=0.000 Holm 0.001 * detectable 0.9% | Sharpe diff +0.03 [-0.05, +0.11]
+  GMV-PCA-SECTOR  vs GMV-SAMPLE vol ratio  1.009 [ 1.002,  1.015] p=0.018 Holm 0.036 * detectable 0.8% | Sharpe diff +0.01 [-0.07, +0.09]
+
+POSITIVE / NEGATIVE CONTROL: paired log(true variance ratio), long-only, Gaussian, 100 replications, 10 groups, 20% wrong labels in the NOISY variant (negative = lower true variance; * = interval excludes 0):
+weak sector factors, against GMV-SAMPLE:
+T                         252      504
+method                                
+GMV-PCA               -0.026*  -0.011*
+GMV-PCA-SECTOR        -0.031*  -0.013*
+GMV-PCA-SECTOR-NOISY  -0.028*  -0.011*
+weak sector factors, against GMV-PCA:
+T                         252      504
+method                                
+GMV-PCA-SECTOR        -0.005*  -0.002*
+GMV-PCA-SECTOR-NOISY  -0.002*  -0.000 
+
+no sector factors, against GMV-SAMPLE:
+T                         252      504
+method                                
+GMV-PCA               -0.033*  -0.015*
+GMV-PCA-SECTOR        -0.030*  -0.014*
+GMV-PCA-SECTOR-NOISY  -0.030*  -0.013*
+no sector factors, against GMV-PCA:
+T                         252      504
+method                                
+GMV-PCA-SECTOR        +0.004*  +0.001*
+GMV-PCA-SECTOR-NOISY  +0.003*  +0.001*
+

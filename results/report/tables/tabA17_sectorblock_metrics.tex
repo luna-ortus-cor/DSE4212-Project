@@ -1,0 +1,16 @@
+\begin{table}[t]
+\centering\footnotesize
+\caption{Extension 8.24: PCA plus sector-block strategy, net of costs.}\label{tab:sectorblock_metrics}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lrrrrrrr}
+\toprule
+strategy & ann\_vol & ann\_return & sharpe & max\_drawdown & annual\_turnover & mean\_pred\_vol & realized\_over\_pred \\
+\midrule
+GMV-SAMPLE & 0.130 & 0.093 & 0.744 & -0.333 & 2.397 & 0.110 & 1.187 \\
+GMV-LW & 0.130 & 0.094 & 0.758 & -0.335 & 2.262 & 0.109 & 1.185 \\
+GMV-RMT & 0.136 & 0.084 & 0.663 & -0.362 & 2.195 & 0.111 & 1.226 \\
+GMV-PCA & 0.135 & 0.092 & 0.721 & -0.343 & 2.175 & 0.102 & 1.319 \\
+GMV-PCA-SECTOR & 0.131 & 0.094 & 0.753 & -0.332 & 2.233 & 0.107 & 1.233 \\
+\bottomrule
+\end{tabular}}
+\end{table}

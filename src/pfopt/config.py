@@ -525,6 +525,118 @@ class PipelineCheckConfig:
 
 
 @dataclass(frozen=True)
+class NonStationarityConfig:
+    """Non-stationarity test: EWMA strategies and simulated positive control (PLAN.md step 8.22).
+
+    Attributes
+    ----------
+    halflives : tuple of int
+        EWMA half-lives in days (fixed a priori; each gives ``GMV-EWMA<h>`` and
+        ``GMV-EWMA<h>-RMT``).
+    calibration_block_days : int
+        Length of the non-overlapping blocks whose log realized variance of the equal-weight market
+        return is used to calibrate the volatility dynamics of the time-varying simulation.
+    sim_sample_sizes : tuple of int
+        Sample sizes of the simulated positive control (must exceed ``simulation.n_assets``).
+    sim_n_reps : int
+        Replications per sample size and design in the positive control.
+    """
+
+    halflives: tuple[int, ...] = (126, 63)
+    calibration_block_days: int = 21
+    sim_sample_sizes: tuple[int, ...] = (252, 504)
+    sim_n_reps: int = 100
+
+    def __post_init__(self) -> None:
+        if not self.halflives or any(h < 1 for h in self.halflives):
+            raise ValueError("halflives must be non-empty positive integers")
+        if self.calibration_block_days < 5:
+            raise ValueError("calibration_block_days must be >= 5")
+        if not self.sim_sample_sizes or any(t < 2 for t in self.sim_sample_sizes):
+            raise ValueError("sim_sample_sizes must be non-empty and >= 2")
+        if self.sim_n_reps < 2:
+            raise ValueError(f"sim_n_reps must be >= 2, got {self.sim_n_reps}")
+
+
+@dataclass(frozen=True)
+class ResidualConfig:
+    """Residual-structure diagnostic and sector-block test (PLAN.md steps 8.23 and 8.24).
+
+    Attributes
+    ----------
+    n_perm : int
+        Sector-label permutations per estimation window for the residual-gap test (at least 19 so
+        that a one-sided p-value can reach 0.05).
+    sim_n_groups : int
+        Number of weak group factors in the simulated positive control of step 8.24.
+    sim_group_vol : float
+        Annual volatility of each group factor of the positive control (chosen so that the
+        within-group residual correlation is about the 0.06 found in step 8.23).
+    sim_label_error : float
+        Fraction of the group labels that are wrong in the noisy-label variant (the sector
+        snapshot problem).
+    sim_sample_sizes : tuple of int
+        Sample sizes of the positive control (must exceed ``simulation.n_assets``).
+    sim_n_reps : int
+        Replications per sample size and design.
+    n_placebo : int
+        Random-label draws of the real-data placebo of step 8.25 (at least 19 so that a one-sided
+        rank p-value can reach 0.05).
+    """
+
+    n_perm: int = 200
+    sim_n_groups: int = 10
+    sim_group_vol: float = 0.08
+    sim_label_error: float = 0.2
+    sim_sample_sizes: tuple[int, ...] = (252, 504)
+    sim_n_reps: int = 100
+    n_placebo: int = 20
+
+    def __post_init__(self) -> None:
+        if self.n_perm < 19:
+            raise ValueError(f"n_perm must be >= 19, got {self.n_perm}")
+        if self.sim_n_groups < 2 or self.sim_group_vol <= 0:
+            raise ValueError("need sim_n_groups >= 2 and sim_group_vol > 0")
+        if not 0.0 <= self.sim_label_error < 1.0:
+            raise ValueError(f"sim_label_error must be in [0, 1), got {self.sim_label_error}")
+        if not self.sim_sample_sizes or any(t < 2 for t in self.sim_sample_sizes):
+            raise ValueError("sim_sample_sizes must be non-empty and >= 2")
+        if self.sim_n_reps < 2:
+            raise ValueError(f"sim_n_reps must be >= 2, got {self.sim_n_reps}")
+        if self.n_placebo < 19:
+            raise ValueError(f"n_placebo must be >= 19, got {self.n_placebo}")
+
+
+@dataclass(frozen=True)
+class ForecastConfig:
+    """Covariance forecast loss on random portfolios (PLAN.md step 8.18).
+
+    Attributes
+    ----------
+    n_portfolios : int
+        Random long-only portfolios per rebalance date and concentration level.
+    dirichlet_alphas : tuple of float
+        Concentration parameters of the Dirichlet weights (1 = uniform on the simplex, diffuse;
+        small values give concentrated portfolios).
+    hac_lag : int
+        Bartlett lag of the Newey-West variance used for the paired loss differences across
+        rebalance dates.
+    """
+
+    n_portfolios: int = 500
+    dirichlet_alphas: tuple[float, ...] = (1.0, 0.1)
+    hac_lag: int = 3
+
+    def __post_init__(self) -> None:
+        if self.n_portfolios < 1:
+            raise ValueError(f"n_portfolios must be >= 1, got {self.n_portfolios}")
+        if not self.dirichlet_alphas or any(a <= 0 for a in self.dirichlet_alphas):
+            raise ValueError("dirichlet_alphas must be non-empty and positive")
+        if self.hac_lag < 0:
+            raise ValueError(f"hac_lag must be >= 0, got {self.hac_lag}")
+
+
+@dataclass(frozen=True)
 class Config:
     """Top-level project configuration."""
 
@@ -541,6 +653,9 @@ class Config:
     sensitivity: SensitivityConfig = field(default_factory=SensitivityConfig)
     simulation: SimulationConfig = field(default_factory=SimulationConfig)
     pipeline_check: PipelineCheckConfig = field(default_factory=PipelineCheckConfig)
+    nonstationarity: NonStationarityConfig = field(default_factory=NonStationarityConfig)
+    residual: ResidualConfig = field(default_factory=ResidualConfig)
+    forecast: ForecastConfig = field(default_factory=ForecastConfig)
 
     def __post_init__(self) -> None:
         n, t = self.universe.n_assets, self.universe.lookback_days

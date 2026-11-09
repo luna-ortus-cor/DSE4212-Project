@@ -1,0 +1,35 @@
+\begin{table}[t]
+\centering\footnotesize
+\caption{Extension 8.7: studentized tests against ERC-SAMPLE and IVOL.}\label{tab:riskbased_tests}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lllrrrrrr}
+\toprule
+reference & strategy & test & estimate & ci\_low & ci\_high & p\_value & p\_holm & mde \\
+\midrule
+ERC-SAMPLE & IVOL & sharpe\_diff & -0.026 & -0.062 & 0.011 & 0.173 & 0.692 & 0.051 \\
+ERC-SAMPLE & IVOL & log\_var\_ratio & 0.070 & 0.058 & 0.082 & 2.0e-04 & 0.001 & 0.015 \\
+ERC-SAMPLE & ERC-LW & sharpe\_diff & 3.5e-05 & -4.6e-04 & 5.3e-04 & 0.885 & 1.000 & 7.0e-04 \\
+ERC-SAMPLE & ERC-LW & log\_var\_ratio & 8.5e-04 & 4.9e-04 & 0.001 & 2.0e-04 & 0.001 & 3.4e-04 \\
+ERC-SAMPLE & ERC-RMT & sharpe\_diff & -0.010 & -0.020 & 2.8e-04 & 0.056 & 0.338 & 0.014 \\
+ERC-SAMPLE & ERC-RMT & log\_var\_ratio & 0.011 & 0.007 & 0.015 & 2.0e-04 & 0.001 & 0.005 \\
+ERC-SAMPLE & ERC-PCA & sharpe\_diff & -0.003 & -0.009 & 0.004 & 0.420 & 1.000 & 0.010 \\
+ERC-SAMPLE & ERC-PCA & log\_var\_ratio & -0.010 & -0.016 & -0.004 & 0.003 & 0.003 & 0.005 \\
+ERC-SAMPLE & EW & sharpe\_diff & 0.013 & -0.062 & 0.087 & 0.725 & 1.000 & 0.103 \\
+ERC-SAMPLE & EW & log\_var\_ratio & 0.200 & 0.114 & 0.287 & 2.0e-04 & 0.001 & 0.065 \\
+ERC-SAMPLE & GMV-SAMPLE & sharpe\_diff & -0.236 & -0.549 & 0.078 & 0.131 & 0.657 & 0.440 \\
+ERC-SAMPLE & GMV-SAMPLE & log\_var\_ratio & -0.375 & -0.536 & -0.213 & 2.0e-04 & 0.001 & 0.166 \\
+IVOL & ERC-SAMPLE & sharpe\_diff & 0.026 & -0.011 & 0.062 & 0.173 & 0.895 & 0.051 \\
+IVOL & ERC-SAMPLE & log\_var\_ratio & -0.070 & -0.082 & -0.058 & 2.0e-04 & 0.001 & 0.015 \\
+IVOL & ERC-LW & sharpe\_diff & 0.026 & -0.011 & 0.062 & 0.168 & 0.895 & 0.051 \\
+IVOL & ERC-LW & log\_var\_ratio & -0.069 & -0.081 & -0.058 & 2.0e-04 & 0.001 & 0.015 \\
+IVOL & ERC-RMT & sharpe\_diff & 0.016 & -0.016 & 0.048 & 0.337 & 0.895 & 0.045 \\
+IVOL & ERC-RMT & log\_var\_ratio & -0.059 & -0.074 & -0.044 & 2.0e-04 & 0.001 & 0.017 \\
+IVOL & ERC-PCA & sharpe\_diff & 0.023 & -0.018 & 0.063 & 0.266 & 0.895 & 0.056 \\
+IVOL & ERC-PCA & log\_var\_ratio & -0.080 & -0.097 & -0.063 & 2.0e-04 & 0.001 & 0.019 \\
+IVOL & EW & sharpe\_diff & 0.038 & -0.014 & 0.090 & 0.149 & 0.895 & 0.074 \\
+IVOL & EW & log\_var\_ratio & 0.130 & 0.057 & 0.204 & 0.009 & 0.009 & 0.053 \\
+IVOL & GMV-SAMPLE & sharpe\_diff & -0.210 & -0.547 & 0.127 & 0.213 & 0.895 & 0.473 \\
+IVOL & GMV-SAMPLE & log\_var\_ratio & -0.445 & -0.618 & -0.272 & 2.0e-04 & 0.001 & 0.179 \\
+\bottomrule
+\end{tabular}}
+\end{table}

@@ -21,6 +21,7 @@
 | stats | sensitivity_block_lengths | [5, 10, 20] |
 | stats | references | [GMV-SAMPLE, EW, GMV-LW] |
 | stats | alpha | 0.05 |
+| stats | mde_power | 0.8 |
 | regimes | covid_start | 2020-02-19 |
 | regimes | covid_end | 2020-12-31 |
 | regimes | stress_year | 2022 |
@@ -56,3 +57,30 @@
 | simulation | idio_vol_low | 0.15 |
 | simulation | idio_vol_high | 0.45 |
 | simulation | alpha | 0.05 |
+| simulation | time_varying | False |
+| simulation | horizon_days | 21 |
+| simulation | vol_log_sd | 0.4 |
+| simulation | vol_persistence | 0.98 |
+| simulation | loading_drift_sd | 0.2 |
+| simulation | loading_persistence | 0.996 |
+| pipeline_check | n_symbols | 150 |
+| pipeline_check | n_days | 2500 |
+| pipeline_check | n_panels | 4 |
+| pipeline_check | dv_persistence | 0.995 |
+| pipeline_check | dv_sd | 1.0 |
+| pipeline_check | z2_tolerance | 3.0 |
+| pipeline_check | identity_tolerance | 1e-06 |
+| nonstationarity | halflives | [126, 63] |
+| nonstationarity | calibration_block_days | 21 |
+| nonstationarity | sim_sample_sizes | [252, 504] |
+| nonstationarity | sim_n_reps | 100 |
+| residual | n_perm | 200 |
+| residual | sim_n_groups | 10 |
+| residual | sim_group_vol | 0.08 |
+| residual | sim_label_error | 0.2 |
+| residual | sim_sample_sizes | [252, 504] |
+| residual | sim_n_reps | 100 |
+| residual | n_placebo | 20 |
+| forecast | n_portfolios | 500 |
+| forecast | dirichlet_alphas | [1.0, 0.1] |
+| forecast | hac_lag | 3 |

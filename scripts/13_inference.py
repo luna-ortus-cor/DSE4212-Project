@@ -3,7 +3,9 @@
 Reads ``returns_net.parquet`` from the cache written by ``02_run_backtest.py`` (as step 5.1 does)
 and writes ``inference_tests.csv`` (studentized tests with Holm / Benjamini-Hochberg adjusted
 p-values and the minimum detectable effect, plus the percentile-bootstrap p-value of step 5.1 for
-comparison) and ``inference_summary.txt`` to ``results/tables``. Settings come from ``stats``.
+comparison), ``inference_blocklength.csv`` (the studentized tests repeated at each of
+``stats.sensitivity_block_lengths``) and ``inference_summary.txt`` to ``results/tables``. Settings
+come from ``stats``.
 
 Usage: ``python scripts/13_inference.py --config config.yaml``
 """
@@ -87,6 +89,22 @@ def main() -> None:
     tables.mkdir(parents=True, exist_ok=True)
     table.to_csv(tables / "inference_tests.csv", index=False)
 
+    parts = []
+    for length in s.sensitivity_block_lengths:
+        part = studentized_compare(
+            returns, s.references, power=s.mde_power, **{**common, "block_length": length}
+        )
+        parts.append(part.assign(block_length=length))
+    by_length = pd.concat(parts, ignore_index=True)
+    by_length.to_csv(tables / "inference_blocklength.csv", index=False)
+    wide = by_length.pivot_table(
+        index=KEYS, columns="block_length", values=["p_value", "p_holm"], aggfunc="first"
+    )
+    holm = wide["p_holm"] < s.alpha
+    unstable = holm[holm.any(axis=1) & ~holm.all(axis=1)]
+    se_wide = by_length.pivot_table(index=KEYS, columns="block_length", values="se")
+    se_ratio = se_wide.max(axis=1) / se_wide.min(axis=1)
+
     n = len(table)
     lines = [
         f"{len(returns)} daily net returns, block length {s.block_length}, B={s.n_boot}, "
@@ -110,6 +128,20 @@ def main() -> None:
     )
     for _, r in flipped.iterrows():
         lines.append(f"  {r['test']}: {r['strategy']} vs {r['reference']}")
+    lengths = ", ".join(str(b) for b in s.sensitivity_block_lengths)
+    lines += [
+        "",
+        f"BLOCK-LENGTH SENSITIVITY (lengths {lengths}): comparisons significant after Holm at",
+        "  " + ", ".join(f"{b}: {int(holm[b].sum())}" for b in holm.columns) + f" of {n}",
+        f"  Holm verdict differs across lengths: {len(unstable)} of {n}",
+    ]
+    for key in unstable.index:
+        pvals = ", ".join(f"{b}: {wide.loc[key, ('p_holm', b)]:.3f}" for b in holm.columns)
+        lines.append(f"    {key[2]}: {key[1]} vs {key[0]}  Holm p {pvals}")
+    lines.append(
+        f"  standard error, largest / smallest across lengths: median {se_ratio.median():.2f}, "
+        f"max {se_ratio.max():.2f}"
+    )
     (tables / "inference_summary.txt").write_text("\n".join(lines) + "\n", encoding="utf-8")
     logger.info(
         "done in %.0f s; summary in %s",

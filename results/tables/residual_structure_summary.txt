@@ -1,0 +1,42 @@
+156 rebalance windows, T=504, N=100, 200 permutations per window; sector labels are a current snapshot used as labels only
+retained factors K (MP rule): mean 4.1, range 2 to 6
+
+same-sector minus cross-sector correlation (mean over windows):
+  raw correlation      0.111
+  PCA residual         0.061  (shuffled labels 0.000, sd 0.004; mean z 16.6)
+  windows with permutation p < 0.05: 100% (overlapping windows, so not independent; 5% expected under no structure)
+
+residual eigenvalues above the MP edge: mean 8.4 (range 6 to 11)
+their share in the span of the sector indicators: 0.38 against 0.11 for a random direction (156 windows with at least one such eigenvalue)
+
+mean residual correlation: within sector 0.087, between sectors -0.015
+within-sector residual correlation by sector (mean over windows):
+Utilities                 0.234
+Real Estate               0.210
+Energy                    0.141
+Basic Materials           0.098
+Healthcare                0.060
+Financial Services        0.057
+Industrials               0.040
+Communication Services    0.038
+Consumer Defensive        0.037
+Technology                0.025
+Consumer Cyclical         0.019
+
+Spearman correlation of window diagnostics with log(vol ratio vs GMV-SAMPLE) (p-values optimistic: overlapping windows):
+    diagnostic         target  spearman_rho  p_value   n
+       raw_gap  logvol_GMV-LW         0.292    0.000 155
+       raw_gap logvol_GMV-RMT        -0.185    0.021 155
+       raw_gap logvol_GMV-PCA        -0.061    0.453 155
+     resid_gap  logvol_GMV-LW        -0.238    0.003 155
+     resid_gap logvol_GMV-RMT         0.165    0.040 155
+     resid_gap logvol_GMV-PCA        -0.070    0.387 155
+        perm_z  logvol_GMV-LW        -0.121    0.132 155
+        perm_z logvol_GMV-RMT         0.115    0.154 155
+        perm_z logvol_GMV-PCA        -0.045    0.576 155
+     k_factors  logvol_GMV-LW         0.258    0.001 155
+     k_factors logvol_GMV-RMT        -0.176    0.029 155
+     k_factors logvol_GMV-PCA        -0.049    0.547 155
+resid_n_signal  logvol_GMV-LW        -0.140    0.082 155
+resid_n_signal logvol_GMV-RMT         0.061    0.453 155
+resid_n_signal logvol_GMV-PCA        -0.236    0.003 155

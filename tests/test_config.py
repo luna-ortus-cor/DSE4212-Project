@@ -43,6 +43,12 @@ def test_repo_config_loads_with_plan_defaults() -> None:
     assert cfg.stats.references == ("GMV-SAMPLE", "EW", "GMV-LW")
     assert cfg.stats.mde_power == 0.8
     assert cfg.pipeline_check.n_symbols == 150 and cfg.pipeline_check.n_panels == 4
+    assert cfg.nonstationarity.halflives == (126, 63) and cfg.nonstationarity.sim_n_reps == 100
+    assert cfg.residual.n_perm == 200 and cfg.residual.sim_n_groups == 10
+    assert cfg.residual.sim_sample_sizes == (252, 504) and cfg.residual.sim_label_error == 0.2
+    assert cfg.residual.n_placebo == 20
+    assert cfg.forecast.n_portfolios == 500 and cfg.forecast.dirichlet_alphas == (1.0, 0.1)
+    assert cfg.forecast.hac_lag == 3
 
 
 def test_unquoted_yaml_date_rejected(tmp_path: Path) -> None:
@@ -136,6 +142,18 @@ def test_unknown_key_rejected() -> None:
         ("pipeline_check", {"n_panels": 1}),
         ("pipeline_check", {"dv_persistence": 1.0}),
         ("pipeline_check", {"z2_tolerance": 0.0}),
+        ("nonstationarity", {"halflives": []}),
+        ("nonstationarity", {"halflives": [0]}),
+        ("nonstationarity", {"sim_n_reps": 1}),
+        ("residual", {"n_perm": 10}),
+        ("residual", {"sim_n_groups": 1}),
+        ("residual", {"sim_group_vol": 0.0}),
+        ("residual", {"sim_label_error": 1.0}),
+        ("residual", {"sim_n_reps": 1}),
+        ("residual", {"n_placebo": 10}),
+        ("forecast", {"n_portfolios": 0}),
+        ("forecast", {"dirichlet_alphas": [1.0, 0.0]}),
+        ("forecast", {"hac_lag": -1}),
         ("eda", {"frontier_horizon_days": 1}),
         ("eda", {"frontier_points": 1}),
         ("backtest", {"mu_convention": "geometric"}),

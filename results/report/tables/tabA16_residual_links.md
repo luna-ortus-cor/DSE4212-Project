@@ -1,0 +1,17 @@
+| diagnostic | target | spearman_rho | p_value | n |
+| --- | --- | --- | --- | --- |
+| raw_gap | logvol_GMV-LW | 0.292 | 2.3e-04 | 155.000 |
+| raw_gap | logvol_GMV-RMT | -0.185 | 0.021 | 155.000 |
+| raw_gap | logvol_GMV-PCA | -0.061 | 0.453 | 155.000 |
+| resid_gap | logvol_GMV-LW | -0.238 | 0.003 | 155.000 |
+| resid_gap | logvol_GMV-RMT | 0.165 | 0.040 | 155.000 |
+| resid_gap | logvol_GMV-PCA | -0.070 | 0.387 | 155.000 |
+| perm_z | logvol_GMV-LW | -0.121 | 0.132 | 155.000 |
+| perm_z | logvol_GMV-RMT | 0.115 | 0.154 | 155.000 |
+| perm_z | logvol_GMV-PCA | -0.045 | 0.576 | 155.000 |
+| k_factors | logvol_GMV-LW | 0.258 | 0.001 | 155.000 |
+| k_factors | logvol_GMV-RMT | -0.176 | 0.029 | 155.000 |
+| k_factors | logvol_GMV-PCA | -0.049 | 0.547 | 155.000 |
+| resid_n_signal | logvol_GMV-LW | -0.140 | 0.082 | 155.000 |
+| resid_n_signal | logvol_GMV-RMT | 0.061 | 0.453 | 155.000 |
+| resid_n_signal | logvol_GMV-PCA | -0.236 | 0.003 | 155.000 |

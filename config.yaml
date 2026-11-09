@@ -109,3 +109,23 @@ pipeline_check:             # step 8.20: synthetic-panel validation of the backt
   dv_sd: 1.0
   z2_tolerance: 3.0         # accounting check: |mean z^2 - 1| within this many standard errors
   identity_tolerance: 1.0e-6
+
+nonstationarity:            # step 8.22: EWMA strategies and the simulated positive control
+  halflives: [126, 63]      # fixed a priori
+  calibration_block_days: 21
+  sim_sample_sizes: [252, 504]
+  sim_n_reps: 100
+
+residual:                   # steps 8.23 (diagnostic) and 8.24 (sector-block test)
+  n_perm: 200               # sector-label permutations per window
+  sim_n_groups: 10          # positive control: weak group factors
+  sim_group_vol: 0.08       # annual vol of a group factor (residual corr about 0.06)
+  sim_label_error: 0.2      # share of wrong labels in the noisy-label variant
+  sim_sample_sizes: [252, 504]
+  sim_n_reps: 100
+  n_placebo: 20             # step 8.25: random-label draws on the real data
+
+forecast:                   # step 8.18 (covariance forecast loss on random portfolios)
+  n_portfolios: 500         # random long-only portfolios per date and concentration level
+  dirichlet_alphas: [1.0, 0.1]   # diffuse and concentrated
+  hac_lag: 3                # Newey-West lag across rebalance dates
