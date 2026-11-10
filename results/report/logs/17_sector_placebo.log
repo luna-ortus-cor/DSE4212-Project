@@ -1,0 +1,3 @@
+2026-11-11 06:18:08,348 WARNING companies: ignoring column(s) not requested in config: ['Exchange', 'Shortname', 'Longname', 'Currentprice', 'Ebitda', 'Revenuegrowth', 'City', 'State', 'Country', 'Fulltimeemployees', 'Longbusinesssummary']
+2026-11-11 06:18:08,364 INFO companies: loaded 502 rows x 5 columns from /mnt/c/Users/russn/work/Y5S1/DSE4212/DSE4212_Project/data/raw/sp500_companies.csv
+2026-11-11 06:18:08,773 INFO summary written to /mnt/c/Users/russn/work/Y5S1/DSE4212/DSE4212_Project/results/tables/sectorblock_placebo_summary.txt

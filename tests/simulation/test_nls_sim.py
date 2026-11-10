@@ -1,4 +1,4 @@
-"""Tests for the nonlinear-shrinkage simulation check (step 8.2)."""
+"""Tests for the nonlinear-shrinkage simulation check."""
 
 import dataclasses
 

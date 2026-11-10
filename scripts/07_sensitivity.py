@@ -1,4 +1,4 @@
-"""Step 5.3: sensitivity analyses (T, N / q, costs, weight cap, PCA K rule, HRP linkage).
+"""Sensitivity analyses (T, N / q, costs, weight cap, PCA K rule, HRP linkage).
 
 Builds every scenario from the ``sensitivity`` section of ``config.yaml`` (one changed field each),
 generates or loads cached weights, simulates net returns, and writes ``sensitivity_metrics.csv``

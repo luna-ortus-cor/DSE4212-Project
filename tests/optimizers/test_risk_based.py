@@ -1,4 +1,4 @@
-"""Tests for inverse-volatility and equal-risk-contribution weights (step 8.7)."""
+"""Tests for inverse-volatility and equal-risk-contribution weights."""
 
 import numpy as np
 import pytest

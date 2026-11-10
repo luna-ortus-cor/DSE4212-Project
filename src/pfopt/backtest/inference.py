@@ -1,4 +1,4 @@
-"""Inference upgrade for the headline comparisons (PLAN.md step 8.21).
+"""Inference upgrade for the headline comparisons.
 
 Builds on the circular block bootstrap of :mod:`pfopt.backtest.stats` and adds
 

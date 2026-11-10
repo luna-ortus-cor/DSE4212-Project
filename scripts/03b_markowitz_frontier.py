@@ -1,4 +1,4 @@
-"""Step 3.2: estimated versus realized long-only efficient frontiers at three dates.
+"""Estimated versus realized long-only efficient frontiers at three dates.
 
 Dates: the first feasible date, the stress date from ``config.yaml``, and the latest date that still
 has ``eda.frontier_horizon_days`` trading days after it (the last date of the data has no future).

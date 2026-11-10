@@ -1,4 +1,4 @@
-"""Core Track-A strategies built from one estimation window (PLAN.md section 0 and step 2.5).
+"""Core strategies built from one estimation window.
 
 One function builds every covariance estimator and every core strategy from a single, already
 winsorized ``T x N`` window of log returns, so that the estimator comparison (2.5) and the
@@ -6,7 +6,7 @@ backtest engine (4.1) share exactly the same logic and every strategy faces iden
 
 Constraint note: the optional per-asset cap (``backtest.max_weight``) is enforced for the GMV
 strategies. HRP has no mechanism for a cap and ignores it; this must be handled explicitly when the
-cap sensitivity is run (step 5.3).
+cap sensitivity is run.
 """
 
 from __future__ import annotations

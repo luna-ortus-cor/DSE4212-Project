@@ -1,4 +1,4 @@
-"""Out-of-sample performance metrics (PLAN.md step 4.3).
+"""Out-of-sample performance metrics.
 
 All metrics are computed from daily simple returns. Definitions (``n`` days, ``A`` = annualization
 factor, 252 by default; ratios with a zero denominator are NaN):

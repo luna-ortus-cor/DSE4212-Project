@@ -1,4 +1,4 @@
-"""Tests for the weight-structure and spectrum-diagnostic helpers (step 5.4)."""
+"""Tests for the weight-structure and spectrum-diagnostic helpers."""
 
 import numpy as np
 import pandas as pd

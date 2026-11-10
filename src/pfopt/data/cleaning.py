@@ -1,4 +1,4 @@
-"""Cleaning and return matrices (PLAN.md step 1.2).
+"""Cleaning and return matrices.
 
 Turns the raw long stock panel into Date x Symbol matrices of log returns (for estimation),
 simple returns (for portfolio P&L), volume and dollar volume. No look-ahead is possible here: every

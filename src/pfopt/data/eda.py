@@ -1,4 +1,4 @@
-"""Exploratory data analysis computations (PLAN.md step 1.4).
+"""Exploratory data analysis computations.
 
 Pure functions that turn the processed return matrices into the quantities shown in the EDA
 figures and tables. Plotting lives in :mod:`pfopt.viz.plots`. All statistics use raw (not

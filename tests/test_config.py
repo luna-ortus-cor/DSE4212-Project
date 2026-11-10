@@ -49,6 +49,11 @@ def test_repo_config_loads_with_plan_defaults() -> None:
     assert cfg.residual.n_placebo == 20
     assert cfg.forecast.n_portfolios == 500 and cfg.forecast.dirichlet_alphas == (1.0, 0.1)
     assert cfg.forecast.hac_lag == 3
+    assert cfg.regularized.ridge_lambdas == (0.1, 1.0, 10.0)
+    assert cfg.regularized.l1_bounds == (1.25, 1.5, 2.0) and cfg.regularized.enet_bound == 1.5
+    assert (cfg.ml.momentum_days, cfg.ml.skip_days, cfg.ml.horizon_days) == (252, 21, 21)
+    assert cfg.ml.purge_days >= cfg.ml.horizon_days and cfg.ml.ic_gate_t == 2.0
+    assert cfg.ml.force_portfolio is True
 
 
 def test_unquoted_yaml_date_rejected(tmp_path: Path) -> None:
@@ -154,6 +159,17 @@ def test_unknown_key_rejected() -> None:
         ("forecast", {"n_portfolios": 0}),
         ("forecast", {"dirichlet_alphas": [1.0, 0.0]}),
         ("forecast", {"hac_lag": -1}),
+        ("regularized", {"ridge_lambdas": [0.0]}),
+        ("regularized", {"shrink_gammas": [1.0]}),
+        ("regularized", {"l1_bounds": [0.9]}),
+        ("regularized", {"enet_lambda": 0.0}),
+        ("ml", {"momentum_days": 10}),
+        ("ml", {"purge_days": 10}),
+        ("ml", {"ridge_alpha": 0.0}),
+        ("ml", {"rf_max_features": 0.0}),
+        ("ml", {"retrain_every": 0}),
+        ("ml", {"min_train_dates": 1}),
+        ("ml", {"ic_gate_t": -1.0}),
         ("eda", {"frontier_horizon_days": 1}),
         ("eda", {"frontier_points": 1}),
         ("backtest", {"mu_convention": "geometric"}),

@@ -23,6 +23,7 @@ from pfopt.report.assets import (  # noqa: E402
     numeric_columns,
     parameter_table,
     png_info,
+    stale_assets,
     to_latex,
     to_markdown,
 )
@@ -124,6 +125,16 @@ def test_format_table_and_renderers() -> None:
     assert r"\caption{Caption with 50\% \& more}\label{tab:lbl}" in latex
     assert "GMV\\_RMT" in latex and r"\begin{tabular}{lrrrl}" in latex
     assert latex.count(r"\\") == 3  # header and two rows
+
+
+def test_stale_assets_lists_only_unexpected_files_of_known_types(tmp_path) -> None:
+    for name in ("tab01_a.csv", "tab01_a.tex", "tabA20_old.csv", "tabA20_old.md", "notes.txt"):
+        (tmp_path / name).write_text("x")
+    (tmp_path / "sub").mkdir()
+    (tmp_path / "sub" / "tabA99_nested.csv").write_text("x")
+    stale = stale_assets(tmp_path, {"tab01_a"}, ("csv", "md", "tex"))
+    assert [p.name for p in stale] == ["tabA20_old.csv", "tabA20_old.md"]
+    assert stale_assets(tmp_path, {"tab01_a", "tabA20_old"}, ("csv", "md", "tex")) == []
 
 
 def test_parameter_table_lists_parameters_without_paths_or_file_names() -> None:

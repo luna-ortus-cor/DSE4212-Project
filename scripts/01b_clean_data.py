@@ -1,4 +1,4 @@
-"""Step 1.2: clean the raw stock panel and write return/volume matrices.
+"""Clean the raw stock panel and write return/volume matrices.
 
 Writes ``data/processed/{log_returns,simple_returns,volume,dollar_volume}.parquet`` and the tables
 ``results/tables/{cleaning_log,dropped_symbols,suspect_returns}.csv``.

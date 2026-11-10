@@ -1,4 +1,4 @@
-"""Expected-return estimates for Markowitz (PLAN.md step 3.2)."""
+"""Expected-return estimates for Markowitz."""
 
 from __future__ import annotations
 

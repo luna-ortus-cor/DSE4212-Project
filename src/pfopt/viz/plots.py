@@ -1,4 +1,4 @@
-"""EDA figures (PLAN.md step 1.4). Every function returns a matplotlib ``Figure``; saving is done
+"""EDA figures. Every function returns a matplotlib ``Figure``; saving is done
 with :func:`pfopt.viz.style.save_figure`. All figures use the shared style in ``style.py``.
 """
 
@@ -414,7 +414,8 @@ def plot_mp_spectra(panels: Sequence[tuple[str, dict]]) -> Figure:
             f"{title}\n{s['n_signal']} above edge; max {float(s['lambda_max']):.1f}", fontsize=8
         )
     axes[0].set_ylabel("Density (log scale)")
-    axes[0].legend(loc="lower left")
+    handles, labels = axes[0].get_legend_handles_labels()
+    fig.legend(handles, labels, loc="outside lower center", ncol=3, fontsize=7)
     fig.supxlabel("Eigenvalue (log scale)", fontsize=9)
     return fig
 
@@ -674,7 +675,7 @@ def plot_h3_summary(
 
 
 def plot_simulation_accuracy(summary: pd.DataFrame, distribution: str) -> Figure:
-    """Estimator accuracy against the sample size in the simulation study (step 6.1).
+    """Estimator accuracy against the sample size in the simulation study.
 
     Four panels with the mean across replications and a confidence band: relative Frobenius error
     of the covariance, true variance of the long-only and of the unconstrained GMV portfolio as a
@@ -726,7 +727,7 @@ def plot_simulation_accuracy(summary: pd.DataFrame, distribution: str) -> Figure
 
 
 def plot_residual_timeseries(frame: pd.DataFrame) -> Figure:
-    """Sector structure of the PCA residual over the rebalance dates (step 8.23).
+    """Sector structure of the PCA residual over the rebalance dates.
 
     Parameters
     ----------

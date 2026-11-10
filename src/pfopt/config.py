@@ -1,8 +1,8 @@
 """Typed, validated project configuration loaded from ``config.yaml``.
 
-All tunable parameters of the project live in ``config.yaml`` (fixed *a priori*, see
-``CLAUDE.md`` section 6). This module turns that file into immutable dataclasses, validates
-them, and provides a stable hash used as a cache key for expensive results.
+All tunable parameters of the project live in ``config.yaml`` (fixed *a priori*). This module
+turns that file into immutable dataclasses, validates them, and provides a stable hash used as a
+cache key for expensive results.
 """
 
 from __future__ import annotations
@@ -61,12 +61,12 @@ class PathsConfig:
 
 @dataclass(frozen=True)
 class DataConfig:
-    """Cleaning parameters (PLAN.md step 1.2).
+    """Cleaning parameters.
 
     Attributes
     ----------
     start_date, end_date : str or None
-        Quoted ISO dates (``"YYYY-MM-DD"``) restricting the sample. Taken from the step 1.1 audit
+        Quoted ISO dates (``"YYYY-MM-DD"``) restricting the sample. Taken from the data audit
         of the supplied file: first and last date with a valid price.
     ffill_limit : int
         Maximum number of consecutive missing price days that are forward-filled.
@@ -142,7 +142,7 @@ class DataConfig:
 
 @dataclass(frozen=True)
 class UniverseConfig:
-    """Universe and estimation window (PLAN.md step 1.3).
+    """Universe and estimation window.
 
     Attributes
     ----------
@@ -166,7 +166,7 @@ class UniverseConfig:
 
 @dataclass(frozen=True)
 class BacktestConfig:
-    """Backtest settings (PLAN.md Phase 4).
+    """Backtest settings.
 
     Attributes
     ----------
@@ -177,7 +177,7 @@ class BacktestConfig:
     max_weight : float or None
         Optional per-asset weight cap (``None`` means no cap).
     mu_convention : {"arithmetic", "log"}
-        Expected-return estimate used by Markowitz (Track B). ``"arithmetic"`` is the window mean
+        Expected-return estimate used by Markowitz. ``"arithmetic"`` is the window mean
         of log returns plus half the sample variance (the expected simple return if returns are
         lognormal); ``"log"`` is the plain mean of log returns.
     """
@@ -200,7 +200,7 @@ class BacktestConfig:
 
 @dataclass(frozen=True)
 class PCAConfig:
-    """PCA-factor covariance settings (PLAN.md step 2.3).
+    """PCA-factor covariance settings.
 
     Attributes
     ----------
@@ -227,7 +227,7 @@ class PCAConfig:
 
 @dataclass(frozen=True)
 class HRPConfig:
-    """Hierarchical Risk Parity settings (PLAN.md step 2.4)."""
+    """Hierarchical Risk Parity settings."""
 
     linkage: str = "single"
 
@@ -238,7 +238,7 @@ class HRPConfig:
 
 @dataclass(frozen=True)
 class SensitivityConfig:
-    """Sensitivity grids (PLAN.md step 5.3). Reported as sensitivity only, never used to tune."""
+    """Sensitivity grids. Reported as sensitivity only, never used to tune."""
 
     n_assets: tuple[int, ...] = (50, 100, 200)
     lookback_days: tuple[int, ...] = (252, 504, 756)
@@ -263,7 +263,7 @@ class SensitivityConfig:
 
 @dataclass(frozen=True)
 class EdaConfig:
-    """Exploratory data analysis settings (PLAN.md step 1.4).
+    """Exploratory data analysis settings.
 
     Attributes
     ----------
@@ -278,7 +278,7 @@ class EdaConfig:
         Calendar years shaded in the rolling-correlation figure.
     frontier_horizon_days : int
         Number of trading days after the as-of date over which the realized risk and return of
-        efficient-frontier portfolios are measured (step 3.2).
+        efficient-frontier portfolios are measured.
     frontier_points : int
         Number of portfolios on each efficient frontier.
     """
@@ -305,7 +305,7 @@ class EdaConfig:
 
 @dataclass(frozen=True)
 class StatsConfig:
-    """Bootstrap significance tests (PLAN.md step 5.1).
+    """Bootstrap significance tests.
 
     Attributes
     ----------
@@ -320,7 +320,7 @@ class StatsConfig:
     alpha : float
         Significance level of the confidence intervals and the significance flag.
     mde_power : float
-        Power used for the minimum detectable effect of the inference upgrade (step 8.21).
+        Power used for the minimum detectable effect of the inference upgrade.
     """
 
     block_length: int = 10
@@ -345,7 +345,7 @@ class StatsConfig:
 
 @dataclass(frozen=True)
 class RegimeConfig:
-    """Subperiod and volatility-regime analysis (PLAN.md step 5.2).
+    """Subperiod and volatility-regime analysis.
 
     Attributes
     ----------
@@ -387,7 +387,7 @@ class RegimeConfig:
 
 @dataclass(frozen=True)
 class SimulationConfig:
-    """Factor-model simulation study (PLAN.md step 6.1).
+    """Factor-model simulation study.
 
     The true covariance is ``B F B' + D`` with one market factor (all assets), ``n_groups`` group
     factors (each loading on its own disjoint block of assets, blocks of near-equal size) and
@@ -420,7 +420,7 @@ class SimulationConfig:
     alpha : float
         Significance level of the confidence bands (normal approximation across replications).
     time_varying : bool
-        If true (step 6.3), the covariance changes over time: every factor has its own
+        If true, the covariance changes over time: every factor has its own
         stochastic volatility and the loadings drift. The target of every estimator is then the
         average conditional covariance over the ``horizon_days`` days after the sample.
     horizon_days : int
@@ -485,7 +485,7 @@ class SimulationConfig:
 
 @dataclass(frozen=True)
 class PipelineCheckConfig:
-    """Synthetic-panel validation of the backtest pipeline (PLAN.md step 8.20).
+    """Synthetic-panel validation of the backtest pipeline.
 
     Attributes
     ----------
@@ -526,7 +526,7 @@ class PipelineCheckConfig:
 
 @dataclass(frozen=True)
 class NonStationarityConfig:
-    """Non-stationarity test: EWMA strategies and simulated positive control (PLAN.md step 8.22).
+    """Non-stationarity test: EWMA strategies and simulated positive control.
 
     Attributes
     ----------
@@ -560,7 +560,7 @@ class NonStationarityConfig:
 
 @dataclass(frozen=True)
 class ResidualConfig:
-    """Residual-structure diagnostic and sector-block test (PLAN.md steps 8.23 and 8.24).
+    """Residual-structure diagnostic and sector-block test.
 
     Attributes
     ----------
@@ -568,10 +568,11 @@ class ResidualConfig:
         Sector-label permutations per estimation window for the residual-gap test (at least 19 so
         that a one-sided p-value can reach 0.05).
     sim_n_groups : int
-        Number of weak group factors in the simulated positive control of step 8.24.
+        Number of weak group factors in the simulated positive control of the sector-block test.
     sim_group_vol : float
         Annual volatility of each group factor of the positive control (chosen so that the
-        within-group residual correlation is about the 0.06 found in step 8.23).
+        within-group residual correlation is about the 0.06 found by the residual-structure
+        diagnostic).
     sim_label_error : float
         Fraction of the group labels that are wrong in the noisy-label variant (the sector
         snapshot problem).
@@ -580,7 +581,7 @@ class ResidualConfig:
     sim_n_reps : int
         Replications per sample size and design.
     n_placebo : int
-        Random-label draws of the real-data placebo of step 8.25 (at least 19 so that a one-sided
+        Random-label draws of the real-data placebo (at least 19 so that a one-sided
         rank p-value can reach 0.05).
     """
 
@@ -609,7 +610,7 @@ class ResidualConfig:
 
 @dataclass(frozen=True)
 class ForecastConfig:
-    """Covariance forecast loss on random portfolios (PLAN.md step 8.18).
+    """Covariance forecast loss on random portfolios.
 
     Attributes
     ----------
@@ -637,6 +638,110 @@ class ForecastConfig:
 
 
 @dataclass(frozen=True)
+class RegularizedConfig:
+    """Regularized weights on the sample covariance.
+
+    Attributes
+    ----------
+    ridge_lambdas : tuple of float
+        Long-only ridge: ``Sigma + lambda * tr(Sigma)/N * I`` (multiples of the mean variance).
+    shrink_gammas : tuple of float
+        Long-only shrinkage of GMV weights toward 1/N, ``(1 - gamma) w + gamma / N``.
+    l1_bounds : tuple of float
+        Shorting-allowed GMV with ``||w||_1 <= c`` (each ``c >= 1``; ``c = 1`` is long-only).
+    enet_bound, enet_lambda : float
+        Elastic net: the L1 bound ``c`` and the ridge multiple ``lambda`` combined.
+    """
+
+    ridge_lambdas: tuple[float, ...] = (0.1, 1.0, 10.0)
+    shrink_gammas: tuple[float, ...] = (0.25, 0.5, 0.75)
+    l1_bounds: tuple[float, ...] = (1.25, 1.5, 2.0)
+    enet_bound: float = 1.5
+    enet_lambda: float = 1.0
+
+    def __post_init__(self) -> None:
+        if any(v <= 0 for v in self.ridge_lambdas) or self.enet_lambda <= 0:
+            raise ValueError("ridge multiples must be positive")
+        if any(not 0 < g < 1 for g in self.shrink_gammas):
+            raise ValueError("shrink_gammas must lie in (0, 1)")
+        if any(c < 1 for c in (*self.l1_bounds, self.enet_bound)):
+            raise ValueError("L1 bounds must be at least 1 (sum(w) = 1 forces ||w||_1 >= 1)")
+
+
+@dataclass(frozen=True)
+class MLConfig:
+    """Walk-forward machine-learning return signals.
+
+    Attributes
+    ----------
+    momentum_days, skip_days : int
+        Momentum feature: sum of log returns over the ``momentum_days`` ending ``skip_days`` before
+        the rebalance date (12-1 months = 252 and 21 trading days).
+    reversal_days : int
+        Trailing return feature over the last ``reversal_days`` (1 month = 21).
+    vol_days : int
+        Window of the trailing volatility feature.
+    horizon_days : int
+        Label: sum of log returns over the next ``horizon_days`` (ranked cross-sectionally).
+    purge_days : int
+        A training date is used only if its label window ends at least ``purge_days`` rows before
+        the retraining date (at least ``horizon_days``, so no label reaches past the cutoff).
+    min_train_dates : int
+        Rebalance dates with a complete label required before the first fit.
+    retrain_every : int
+        Refit every this many rebalance dates (expanding window).
+    ridge_alpha : float
+        Ridge penalty per training sample (the sklearn ``alpha`` is this times the sample count).
+    rf_trees, rf_max_depth, rf_min_leaf : int
+        Random-forest size, depth limit and minimum samples per leaf.
+    rf_max_features : float
+        Share of the features tried at each split, in ``(0, 1]``.
+    ic_gate_t : float
+        A signal feeds the optimizer only if its mean out-of-sample rank IC is positive with
+        t-statistic at least this value.
+    force_portfolio : bool
+        Build the portfolios of models that fail the gate too (reported as "gate failed, shown
+        for completeness"); the gate verdict itself is unchanged.
+    """
+
+    momentum_days: int = 252
+    skip_days: int = 21
+    reversal_days: int = 21
+    vol_days: int = 63
+    horizon_days: int = 21
+    purge_days: int = 21
+    min_train_dates: int = 24
+    retrain_every: int = 6
+    ridge_alpha: float = 0.1
+    rf_trees: int = 200
+    rf_max_depth: int = 4
+    rf_min_leaf: int = 50
+    rf_max_features: float = 0.5
+    ic_gate_t: float = 2.0
+    force_portfolio: bool = True
+
+    def __post_init__(self) -> None:
+        if self.skip_days < 0 or self.momentum_days <= self.skip_days:
+            raise ValueError("need momentum_days > skip_days >= 0")
+        if self.reversal_days < 1 or self.vol_days < 2:
+            raise ValueError("need reversal_days >= 1 and vol_days >= 2")
+        if self.horizon_days < 1:
+            raise ValueError(f"horizon_days must be >= 1, got {self.horizon_days}")
+        if self.purge_days < self.horizon_days:
+            raise ValueError("purge_days must be at least horizon_days (labels would leak)")
+        if self.min_train_dates < 2 or self.retrain_every < 1:
+            raise ValueError("need min_train_dates >= 2 and retrain_every >= 1")
+        if self.ridge_alpha <= 0:
+            raise ValueError(f"ridge_alpha must be > 0, got {self.ridge_alpha}")
+        if self.rf_trees < 1 or self.rf_max_depth < 1 or self.rf_min_leaf < 1:
+            raise ValueError("rf_trees, rf_max_depth and rf_min_leaf must be >= 1")
+        if not 0.0 < self.rf_max_features <= 1.0:
+            raise ValueError(f"rf_max_features must be in (0, 1], got {self.rf_max_features}")
+        if self.ic_gate_t < 0:
+            raise ValueError(f"ic_gate_t must be >= 0, got {self.ic_gate_t}")
+
+
+@dataclass(frozen=True)
 class Config:
     """Top-level project configuration."""
 
@@ -656,6 +761,8 @@ class Config:
     nonstationarity: NonStationarityConfig = field(default_factory=NonStationarityConfig)
     residual: ResidualConfig = field(default_factory=ResidualConfig)
     forecast: ForecastConfig = field(default_factory=ForecastConfig)
+    regularized: RegularizedConfig = field(default_factory=RegularizedConfig)
+    ml: MLConfig = field(default_factory=MLConfig)
 
     def __post_init__(self) -> None:
         n, t = self.universe.n_assets, self.universe.lookback_days

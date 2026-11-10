@@ -1,0 +1,8 @@
+2026-11-11 06:19:40,934 INFO loading cached ML signals from /mnt/c/Users/russn/work/Y5S1/DSE4212/DSE4212_Project/results/cache/7cf44adf637b/ml/6256a3a32ec1
+2026-11-11 06:19:42,687 INFO ML weights for 25 / 132 dates
+2026-11-11 06:19:44,266 INFO ML weights for 50 / 132 dates
+2026-11-11 06:19:46,045 INFO ML weights for 75 / 132 dates
+2026-11-11 06:19:47,693 INFO ML weights for 100 / 132 dates
+2026-11-11 06:19:49,365 INFO ML weights for 125 / 132 dates
+2026-11-11 06:19:49,860 INFO ML weights for 132 / 132 dates
+2026-11-11 06:19:52,695 INFO summary written to /mnt/c/Users/russn/work/Y5S1/DSE4212/DSE4212_Project/results/tables/ml_summary.txt

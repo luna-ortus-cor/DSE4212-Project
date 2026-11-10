@@ -1,4 +1,4 @@
-"""Risk-based portfolios: inverse volatility and equal risk contribution (PLAN.md step 8.7).
+"""Risk-based portfolios: inverse volatility and equal risk contribution.
 
 Inverse volatility (naive risk parity) uses only the variances, ``w_i proportional to 1 / sigma_i``.
 Equal risk contribution (ERC, Maillard, Roncalli and Teiletche, 2010) chooses weights whose risk

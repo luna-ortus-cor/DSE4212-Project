@@ -1,4 +1,4 @@
-"""Subperiod and volatility-regime analysis (PLAN.md step 5.2).
+"""Subperiod and volatility-regime analysis.
 
 Subperiods are fixed calendar windows (COVID stress, one stress year, and the remaining "calm"
 days, which are concatenated across their non-contiguous stretches; drawdowns on that series

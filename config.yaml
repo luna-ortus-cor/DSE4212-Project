@@ -1,4 +1,4 @@
-# All parameters are fixed a priori (CLAUDE.md section 6). Sensitivity grids are for
+# All parameters are fixed a priori. Sensitivity grids are for
 # sensitivity reporting only, never for choosing the headline configuration.
 # Note: write floats with a decimal point and no exponent shortcut (PyYAML parses 1e-3 as a string).
 # Note: dates must be quoted, otherwise YAML turns them into date objects.
@@ -16,8 +16,8 @@ paths:
   figures_dir: results/figures
 
 data:
-  start_date: "2010-01-04"   # first date with a valid price in the supplied file (step 1.1 audit)
-  end_date: "2024-12-20"     # last date with a valid price in the supplied file (step 1.1 audit)
+  start_date: "2010-01-04"   # first date with a valid price in the supplied file (from the data audit)
+  end_date: "2024-12-20"     # last date with a valid price in the supplied file (from the data audit)
   ffill_limit: 3
   max_missing_frac: 0.05
   suspect_abs_logret: 0.40
@@ -44,7 +44,7 @@ stats:
   sensitivity_block_lengths: [5, 10, 20]
   references: [GMV-SAMPLE, EW, GMV-LW]
   alpha: 0.05
-  mde_power: 0.8            # step 8.21: power of the minimum detectable effect
+  mde_power: 0.8            # power of the minimum detectable effect
 
 regimes:
   covid_start: "2020-02-19"
@@ -80,7 +80,7 @@ sensitivity:
   pca_k_fixed: [1, 3, 5, 10]
   hrp_linkage: [single, ward, average]
 
-simulation:                  # step 6.1: factor-model simulation study (N=100, K_true = 1 + n_groups)
+simulation:                  # factor-model simulation study (N=100, K_true = 1 + n_groups)
   n_assets: 100
   n_groups: 2                # disjoint asset blocks, one group factor each
   sample_sizes: [126, 252, 504, 1000]
@@ -94,14 +94,14 @@ simulation:                  # step 6.1: factor-model simulation study (N=100, K
   idio_vol_low: 0.15
   idio_vol_high: 0.45
   alpha: 0.05
-  time_varying: false        # step 6.3: stochastic factor volatility and drifting loadings
+  time_varying: false        # stochastic factor volatility and drifting loadings
   horizon_days: 21           # forward evaluation period of the time-varying design
   vol_log_sd: 0.4            # stationary sd of each factor's log volatility
   vol_persistence: 0.98      # daily autocorrelation of the log volatilities
   loading_drift_sd: 0.2      # stationary sd of the loading drift
   loading_persistence: 0.996 # daily autocorrelation of the loading drift
 
-pipeline_check:             # step 8.20: synthetic-panel validation of the backtest pipeline
+pipeline_check:             # synthetic-panel validation of the backtest pipeline
   n_symbols: 150            # more than universe.n_assets so the universe has to choose
   n_days: 2500
   n_panels: 4
@@ -110,22 +110,46 @@ pipeline_check:             # step 8.20: synthetic-panel validation of the backt
   z2_tolerance: 3.0         # accounting check: |mean z^2 - 1| within this many standard errors
   identity_tolerance: 1.0e-6
 
-nonstationarity:            # step 8.22: EWMA strategies and the simulated positive control
+nonstationarity:            # EWMA strategies and the simulated positive control
   halflives: [126, 63]      # fixed a priori
   calibration_block_days: 21
   sim_sample_sizes: [252, 504]
   sim_n_reps: 100
 
-residual:                   # steps 8.23 (diagnostic) and 8.24 (sector-block test)
+residual:                   # diagnostic and sector-block test
   n_perm: 200               # sector-label permutations per window
   sim_n_groups: 10          # positive control: weak group factors
   sim_group_vol: 0.08       # annual vol of a group factor (residual corr about 0.06)
   sim_label_error: 0.2      # share of wrong labels in the noisy-label variant
   sim_sample_sizes: [252, 504]
   sim_n_reps: 100
-  n_placebo: 20             # step 8.25: random-label draws on the real data
+  n_placebo: 20             # random-label draws on the real data
 
-forecast:                   # step 8.18 (covariance forecast loss on random portfolios)
+forecast:                   # (covariance forecast loss on random portfolios)
   n_portfolios: 500         # random long-only portfolios per date and concentration level
   dirichlet_alphas: [1.0, 0.1]   # diffuse and concentrated
   hac_lag: 3                # Newey-West lag across rebalance dates
+
+regularized:                # (regularized weights on the sample covariance)
+  ridge_lambdas: [0.1, 1.0, 10.0]   # multiples of tr(Sigma)/N, long-only
+  shrink_gammas: [0.25, 0.5, 0.75]  # weight shrinkage toward 1/N, long-only
+  l1_bounds: [1.25, 1.5, 2.0]       # ||w||_1 <= c, shorting allowed
+  enet_bound: 1.5                   # elastic net: L1 bound and ridge multiple together
+  enet_lambda: 1.0
+
+ml:                         # (walk-forward ML return signals); all fixed a priori
+  momentum_days: 252        # 12-1 month momentum: returns over 252 days ending 21 days ago
+  skip_days: 21
+  reversal_days: 21         # trailing 1-month return
+  vol_days: 63              # trailing volatility window
+  horizon_days: 21          # label: next-21-day log return, ranked cross-sectionally
+  purge_days: 21            # training labels must end at least this many rows before the cutoff
+  min_train_dates: 24       # rebalance dates with labels before the first fit
+  retrain_every: 6          # refit every 6 rebalance dates, expanding window
+  ridge_alpha: 0.1          # penalty per training sample
+  rf_trees: 200
+  rf_max_depth: 4
+  rf_min_leaf: 50
+  rf_max_features: 0.5
+  ic_gate_t: 2.0            # mean rank IC > 0 with t >= 2 needed before the optimizer uses a signal
+  force_portfolio: true     # also build portfolios of models that fail the gate (shown for completeness)

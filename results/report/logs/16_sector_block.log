@@ -1,0 +1,5 @@
+2026-11-11 06:18:03,864 WARNING companies: ignoring column(s) not requested in config: ['Exchange', 'Shortname', 'Longname', 'Currentprice', 'Ebitda', 'Revenuegrowth', 'City', 'State', 'Country', 'Fulltimeemployees', 'Longbusinesssummary']
+2026-11-11 06:18:03,881 INFO companies: loaded 502 rows x 5 columns from /mnt/c/Users/russn/work/Y5S1/DSE4212/DSE4212_Project/data/raw/sp500_companies.csv
+2026-11-11 06:18:03,886 INFO loading cached sector-block weights from /mnt/c/Users/russn/work/Y5S1/DSE4212/DSE4212_Project/results/cache/7cf44adf637b/sector_block
+2026-11-11 06:18:05,711 INFO loading cached simulation scores from /mnt/c/Users/russn/work/Y5S1/DSE4212/DSE4212_Project/results/cache/sector_block_sim/61f570588454
+2026-11-11 06:18:05,807 INFO summary written to /mnt/c/Users/russn/work/Y5S1/DSE4212/DSE4212_Project/results/tables/sectorblock_summary.txt

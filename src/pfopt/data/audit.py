@@ -1,4 +1,4 @@
-"""Read-only audit of the raw CSVs (PLAN.md step 1.1).
+"""Read-only audit of the raw CSVs.
 
 Every function returns a long table with columns ``section, metric, detail, value`` and never
 modifies its inputs. The audit reports anomalies; it does not clean anything.

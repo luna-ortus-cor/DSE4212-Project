@@ -1,9 +1,9 @@
-"""Step 8.2: nonlinear shrinkage (quadratic-inverse shrinkage, QIS) against RMT clipping.
+"""Nonlinear shrinkage (quadratic-inverse shrinkage, QIS) against RMT clipping.
 
 Real data: long-only GMV with the QIS covariance (``GMV-NLS``) on exactly the dates and universes of
 the core strategies, tested against ``GMV-SAMPLE`` and ``GMV-RMT`` (hard threshold versus smooth
-shrinkage of the eigenvalues) with the studentized bootstrap of step 8.21. Simulation: the
-factor-model study of step 6.1 (stationary) and 6.3 (time-varying) rerun with NLS added, scored by
+shrinkage of the eigenvalues) with the studentized bootstrap. Simulation: the
+factor-model study (stationary and time-varying versions) rerun with NLS added, scored by
 the covariance error and the true variance of the GMV weights relative to the oracle.
 
 Reads ``returns_net.parquet`` written by ``02_run_backtest.py``. Writes ``nls_real_metrics.csv``,

@@ -1,4 +1,4 @@
-"""Statistical significance of performance differences (PLAN.md step 5.1).
+"""Statistical significance of performance differences.
 
 Circular block bootstrap (Politis and Romano, 1992; Ledoit and Wolf, 2008 for the Sharpe test):
 the daily return series of all strategies are resampled *jointly*, by concatenating blocks of
@@ -220,7 +220,7 @@ def log_var_double_difference(
     alpha: float = 0.05,
     chunk_size: int = 250,
 ) -> pd.DataFrame:
-    """Bootstrap test of a difference in log variance ratios (the H3 statistic, step 5.5).
+    """Bootstrap test of a difference in log variance ratios (the H3 statistic).
 
     For each named quadruple ``(a, a_ref, b, b_ref)`` the statistic is
     ``[log var(a) - log var(a_ref)] - [log var(b) - log var(b_ref)]``. With ``a`` an

@@ -1,4 +1,4 @@
-"""Tests for the random-label placebo of the sector-block strategy (step 8.25)."""
+"""Tests for the random-label placebo of the sector-block strategy."""
 
 import dataclasses
 

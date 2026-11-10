@@ -1,4 +1,4 @@
-"""Risk-based strategies on the real data (PLAN.md step 8.7).
+"""Risk-based strategies on the real data.
 
 ``IVOL`` (inverse volatility) and ``ERC-<estimator>`` (equal risk contribution with the sample,
 Ledoit-Wolf, RMT and PCA covariances) on exactly the dates, universes, windows and winsorization of

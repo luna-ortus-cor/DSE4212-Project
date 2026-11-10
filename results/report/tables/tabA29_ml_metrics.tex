@@ -1,0 +1,18 @@
+\begin{table}[t]
+\centering\footnotesize
+\caption{Extension: ML-fed max-Sharpe portfolios (IC gate failed, shown for completeness) and core references, net of costs.}\label{tab:ml_metrics}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lrrrrrrrr}
+\toprule
+strategy & ann\_vol & ann\_return & sharpe & max\_drawdown & annual\_turnover & mean\_effective\_n & mean\_pred\_vol & realized\_over\_pred \\
+\midrule
+MV-ML-RIDGE-RMT & 0.245 & 0.114 & 0.562 & -0.477 & 18.590 & 5.197 & 0.192 & 1.277 \\
+MV-ML-RF-RMT & 0.260 & 0.097 & 0.489 & -0.489 & 16.548 & 4.723 & 0.207 & 1.257 \\
+EW & 0.180 & 0.149 & 0.863 & -0.376 & 0.901 & 100.000 &  &  \\
+GMV-SAMPLE & 0.137 & 0.092 & 0.715 & -0.333 & 2.549 & 11.203 & 0.112 & 1.223 \\
+GMV-RMT & 0.143 & 0.084 & 0.638 & -0.362 & 2.373 & 10.817 & 0.113 & 1.265 \\
+MV-SAMPLE & 0.210 & 0.174 & 0.872 & -0.380 & 5.764 & 7.085 & 0.180 & 1.167 \\
+MV-RMT & 0.213 & 0.174 & 0.858 & -0.383 & 5.970 & 7.034 & 0.185 & 1.148 \\
+\bottomrule
+\end{tabular}}
+\end{table}

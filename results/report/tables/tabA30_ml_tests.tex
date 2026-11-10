@@ -1,0 +1,47 @@
+\begin{table}[t]
+\centering\footnotesize
+\caption{Extension: studentized tests against MV-RMT, GMV-RMT and EW.}\label{tab:ml_tests}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lllrrrrrr}
+\toprule
+reference & strategy & test & estimate & ci\_low & ci\_high & p\_value & p\_holm & mde \\
+\midrule
+MV-RMT & MV-ML-RIDGE-RMT & sharpe\_diff & -0.296 & -0.927 & 0.334 & 0.360 & 1.000 & 0.894 \\
+MV-RMT & MV-ML-RIDGE-RMT & log\_var\_ratio & 0.283 & 0.050 & 0.516 & 0.021 & 0.021 & 0.292 \\
+MV-RMT & MV-ML-RF-RMT & sharpe\_diff & -0.370 & -0.943 & 0.204 & 0.196 & 1.000 & 0.796 \\
+MV-RMT & MV-ML-RF-RMT & log\_var\_ratio & 0.398 & 0.215 & 0.580 & 2.0e-04 & 0.001 & 0.236 \\
+MV-RMT & EW & sharpe\_diff & 0.004 & -0.558 & 0.567 & 0.988 & 1.000 & 0.792 \\
+MV-RMT & EW & log\_var\_ratio & -0.334 & -0.566 & -0.103 & 0.005 & 0.014 & 0.287 \\
+MV-RMT & GMV-SAMPLE & sharpe\_diff & -0.144 & -0.676 & 0.389 & 0.607 & 1.000 & 0.746 \\
+MV-RMT & GMV-SAMPLE & log\_var\_ratio & -0.887 & -1.290 & -0.483 & 2.0e-04 & 0.001 & 0.358 \\
+MV-RMT & GMV-RMT & sharpe\_diff & -0.220 & -0.748 & 0.308 & 0.434 & 1.000 & 0.764 \\
+MV-RMT & GMV-RMT & log\_var\_ratio & -0.798 & -1.295 & -0.301 & 0.002 & 0.010 & 0.396 \\
+MV-RMT & MV-SAMPLE & sharpe\_diff & 0.013 & -0.067 & 0.094 & 0.754 & 1.000 & 0.115 \\
+MV-RMT & MV-SAMPLE & log\_var\_ratio & -0.030 & -0.049 & -0.010 & 0.005 & 0.014 & 0.027 \\
+GMV-RMT & MV-ML-RIDGE-RMT & sharpe\_diff & -0.076 & -0.572 & 0.420 & 0.759 & 1.000 & 0.702 \\
+GMV-RMT & MV-ML-RIDGE-RMT & log\_var\_ratio & 1.081 & 0.817 & 1.345 & 2.0e-04 & 0.001 & 0.271 \\
+GMV-RMT & MV-ML-RF-RMT & sharpe\_diff & -0.150 & -0.683 & 0.384 & 0.572 & 1.000 & 0.750 \\
+GMV-RMT & MV-ML-RF-RMT & log\_var\_ratio & 1.195 & 0.882 & 1.509 & 2.0e-04 & 0.001 & 0.299 \\
+GMV-RMT & EW & sharpe\_diff & 0.225 & -0.194 & 0.644 & 0.284 & 1.000 & 0.590 \\
+GMV-RMT & EW & log\_var\_ratio & 0.464 & 0.175 & 0.753 & 0.003 & 0.010 & 0.234 \\
+GMV-RMT & GMV-SAMPLE & sharpe\_diff & 0.077 & -0.036 & 0.189 & 0.173 & 1.000 & 0.159 \\
+GMV-RMT & GMV-SAMPLE & log\_var\_ratio & -0.089 & -0.187 & 0.009 & 0.059 & 0.059 & 0.066 \\
+GMV-RMT & MV-SAMPLE & sharpe\_diff & 0.234 & -0.302 & 0.770 & 0.404 & 1.000 & 0.765 \\
+GMV-RMT & MV-SAMPLE & log\_var\_ratio & 0.768 & 0.253 & 1.283 & 0.006 & 0.012 & 0.406 \\
+GMV-RMT & MV-RMT & sharpe\_diff & 0.220 & -0.308 & 0.748 & 0.434 & 1.000 & 0.764 \\
+GMV-RMT & MV-RMT & log\_var\_ratio & 0.798 & 0.301 & 1.295 & 0.002 & 0.010 & 0.396 \\
+EW & MV-ML-RIDGE-RMT & sharpe\_diff & -0.301 & -0.627 & 0.025 & 0.069 & 0.347 & 0.453 \\
+EW & MV-ML-RIDGE-RMT & log\_var\_ratio & 0.617 & 0.537 & 0.698 & 2.0e-04 & 0.001 & 0.111 \\
+EW & MV-ML-RF-RMT & sharpe\_diff & -0.374 & -0.751 & 0.003 & 0.052 & 0.314 & 0.524 \\
+EW & MV-ML-RF-RMT & log\_var\_ratio & 0.732 & 0.626 & 0.838 & 2.0e-04 & 0.001 & 0.144 \\
+EW & GMV-SAMPLE & sharpe\_diff & -0.148 & -0.550 & 0.253 & 0.461 & 1.000 & 0.561 \\
+EW & GMV-SAMPLE & log\_var\_ratio & -0.553 & -0.739 & -0.366 & 2.0e-04 & 0.001 & 0.177 \\
+EW & GMV-RMT & sharpe\_diff & -0.225 & -0.644 & 0.194 & 0.284 & 1.000 & 0.590 \\
+EW & GMV-RMT & log\_var\_ratio & -0.464 & -0.753 & -0.175 & 0.003 & 0.008 & 0.234 \\
+EW & MV-SAMPLE & sharpe\_diff & 0.009 & -0.551 & 0.569 & 0.977 & 1.000 & 0.791 \\
+EW & MV-SAMPLE & log\_var\_ratio & 0.305 & 0.065 & 0.544 & 0.015 & 0.015 & 0.298 \\
+EW & MV-RMT & sharpe\_diff & -0.004 & -0.567 & 0.558 & 0.988 & 1.000 & 0.792 \\
+EW & MV-RMT & log\_var\_ratio & 0.334 & 0.103 & 0.566 & 0.005 & 0.010 & 0.287 \\
+\bottomrule
+\end{tabular}}
+\end{table}

@@ -1,4 +1,4 @@
-"""Long-only Markowitz portfolios and the efficient frontier (PLAN.md step 3.2).
+"""Long-only Markowitz portfolios and the efficient frontier.
 
 Maximum-Sharpe portfolio (long-only, fully invested, optional per-asset cap): the problem
 ``max (mu - rf)'w / sqrt(w'Sigma w)`` is quasi-concave but has a convex reformulation (Cornuejols

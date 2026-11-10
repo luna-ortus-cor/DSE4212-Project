@@ -1,4 +1,4 @@
-"""Hierarchical Risk Parity (HRP) allocation (PLAN.md step 2.4).
+"""Hierarchical Risk Parity (HRP) allocation.
 
 Algorithm (Lopez de Prado, 2016, "Building diversified portfolios that outperform out of sample",
 Journal of Portfolio Management 42(4), 59-69):

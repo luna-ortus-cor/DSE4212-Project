@@ -1,4 +1,4 @@
-"""Tests for the nonlinear-shrinkage strategy on the backtest calendar (step 8.2)."""
+"""Tests for the nonlinear-shrinkage strategy on the backtest calendar."""
 
 import dataclasses
 

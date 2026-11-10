@@ -1,4 +1,4 @@
-"""Step 6.1: factor-model simulation study of covariance and GMV estimation error.
+"""Factor-model simulation study of covariance and GMV estimation error.
 
 Simulates returns from a known 1 + ``n_groups`` factor covariance (Gaussian = main result, and a
 Student-t variant with the same covariance), fits the sample, Ledoit-Wolf, RMT and PCA covariances
@@ -11,10 +11,9 @@ Raw scores are cached in ``results/cache/simulation/<key>``; ``--force`` recompu
 ``simulation_detection.csv`` and ``simulation_summary.txt`` to ``results/tables`` and the figures
 ``sim_gaussian`` / ``sim_student_t`` to ``results/figures``.
 
-Scenario runs: ``--n-groups 5`` (step 6.2) replaces ``simulation.n_groups``; ``--time-varying``
-(step 6.3) switches on stochastic factor volatility and drifting loadings. Every output then gets
-a suffix (``_groups5``, ``_tv``, ``_groups5_tv``, or ``--tag NAME``), leaving the baseline files
-untouched.
+Scenario runs: ``--n-groups 5`` replaces ``simulation.n_groups``; ``--time-varying`` switches on
+stochastic factor volatility and drifting loadings. Every output then gets a suffix (``_groups5``,
+``_tv``, ``_groups5_tv``, or ``--tag NAME``), leaving the baseline files untouched.
 
 Usage: ``python scripts/10_simulation.py --config config.yaml [--force] [--n-groups G]
 [--time-varying] [--tag T]``

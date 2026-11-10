@@ -1,4 +1,4 @@
-"""Shared validation of portfolio weight vectors (CLAUDE.md section 5)."""
+"""Shared validation of portfolio weight vectors."""
 
 from __future__ import annotations
 

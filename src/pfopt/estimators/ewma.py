@@ -1,4 +1,4 @@
-"""Exponentially weighted covariance and its RMT-clipped version (PLAN.md steps 8.3 and 8.22).
+"""Exponentially weighted covariance and its RMT-clipped version.
 
 Within an estimation window of ``T`` observations (oldest first), observation ``i`` gets the weight
 ``w_i proportional to 0.5 ** ((T - 1 - i) / halflife)``, normalised to sum to one, so the most

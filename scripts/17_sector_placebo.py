@@ -1,7 +1,8 @@
-"""Step 8.25: random-label placebo for the sector-block strategy on the real data.
+"""Random-label placebo for the sector-block strategy on the real data.
 
-``GMV-PCA-SECTOR`` of step 8.24 is rerun ``residual.n_placebo`` times with the known sector labels
-shuffled among the universe members at every rebalance (group sizes and unknown members kept). If
+``GMV-PCA-SECTOR`` of the sector-block test is rerun ``residual.n_placebo`` times with the known
+sector labels shuffled among the universe members at every rebalance (group sizes and unknown
+members kept). If
 the gain over ``GMV-PCA`` comes from sector structure, the true-label strategy should beat the
 placebo draws; if any block restriction of the residual helps, the draws should gain as much.
 

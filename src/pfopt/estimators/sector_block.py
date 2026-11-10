@@ -1,8 +1,8 @@
-"""PCA factor covariance with a sector-block residual (PLAN.md step 8.24).
+"""PCA factor covariance with a sector-block residual.
 
-The PCA-factor estimator keeps the top ``K`` principal components and a diagonal residual. Step 8.23
-found sector correlation in the discarded part, so this estimator keeps the residual of the sample
-covariance for pairs in the same group:
+The PCA-factor estimator keeps the top ``K`` principal components and a diagonal residual. A
+residual-structure diagnostic found sector correlation in the discarded part, so this estimator
+keeps the residual of the sample covariance for pairs in the same group:
 
     S = sample covariance,   Sigma_sys = V_K Lambda_K V_K',   R = S - Sigma_sys,
     Sigma = Sigma_sys + R o M,   M_ij = 1 if i = j or i and j share a known group, else 0.

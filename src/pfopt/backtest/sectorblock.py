@@ -1,4 +1,4 @@
-"""PCA plus sector-block strategy on the real data (PLAN.md step 8.24).
+"""PCA plus sector-block strategy on the real data.
 
 Same universe, calendar, estimation windows, winsorization, long-only constraint and cost model as
 the core strategies (:func:`pfopt.backtest.engine.generate_weights`); only the covariance differs
@@ -36,7 +36,7 @@ def sector_categories(sectors: pd.Series) -> list[str]:
 
 
 def placebo_codes(groups: np.ndarray, rng: np.random.Generator) -> np.ndarray:
-    """Shuffle the known group labels among the members (step 8.25 placebo).
+    """Shuffle the known group labels among the members (placebo).
 
     Group sizes and the set of unknown members are unchanged; only which asset carries which label
     is randomized, so any sector information is destroyed and the block structure is kept.
@@ -95,7 +95,7 @@ def generate_sector_block_weights(
     end_date : str or Timestamp, optional
         If given, only rebalance dates up to and including it are generated.
     placebo_draw : int, optional
-        If given, the known labels are shuffled among the members at every rebalance (step 8.25),
+        If given, the known labels are shuffled among the members at every rebalance,
         with the generator seeded ``[seed, 27, placebo_draw, rebalance index]``.
 
     Returns

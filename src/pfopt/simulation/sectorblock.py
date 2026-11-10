@@ -1,9 +1,10 @@
-"""Positive and negative control for the sector-block estimator (PLAN.md step 8.24).
+"""Positive and negative control for the sector-block estimator.
 
 Positive control: a factor model with ``residual.sim_n_groups`` weak group factors, each loading on
 its own block of assets, whose volatility (``sim_group_vol``) is set so that the within-group
-residual correlation is close to the 0.06 found on the real data in step 8.23. The group factors
-are weak enough to stay below the Marchenko-Pastur edge, so the PCA factors do not absorb them.
+residual correlation is close to the 0.06 found on the real data by the residual-structure
+diagnostic. The group factors are weak enough to stay below the Marchenko-Pastur edge, so the PCA
+factors do not absorb them.
 The sector-block covariance is fitted with the true groups and with ``sim_label_error`` of the
 labels wrong (relabelled among themselves), which mimics a sector snapshot that is out of date.
 
@@ -11,7 +12,7 @@ Negative control: the same model without group factors and with arbitrary labels
 the extra blocks cost when there is no sector structure.
 
 Estimators are scored by the true variance of their long-only GMV portfolio relative to the
-oracle, as in step 6.1 (stationary, Gaussian).
+oracle, as in the simulation study (stationary, Gaussian).
 """
 
 from __future__ import annotations

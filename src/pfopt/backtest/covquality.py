@@ -1,4 +1,4 @@
-"""Covariance-quality and weight-stability metrics (PLAN.md step 4.4).
+"""Covariance-quality and weight-stability metrics.
 
 Risk-forecast quality asks whether the volatility a strategy's covariance matrix *predicts* at a
 rebalance date matches the volatility the strategy *realizes* afterwards. For strategy ``s`` and

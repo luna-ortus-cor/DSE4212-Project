@@ -1,9 +1,10 @@
-"""Step 8.21: studentized bootstrap tests, multiple-testing adjustment and detectable effects.
+"""Studentized bootstrap tests, multiple-testing adjustment and detectable effects.
 
-Reads ``returns_net.parquet`` from the cache written by ``02_run_backtest.py`` (as step 5.1 does)
-and writes ``inference_tests.csv`` (studentized tests with Holm / Benjamini-Hochberg adjusted
-p-values and the minimum detectable effect, plus the percentile-bootstrap p-value of step 5.1 for
-comparison), ``inference_blocklength.csv`` (the studentized tests repeated at each of
+Reads ``returns_net.parquet`` from the cache written by ``02_run_backtest.py`` (as the
+significance script does) and writes ``inference_tests.csv`` (studentized tests with Holm /
+Benjamini-Hochberg adjusted p-values and the minimum detectable effect, plus the
+percentile-bootstrap p-value of the significance script for comparison),
+``inference_blocklength.csv`` (the studentized tests repeated at each of
 ``stats.sensitivity_block_lengths``) and ``inference_summary.txt`` to ``results/tables``. Settings
 come from ``stats``.
 

@@ -1,4 +1,4 @@
-"""PCA statistical-factor covariance estimator (PLAN.md step 2.3).
+"""PCA statistical-factor covariance estimator.
 
 Model: returns follow a ``K``-factor structure estimated by principal components, with a diagonal
 (idiosyncratic) residual covariance. The systematic part is the rank-``K`` truncation of the

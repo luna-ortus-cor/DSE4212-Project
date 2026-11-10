@@ -1,5 +1,5 @@
-# Allowed libraries only (CLAUDE.md section 5).
-# Lower bounds only (supervisor decision: exact pins not required).
+# Allowed libraries only.
+# Lower bounds only ; exact pins are not required.
 numpy>=1.26
 pandas>=2.1
 scipy>=1.11

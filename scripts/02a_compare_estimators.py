@@ -1,4 +1,4 @@
-"""Step 2.5: compare the covariance estimators and core strategies at three snapshot dates.
+"""Compare the covariance estimators and core strategies at three snapshot dates.
 
 Snapshots: first feasible date, the stress date from ``config.yaml`` and the last date (as in the
 EDA). At each date the point-in-time top-N universe's T-day window is winsorized per column and

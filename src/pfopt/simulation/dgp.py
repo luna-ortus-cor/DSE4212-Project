@@ -1,4 +1,4 @@
-"""Factor-model data-generating process for the simulation study (PLAN.md step 6.1).
+"""Factor-model data-generating process for the simulation study.
 
 Daily returns follow ``r = B f + e`` with zero mean, where ``f`` are ``1 + n_groups`` independent
 factors (a market factor loading on every asset and ``n_groups`` group factors, each loading on its
@@ -195,7 +195,7 @@ def simulate_time_varying(
     cfg: SimulationConfig,
     distribution: str = "gaussian",
 ) -> tuple[np.ndarray, np.ndarray]:
-    """Simulate returns with stochastic factor volatility and drifting loadings (step 6.3).
+    """Simulate returns with stochastic factor volatility and drifting loadings.
 
     On day ``t`` the return is ``r_t = B_t (s_t * f_t) + e_t`` with ``f_t`` normal with the model's
     factor variances, independent idiosyncratic noise ``e_t`` (constant variances) and

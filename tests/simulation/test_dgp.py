@@ -99,7 +99,7 @@ def test_invalid_arguments_rejected() -> None:
         simulate_returns(m, 0, rng)
 
 
-# ---- time-varying design (step 6.3) --------------------------------------------------------
+# ---- time-varying design --------------------------------------------------------
 TV = SimulationConfig(
     n_assets=12, n_groups=2, sample_sizes=(30,), n_reps=2, time_varying=True, horizon_days=5
 )

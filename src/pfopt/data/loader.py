@@ -1,4 +1,4 @@
-"""Readers for the raw Kaggle CSVs (PLAN.md step 1.1).
+"""Readers for the raw Kaggle CSVs.
 
 The loaders parse types explicitly and fail loudly on schema problems. They never clean,
 fill, sort or drop anything: that is the job of ``cleaning.py``.

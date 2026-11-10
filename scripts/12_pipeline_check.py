@@ -1,4 +1,4 @@
-"""Step 8.20: validate the backtest pipeline end to end on synthetic panels with a known truth.
+"""Validate the backtest pipeline end to end on synthetic panels with a known truth.
 
 Draws ``pipeline_check.n_panels`` synthetic Date x Symbol panels from the factor model of the
 simulation study, runs each through the unchanged engine and scores the weights and the P&L
@@ -66,7 +66,7 @@ def _run_or_load(cfg: Config, cache: Path, force: bool) -> tuple[pd.DataFrame, p
 
 
 def _study_reference(tables: Path, lookback: int) -> pd.Series | None:
-    """Paired log ratios of step 6.1 (Gaussian, long-only) at the engine's window length."""
+    """Paired log ratios of the simulation study (Gaussian, long-only) at the engine's window."""
     path = tables / "simulation_paired.csv"
     if not path.exists():
         return None
@@ -115,7 +115,7 @@ def main() -> None:
     lines = [
         f"{pc.n_panels} synthetic panels of {pc.n_symbols} symbols x {pc.n_days} days; universe "
         f"N={cfg.universe.n_assets}, T={cfg.universe.lookback_days}, about {n_dates:.0f} "
-        f"rebalance dates per panel; step 6.1 factor model, K={1 + cfg.simulation.n_groups}",
+        f"rebalance dates per panel; simulation factor model, K={1 + cfg.simulation.n_groups}",
         f"VERDICT: accounting and identity checks {'PASS' if ok else 'FAIL'}",
         "",
         "1. accounting: mean of r^2 / (w' Sigma w) should be 1 "
@@ -128,8 +128,8 @@ def main() -> None:
         "",
         "3. ranking: mean log(true variance / sample GMV true variance) over rebalance dates "
         f"(negative = beats sample); {100 * (1 - cfg.stats.alpha):.0f}% t-interval across panels;"
-        " study_6_1 = same quantity from step 6.1 at the same T (Gaussian, long-only, different "
-        "random model):",
+        " study_6_1 = same quantity from the simulation study at the same T (Gaussian, "
+        "long-only, different random model):",
         ranking.round(4).to_string(),
     ]
     summary = tables / "pipeline_check_summary.txt"

@@ -1,8 +1,8 @@
-"""Step 8.24: PCA plus sector-block residual covariance (direct test of the sector explanation).
+"""PCA plus sector-block residual covariance (direct test of the sector explanation).
 
 Real data: long-only GMV with the sector-block covariance (``GMV-PCA-SECTOR``) on exactly the dates
 and universes of the core strategies, tested against ``GMV-PCA`` (only the blocks differ) and
-``GMV-SAMPLE`` with the studentized bootstrap of step 8.21. Sector labels are the static snapshot
+``GMV-SAMPLE`` with the studentized bootstrap. Sector labels are the static snapshot
 of ``sp500_companies.csv``, used as labels only. Positive and negative controls: the same
 estimators in simulations with and without weak group factors, with true and partly wrong labels.
 

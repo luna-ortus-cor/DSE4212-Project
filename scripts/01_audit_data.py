@@ -1,4 +1,4 @@
-"""Step 1.1: audit the raw CSVs and save ``results/tables/data_audit.csv``.
+"""Audit the raw CSVs and save ``results/tables/data_audit.csv``.
 
 Usage: ``python scripts/01_audit_data.py --config config.yaml``
 """

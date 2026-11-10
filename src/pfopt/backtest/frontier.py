@@ -1,4 +1,4 @@
-"""Estimated versus realized efficient frontiers (PLAN.md step 3.2).
+"""Estimated versus realized efficient frontiers.
 
 Markowitz optimization is an "error maximizer": it loads on the assets whose estimated mean or
 covariance is most favourable, which are partly the ones with the largest estimation errors. The

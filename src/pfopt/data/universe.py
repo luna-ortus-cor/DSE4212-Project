@@ -1,4 +1,4 @@
-"""Point-in-time universe selection (PLAN.md step 1.3).
+"""Point-in-time universe selection.
 
 At a rebalance date ``t`` the universe uses only data dated ``<= t``:
 

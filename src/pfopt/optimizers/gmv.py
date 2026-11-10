@@ -1,4 +1,4 @@
-"""Global minimum variance (GMV) portfolios (PLAN.md step 3.1).
+"""Global minimum variance (GMV) portfolios.
 
 Long-only GMV solves the convex quadratic program
 

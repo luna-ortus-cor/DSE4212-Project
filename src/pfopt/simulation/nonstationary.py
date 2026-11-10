@@ -1,6 +1,6 @@
-"""Calibration and positive control for the non-stationarity test (PLAN.md step 8.22).
+"""Calibration and positive control for the non-stationarity test.
 
-**Calibration.** In the time-varying design of step 6.3 each factor has a stationary AR(1) log
+**Calibration.** In the time-varying design each factor has a stationary AR(1) log
 volatility ``x_t`` with standard deviation ``sd`` and daily autocorrelation ``phi``; the variance
 scale is ``s_t^2 = exp(2 x_t - 2 v)``. For non-overlapping blocks of ``b`` days the log
 realized variance of the equal-weight market return is, to a good approximation,

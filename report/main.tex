@@ -1,0 +1,360 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{setspace}
+\usepackage{placeins}
+\usepackage{float}
+\usepackage{adjustbox}
+\usepackage[font=small,labelfont=bf]{caption}
+\usepackage[hidelinks]{hyperref}
+
+\onehalfspacing
+\graphicspath{{../results/report/figures/}}
+\setlength{\parskip}{0.3em}
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\textfraction}{0.1}
+\renewcommand{\floatpagefraction}{0.7}
+
+% All floats are in the appendix and are placed exactly where they are written, so the numbering
+% follows the order of the source. The exported tables ask for [t]; this makes them [H] instead.
+\let\origtable\table
+\let\endorigtable\endtable
+\renewenvironment{table}[1][]{\origtable[H]}{\endorigtable}
+
+% Table exported by scripts/11_make_report_assets.py (single line spacing so rows stay compact).
+% The exported tables call \resizebox{\textwidth}{!}, which also enlarges narrow tables. Here it
+% is replaced by a shrink-only box, so every table keeps its natural \footnotesize text unless it
+% is wider than the page.
+\newcommand{\tbl}[1]{\begingroup\linespread{1}\selectfont
+  \def\resizebox##1##2##3{\adjustbox{max width=##1}{##3}}%
+  \input{../results/report/tables/#1.tex}\endgroup}
+% Figure exported by the same script: \fig{file-stem}{caption}{width as a fraction of the text}.
+\newcommand{\fig}[3]{\begin{figure}[H]\centering
+  \includegraphics[width=#3\textwidth,height=0.28\textheight,keepaspectratio]{#1.pdf}\caption{#2}\label{fig:#1}\end{figure}}
+
+\newcommand{\Sig}{\boldsymbol{\Sigma}}
+\newcommand{\bone}{\mathbf{1}}
+
+\title{Where Does the Estimation Error Go?\\[0.2em]
+\large Markowitz, RMT-denoised, PCA-factor and HRP portfolios on daily S\&P~500 data}
+\author{DSE4212/QF4212 Project 2 --- Group [number and names to be filled in]}
+\date{15 November 2026}
+
+\begin{document}
+\maketitle
+
+%% ---------------------------------------------------------------------------------------------
+\section{Overview of the problem}
+
+Mean-variance portfolios built from sample moments perform poorly out of sample: the optimizer puts its
+largest positions where the estimation error is largest \cite{michaud1989,markowitz1952}. The project
+asks \emph{where the estimation error goes}, and whether methods that clean the covariance matrix give
+better out-of-sample portfolios than the sample-covariance plug-in.
+
+In one rolling backtest with identical universe, dates, constraints and costs, we compare the sample
+covariance, Ledoit--Wolf shrinkage \cite{lw2004}, RMT eigenvalue clipping \cite{mp1967,laloux1999}, a PCA
+factor model and hierarchical risk parity (HRP, \cite{lopezdeprado2016}), with 1/N as the naive benchmark
+\cite{demiguel2009}. Two hypotheses were fixed beforehand: \textbf{H1}, denoised covariances give lower
+out-of-sample volatility than the sample covariance in the global minimum-variance (GMV) portfolio;
+\textbf{H3}, the advantage of denoising is larger without the long-only constraint, because the constraint
+already regularizes \cite{jagannathanma2003}. Parameters were fixed a priori and never tuned on the test
+period; null results are reported as results. All figures and tables are collected in the Appendix.
+
+\paragraph{Summary of findings.} Equal weight has the best Sharpe ratio, and no Sharpe difference is
+statistically detectable. GMV cuts volatility by about a quarter relative to 1/N, but denoising does
+\emph{not} improve on sample GMV (PCA and RMT are worse), so H1 is not supported; H3 holds only for
+Ledoit--Wolf. In a simulation with a known factor covariance the denoisers do win, by only about 1\% of
+variance, and the advantage disappears when the covariance is time-varying. The extensions
+(Section~5.7) do not change the picture.
+
+%% ---------------------------------------------------------------------------------------------
+\section{Dataset description}
+
+We use only the supplied Kaggle files of daily S\&P~500 prices. The stock file lists 502 symbols, but only
+172 have prices (the other 330 are empty; Apple, for example, has none). Cleaning is done in code: symbols
+without prices are dropped and logged, and 11 suspect returns across 9 symbols are flagged. The cleaned panel
+runs from 2010-01-05 to 2024-12-20 (3{,}767 return dates). The index file is used only for a comparison on its
+common period, and sector labels only as labels.
+
+At each rebalance date the universe is the top $N=100$ names by trailing 504-day dollar volume among symbols
+with a complete $T=504$-day history, using data up to that date only (150 to 170 symbols are eligible).
+The first window ends 2012-01-03, so the out-of-sample period is 2012-01-04 to 2024-12-20 (3{,}263 trading
+days, 156 monthly rebalances). The 172 priced names are current index members, so the universe carries
+survivorship bias; relative comparisons share it. $N=200$, a planned sensitivity value, is infeasible.
+
+%% ---------------------------------------------------------------------------------------------
+\section{Initial data analysis}
+
+Daily returns are strongly fat-tailed: on the first, stress and last snapshot windows the pooled excess
+kurtosis is 11.7, 25.9 and 29.2 (Figure~\ref{fig:figA01_return_hist}), so windows are winsorized per column
+(0.1\%/99.9\%) before estimation.
+
+For $N$ assets and $T$ observations of pure noise, the eigenvalues of a correlation matrix lie below the
+Marchenko--Pastur (MP) edge $\lambda_+=(1+\sqrt{q})^2$, $q=N/T$ \cite{mp1967}; here $q=0.20$ and
+$\lambda_+=2.09$. Figure~\ref{fig:fig01_mp_spectrum} shows that only 2, 4 and 6 eigenvalues rise above the
+edge at the three snapshots, the largest (the market mode) taking 53\%, 49\% and 23\% of the total; the rest
+is a bulk that the sample estimate spreads too widely, which is what RMT clipping targets. Across the 156
+windows, the number of signal eigenvalues ranges from 2 to 6 (median 4) and the average correlation from
+0.21 to 0.52, highest at the start (Figure~\ref{fig:fig03_spectrum_time}). The 21-day average correlation
+is 0.32 over the sample, 0.38 in 2020 and 0.43 in 2022: correlations jump in stress periods, so an estimator
+calibrated on a calm window is exposed.
+
+%% ---------------------------------------------------------------------------------------------
+\section{Methods used}
+
+The central tools are unsupervised learning methods (eigen-decomposition and PCA, random matrix theory,
+hierarchical clustering) that build the covariance input of the optimizer. Supervised learning (Ridge and
+random forest) enters in one extension.
+
+\paragraph{Backtest.} Log returns are used for estimation and simple returns for profit and loss. Weights at
+rebalance date $t$ use only data up to $t$ (including the universe and winsorization) and apply from $t+1$,
+drift between rebalances and pay 10 bps on turnover. Every strategy is long-only, fully invested and faces
+the same universe, dates and costs. Unit tests check the absence of look-ahead and the accounting.
+
+\paragraph{Covariance estimators} (written by hand in NumPy/SciPy). \emph{Sample} covariance $S$.
+\emph{Ledoit--Wolf}: $\hat\Sig=(1-\delta)S+\delta(\operatorname{tr}S/N)I$ with a data-driven $\delta$
+\cite{lw2004}. \emph{RMT clipping}: correlation eigenvalues above $\lambda_+$ are kept, the rest replaced by
+their mean (trace preserved), rescaled to a unit diagonal \cite{laloux1999}. \emph{PCA factor model}:
+$\hat\Sig=B\Lambda_KB^\top+\operatorname{diag}(\text{residual})$ with $K$ from the MP rule. \emph{HRP}:
+clustering of the correlation matrix and recursive bisection by cluster variance, with no matrix inversion
+\cite{lopezdeprado2016}.
+
+\paragraph{Portfolios.} 1/N; GMV, $\min_w w^\top\hat\Sig w$ s.t.\ $\bone^\top w=1$, $w\ge0$, for each
+covariance; HRP; and long-only maximum-Sharpe (Markowitz) with sample and RMT covariance, using window means
+(mean log return plus half the variance) as expected returns and a zero risk-free rate.
+
+\paragraph{Evaluation.} Annualized return, volatility, Sharpe, Sortino, drawdown, CVaR, turnover and the
+effective number of names $1/\sum_i w_i^2$, net and gross of costs, plus the volatility the optimizer
+\emph{predicts} against the one realized over the next 21 days. Differences are tested with a studentized
+circular block bootstrap (block 10, 5{,}000 resamples, strategies resampled jointly; Sharpe differences and log
+variance ratios), Holm adjustment within each family and the smallest effect detectable at 80\% power.
+
+\paragraph{Simulation and extensions.} A factor-model simulation with known covariance ($N=100$, three true
+factors, 200 replications; stationary and time-varying) separates ``the estimator is worse'' from ``the data
+are different''. Extensions use the same engine: inverse-volatility and equal-risk-contribution (ERC)
+portfolios \cite{maillard2010}; ridge, shrinkage-to-1/N, L1-bounded and elastic-net weights; quadratic-inverse
+nonlinear shrinkage \cite{lw2022}; EWMA covariances; a sector-block residual covariance with a random-label
+placebo; and the QLIKE forecast loss of each covariance on random portfolios (Newey--West errors,
+\cite{neweywest1987}).
+
+\paragraph{Machine-learning return forecasts.} Ridge and a shallow random forest (200 trees, depth 4) predict the
+cross-sectional rank of the next 21-day return from 12-1 month momentum, 1-month return, 63-day volatility and
+dollar volume. Training uses an expanding window, a refit every six rebalances and a purge so no training label
+reaches past the refit date. The signal is judged by its out-of-sample rank information coefficient (IC); a
+pre-set gate (mean IC $>0$ and $t\ge2$) decides whether it may feed the optimizer, as a centered rank score with
+the RMT covariance. All hyperparameters were fixed before the run.
+
+%% ---------------------------------------------------------------------------------------------
+\section{Model performance evaluation and application results}
+
+\subsection{Estimated versus realized Markowitz frontier}
+
+Plug-in Markowitz treats estimates as truth. At the first window (2012-01-03) the maximum-Sharpe portfolio has an
+estimated Sharpe ratio of 2.07 with the sample covariance against 0.87 realized over the next 252 days; at the
+latest date with a full year ahead (2023-12-20) the figures are 1.87 and 1.01 (Figure~\ref{fig:fig04_frontier}).
+The stress date (2020-03-31) is an exception because of the rebound that followed. The RMT covariance does not
+change the picture, which points to expected returns as the dominant error in the Markowitz problem.
+\subsection{Out-of-sample performance}
+
+Table~\ref{tab:main_net} and Figure~\ref{fig:fig05_equity} give the main result. Equal weight has the highest
+Sharpe ratio (0.99) and HRP is next (0.93 to 0.94). GMV portfolios have the lowest volatility (about 0.13
+against 0.17 for 1/N) but also the lowest return, so their Sharpe ratios are lower (0.66 to 0.76). The Markowitz
+portfolios earn a return close to 1/N with higher volatility (0.20) and a turnover of about 6 a year, against 0.9 for 1/N and 2.2 to 2.7 for GMV and HRP. Costs of 10 bps lower Sharpe ratios by only
+0.01 to 0.03 (Table~\ref{tab:main_gross}). Denoising does not lower GMV volatility: RMT (0.136) and PCA (0.135)
+are above sample GMV (0.130), and Ledoit--Wolf matches it. GMV portfolios are concentrated (about 10 effective
+names against about 66 for HRP, Table~\ref{tab:concentration}) and tilt towards Consumer Defensive and Utilities
+and away from Technology (Figure~\ref{fig:figA11_struct_sectors}).
+
+\subsection{Statistical evidence}
+
+All GMV variants reduce volatility relative to 1/N by 22 to 25\% (significant after Holm). Against sample GMV, PCA
+has 3.3\% higher volatility (95\% interval 2.4 to 4.3\%, significant), Ledoit--Wolf is 0.6\% lower (significant but
+negligible), and RMT is 4.5\% higher with an interval that includes zero in the studentized test ($p=0.060$). The
+RMT result is therefore suggestive, not established: its Holm-adjusted $p$-value is 0.022, 0.060 and 0.201 for block
+lengths 5, 10 and 20, while all other conclusions are stable. The Markowitz portfolios have about 1.5 times the
+volatility of sample GMV.
+
+\textbf{No Sharpe difference is significant}, but this is mostly a power problem, not evidence of equality: the
+smallest detectable difference is about 0.5 to 0.6 against 1/N and 0.13 to 0.17 against sample GMV.
+\subsection{Does the optimizer know its own risk?}
+
+The pooled ratio of realized to predicted variance is 1.32 for sample GMV, 1.39 for RMT and 1.61 for PCA, so the
+optimizers under-predict their own risk, and the denoised versions by more; HRP does not (0.97)
+(Figure~\ref{fig:fig07_vol_forecast}, Table~\ref{tab:risk_forecast}). This is consistent with an optimizer that
+chooses weights against its own estimate, an effect a better-conditioned covariance does not remove.
+
+\subsection{Subperiods, sensitivity and the long-only constraint}
+
+Rankings are not stable across subperiods (Figure~\ref{fig:fig09_subperiods}). Minimum-variance portfolios have a
+Sharpe ratio near zero in the COVID stress period (0.06 to 0.08 against 0.67 for 1/N) while the Markowitz
+portfolios exceed 1.5; in 2022 every strategy is negative, GMV-PCA the least ($-0.02$); in calm markets 1/N and HRP
+lead. A 250-day subperiod has a Sharpe standard error near 1, so this is descriptive. Across 15 sensitivity
+scenarios (81 strategy-parameter combinations, reported as sensitivity and never used to choose a configuration),
+one result is stable: at every $q=N/T$ from 0.10 to 0.40, GMV-RMT and GMV-PCA have higher volatility than sample
+GMV (Figure~\ref{fig:fig10_sens_q}). The loss does not go away with more data per asset.
+
+\textbf{H3} (Table~\ref{tab:h3_tests}) holds only for Ledoit--Wolf (difference $-0.055$, interval $-0.080$ to
+$-0.033$). For RMT there is no difference, and PCA goes the other way: it is worse than sample GMV, more so
+unconstrained. Without the constraint, leverage is 2.7 to 3.7, turnover 6 to 12 times higher and volatility not
+lower for any estimator (shorts carry no borrow cost here, which flatters them). The long-only constraint is
+already a strong regularizer \cite{jagannathanma2003}, leaving little for denoising to add.
+
+\subsection{What a known-truth simulation says}
+
+On real data the true covariance is unknown, so Figure~\ref{fig:fig12_simulation} repeats the comparison with a
+known factor covariance. With a stationary covariance, PCA and RMT beat sample GMV, by the most at small $T$ (log
+true-variance ratio about $-0.06$ at $T=126$) but only $-0.012$ (PCA) and $-0.005$ (RMT), about 1\% of variance, at
+$T=504$; without the long-only constraint the gain is far larger (about $-1.3$ at $T=126$). With time-varying volatilities and loadings the advantage vanishes for $T\ge504$: the error is
+mostly non-stationarity bias, which denoising cannot remove. The simulated loss is only about 0.7\% of variance,
+however, far from the 3 to 5\% of volatility (about 7 to 9\% of variance) seen on real data. The engine is not the
+cause: run unchanged on synthetic stationary panels, it agrees with the direct evaluation to $10^{-15}$ and
+reproduces the simulation's ranking and magnitudes.
+
+\subsection{Why does denoising not help? Extensions}
+
+\paragraph{Non-stationarity.} EWMA covariances (half-lives 126 and 63 days, fixed in advance) win in the simulated
+time-varying world; on real data their point estimates beat sample GMV (volatility ratio 0.96, Sharpe 0.83 against
+0.74) but not significantly, as the test could only detect a 5 to 10\% change. Non-stationarity is consistent with
+the evidence but not confirmed, and it does not explain the RMT/PCA loss (EWMA-RMT is again no better than EWMA).
+
+\paragraph{Sector structure in the residual.} The PCA residual still holds sector correlation: the same-sector minus
+cross-sector gap is 0.061 against 0.000 for shuffled labels (permutation $p<0.05$ in all 156 windows, descriptive), so the factors remove only about 45\% of the sector gap. Restoring same-sector blocks lowers PCA's
+volatility by 2.4\% (Holm $p=0.001$), removing about three quarters of its loss, but stays above sample GMV (ratio
+1.009, Holm $p=0.036$). True sectors beat all 20 random-label draws (rank $p=0.048$, the smallest possible), and
+random labels recover only 18\% of the gain. Sector structure is a real but incomplete part of the PCA loss.
+
+\paragraph{Forecast quality versus use.} As forecasters of the variance of random long-only portfolios, RMT and PCA
+are not worse than the sample covariance: QLIKE differences are not significant after Holm (smallest adjusted
+$p=0.77$), and the point estimates rank PCA-sector, PCA, RMT, sample, nonlinear shrinkage, Ledoit--Wolf identically
+in three portfolio families (Table~\ref{tab:forecastloss}). This suggests that the GMV loss comes from how the
+optimizer exploits the estimate, not from a worse covariance as such. The mechanism was not tested directly, and
+the test has little power.
+
+\paragraph{Other optimizers and regularization.} ERC portfolios are almost insensitive to the covariance estimator
+(differences below 1\%) and have realized-to-predicted volatility of about 1.0 against 1.19 to 1.32 for GMV, so the
+denoising loss is specific to the minimum-variance optimizer, which exploits the small eigenvalues
+(Table~\ref{tab:riskbased_metrics}). Ridge and shrinkage towards 1/N push realized volatility towards the
+predicted level (1.19 to 1.01) at the price of higher volatility, with no significant Sharpe gain
+(Table~\ref{tab:regularized_metrics}). Nonlinear shrinkage, the theoretical counterpart of RMT clipping, does not
+beat sample GMV either (volatility ratio 0.996, Holm $p=0.12$).
+
+\paragraph{Machine-learning return forecasts.} Both models fail the pre-set gate (Table~\ref{tab:ml_signal_ic}): the
+mean rank IC is 0.025 for Ridge ($t=1.25$) and 0.029 for the random forest ($t=1.70$) over 131 dates, against a gate
+of $t\ge2$, and the single features are no better. The portfolios built on the forecasts are shown for completeness
+(Table~\ref{tab:ml_metrics}): the optimizer turns a noise ranking into a concentrated, high-turnover portfolio
+(about 5 effective names, turnover 17 to 19 a year) with volatility 15\% to 22\% above MV-RMT (Holm $p=0.02$ and
+$0.001$) and a lower Sharpe ratio. This is a null result. The centered-rank mapping drops the market premium that
+MV-RMT keeps, so part of the gap may come from the mapping, which was fixed before the results.
+
+%% ---------------------------------------------------------------------------------------------
+\section{Conclusion}
+
+\paragraph{Answer to the research question.} On this data the estimation error does \emph{not} go where denoising
+can remove it. Cleaning the covariance matrix reduces condition numbers by a factor of three to six, yet does not
+lower the out-of-sample volatility of GMV and, for PCA, raises it. Our evidence points to three parts of the
+explanation, none isolated fully: sector correlation that denoising throws away (real but incomplete),
+non-stationarity of the covariance (consistent with the simulation, underpowered on real data), and the optimizer
+exploiting its estimate (covariance forecasts are not worse, but GMV portfolios under-predict their own risk). The
+long-only constraint already regularizes much of the problem. In risk-adjusted terms 1/N is hard to beat: GMV gives
+the lowest volatility at a lower Sharpe ratio, while ERC and HRP give diversified portfolios with a Sharpe ratio
+close to 1/N.
+
+\paragraph{Limitations.} (i) Only 172 of 502 symbols have prices and they are current members, so survivorship bias
+remains, the sample is mostly a bull market, and $N=200$ was infeasible. (ii) One historical path: the bootstrap
+quantifies sampling noise within it, and many differences are inside the detectable-effect bounds, so ``not
+significant'' means ``not detectable''. (iii) Costs are proportional, with no market impact and no borrow cost for
+shorting variants. (iv) The ML evaluation starts two years after the core backtest (132 dates), uses four features
+and treats the 21-day-spaced IC values as independent. (v) The ``optimizer selects against the estimate'' mechanism
+rests on indirect evidence, and the sector and non-stationarity diagnostics are descriptive with overlapping windows.
+
+\paragraph{Future work.} Test the optimizer mechanism directly (for example by resampling diagnostics); repeat the
+study on a full point-in-time S\&P~500 file with delistings; combine time-varying volatility with denoising;
+denoise eigenvectors as well as eigenvalues; and try richer return signals with a longer training history.
+
+\paragraph{Reproducibility.} Parameters are in \texttt{config.yaml}; the submitted code regenerates every table and figure.
+
+%% ---------------------------------------------------------------------------------------------
+\begin{thebibliography}{99}\small
+\bibitem{demiguel2009} DeMiguel, V., Garlappi, L. and Uppal, R. (2009). Optimal versus naive diversification:
+how inefficient is the 1/N portfolio strategy? \emph{Review of Financial Studies} 22(5), 1915--1953.
+\bibitem{jagannathanma2003} Jagannathan, R. and Ma, T. (2003). Risk reduction in large portfolios: why
+imposing the wrong constraints helps. \emph{Journal of Finance} 58(4), 1651--1683.
+\bibitem{laloux1999} Laloux, L., Cizeau, P., Bouchaud, J.-P. and Potters, M. (1999). Noise dressing of
+financial correlation matrices. \emph{Physical Review Letters} 83, 1467--1470.
+\bibitem{lw2004} Ledoit, O. and Wolf, M. (2004). A well-conditioned estimator for large-dimensional
+covariance matrices. \emph{Journal of Multivariate Analysis} 88(2), 365--411.
+\bibitem{lw2022} Ledoit, O. and Wolf, M. (2022). Quadratic shrinkage for large covariance matrices.
+\emph{Bernoulli} 28(3), 1519--1547.
+\bibitem{lopezdeprado2016} L{\'o}pez de Prado, M. (2016). Building diversification portfolios that outperform
+out of sample. \emph{Journal of Portfolio Management} 42(4), 59--69.
+\bibitem{maillard2010} Maillard, S., Roncalli, T. and Te{\"i}letche, J. (2010). The properties of equally
+weighted risk contribution portfolios. \emph{Journal of Portfolio Management} 36(4), 60--70.
+\bibitem{markowitz1952} Markowitz, H. (1952). Portfolio selection. \emph{Journal of Finance} 7(1), 77--91.
+\bibitem{mp1967} Marchenko, V. A. and Pastur, L. A. (1967). Distribution of eigenvalues for some sets of
+random matrices. \emph{Mathematics of the USSR-Sbornik} 1(4), 457--483.
+\bibitem{michaud1989} Michaud, R. O. (1989). The Markowitz optimization enigma: is ``optimized'' optimal?
+\emph{Financial Analysts Journal} 45(1), 31--42.
+\bibitem{neweywest1987} Newey, W. K. and West, K. D. (1987). A simple, positive semi-definite,
+heteroskedasticity and autocorrelation consistent covariance matrix. \emph{Econometrica} 55(3), 703--708.
+\end{thebibliography}
+
+%% ---------------------------------------------------------------------------------------------
+\clearpage
+\appendix
+\section{Appendix: figures and tables}
+
+All tables are also available as CSV, Markdown and LaTeX in \texttt{results/report/tables}, and all figures as
+PDF and PNG in \texttt{results/report/figures}. The long tables (bootstrap tests, subperiods, sensitivity, the
+parameter table) are not repeated here; see \texttt{tab03\_significance}, \texttt{tab04\_subperiods},
+\texttt{tab05\_sensitivity}, \texttt{tab08\_parameters} and \texttt{tabA09\_inference}.
+
+\subsection{Data analysis (Section 3)}
+\fig{figA01_return_hist}{Pooled return distribution.}{0.7}
+\fig{fig01_mp_spectrum}{Eigenvalue spectrum of the sample correlation matrix against the Marchenko--Pastur
+density (first, stress and last snapshot windows).}{0.7}
+\fig{fig03_spectrum_time}{Number of eigenvalues above the MP edge and the market-mode share over
+time.}{0.7}
+\FloatBarrier
+
+\subsection{Main results (Sections 5.1 to 5.6)}
+\fig{fig04_frontier}{Estimated against realized efficient frontier at three dates (sample and RMT
+covariance).}{0.7}
+\tbl{tab01_main_net}
+\fig{fig05_equity}{Net equity curves of the core strategies, 1/N and the S\&P~500 (common period).}{0.7}
+\tbl{tab02_main_gross}
+\tbl{tabA02_concentration}
+\fig{fig07_vol_forecast}{Realized over predicted volatility at each rebalance, by strategy.}{0.7}
+\tbl{tabA03_risk_forecast}
+\fig{fig09_subperiods}{Net Sharpe ratio and maximum drawdown by subperiod.}{0.7}
+\fig{fig10_sens_q}{Sensitivity to the ratio $q=N/T$ (common window).}{0.7}
+\fig{figA08_sens_other}{Sensitivity to costs, weight cap, number of PCA factors and HRP linkage.}{0.7}
+\tbl{tab07_h3_tests}
+\tbl{tab06_h3_metrics}
+\fig{fig11_h3}{Long-only against unconstrained GMV (hypothesis H3).}{0.7}
+\fig{fig12_simulation}{Simulation study with Gaussian returns: true variance of each GMV portfolio relative to the
+oracle, by window length.}{0.7}
+\fig{figA13_simulation_t}{Simulation study with Student-$t$ returns.}{0.7}
+\tbl{tabA01_common_period}
+\fig{figA11_struct_sectors}{Mean sector exposure of each strategy (current sector labels).}{0.7}
+\FloatBarrier
+
+\subsection{Extensions (Section 5.7)}
+\tbl{tabA11_nonstat_metrics}
+\tbl{tabA13_nonstat_calibration}
+\tbl{tabA17_sectorblock_metrics}
+\fig{figA14_res_blocks}{Mean PCA-residual correlation by sector pair.}{0.7}
+\fig{figA15_res_timeseries}{Sector structure of the PCA residual over time.}{0.7}
+\tbl{tabA20_forecastloss}
+\tbl{tabA21_nls_metrics}
+\tbl{tabA24_riskbased_metrics}
+\tbl{tabA26_regularized_metrics}
+\tbl{tabA28_ml_signal_ic}
+\tbl{tabA29_ml_metrics}
+
+\end{document}

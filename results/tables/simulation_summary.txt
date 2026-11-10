@@ -1,4 +1,11 @@
+design: stationary covariance
 N=100, true factors K=3 (1 market + 2 group), T in [126, 252, 504, 1000], 200 replications, t df=5; bands are 95% normal intervals; main result: gaussian
+
+true correlation eigenvalues of the K factors: 25.78, 3.38, 1.11; noise bulk level 0.72
+  T=126: MP edge 2.57, factors above it: 2 of 3
+  T=252: MP edge 1.91, factors above it: 2 of 3
+  T=504: MP edge 1.50, factors above it: 2 of 3
+  T=1000: MP edge 1.25, factors above it: 2 of 3
 
 ===== gaussian =====
 lowest true-variance ratio over all replications: 1.01141491 (oracle bound holds: True)

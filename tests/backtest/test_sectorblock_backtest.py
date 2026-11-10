@@ -1,4 +1,4 @@
-"""Tests for the PCA plus sector-block strategy on the backtest calendar (step 8.24)."""
+"""Tests for the PCA plus sector-block strategy on the backtest calendar."""
 
 import dataclasses
 

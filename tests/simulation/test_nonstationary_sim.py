@@ -1,4 +1,4 @@
-"""Tests for the volatility calibration and the positive control (step 8.22)."""
+"""Tests for the volatility calibration and the positive control."""
 
 import dataclasses
 

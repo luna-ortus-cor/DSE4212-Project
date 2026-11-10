@@ -1,4 +1,4 @@
-"""Quadratic-inverse shrinkage (QIS), a nonlinear shrinkage covariance estimator (PLAN.md step 8.2).
+"""Quadratic-inverse shrinkage (QIS), a nonlinear shrinkage covariance estimator.
 
 Reference: O. Ledoit and M. Wolf (2022), "Quadratic shrinkage for large covariance matrices",
 Bernoulli 28(3), 1519-1547 (their closed-form MATLAB routine ``QIS``, re-implemented here).

@@ -1,4 +1,4 @@
-"""Sample and Ledoit-Wolf covariance estimators (PLAN.md step 2.1).
+"""Sample and Ledoit-Wolf covariance estimators.
 
 Both take a ``T x N`` array of log returns and return an ``N x N`` symmetric covariance matrix.
 """

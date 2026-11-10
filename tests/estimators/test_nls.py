@@ -1,4 +1,4 @@
-"""Tests for the quadratic-inverse-shrinkage covariance (step 8.2)."""
+"""Tests for the quadratic-inverse-shrinkage covariance."""
 
 import numpy as np
 import pytest

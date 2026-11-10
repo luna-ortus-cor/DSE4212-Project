@@ -1,4 +1,4 @@
-"""Simulation study runner and summaries (PLAN.md step 6.1).
+"""Simulation study runner and summaries.
 
 For every grid cell ``(distribution, T)`` and replication, returns are simulated from a fixed true
 factor model, every estimator is fitted on the sample, and three accuracy measures are recorded:
@@ -13,7 +13,7 @@ Methods are the four GMV strategies (sample, Ledoit-Wolf, RMT, PCA covariance), 
 covariance) and the equal-weight portfolio. Unconstrained weights exist for the four GMV methods;
 HRP and EW are long-only by construction.
 
-With ``simulation.time_varying`` (step 6.3) the covariance changes over time, so the truth is the
+With ``simulation.time_varying`` the covariance changes over time, so the truth is the
 average conditional covariance over the ``horizon_days`` days after the sample; the oracle
 portfolios are recomputed for that matrix in every replication.
 """

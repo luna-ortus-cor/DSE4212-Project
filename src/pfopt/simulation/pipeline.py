@@ -1,4 +1,4 @@
-"""End-to-end validation of the backtest pipeline on a synthetic panel (PLAN.md step 8.20).
+"""End-to-end validation of the backtest pipeline on a synthetic panel.
 
 A Date x Symbol panel of log returns and dollar volumes is drawn from the factor model of the
 simulation study (more symbols than the universe size, persistent random dollar volumes so the
@@ -12,7 +12,7 @@ Because the true covariance is known, three things can be checked:
   the same universe) of the engine's weights equals the ratio that
   :func:`pfopt.simulation.run.evaluate_sample` gives for the same window;
 - **ranking**: the paired log true-variance ratio of each strategy against ``GMV-SAMPLE`` over
-  rebalance dates, which can be compared with the stationary simulation study of step 6.1.
+  rebalance dates, which can be compared with the stationary simulation study.
 
 Returns are simulated as log returns; the simple returns used for P&L are ``exp(r) - 1``.
 """

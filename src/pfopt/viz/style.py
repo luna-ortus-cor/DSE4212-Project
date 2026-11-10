@@ -1,4 +1,4 @@
-"""Shared matplotlib style, colour palette and figure saving (CLAUDE.md section 8).
+"""Shared matplotlib style, colour palette and figure saving.
 
 One style for every figure: 6.3 in wide at most (fits A4 with margins), readable at report scale,
 colour-blind-safe Okabe-Ito palette, one fixed colour per method across all figures, 300 dpi PNG

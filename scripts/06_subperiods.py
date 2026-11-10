@@ -1,4 +1,4 @@
-"""Step 5.2: subperiod and volatility-regime analysis of the net-of-cost strategy returns.
+"""Subperiod and volatility-regime analysis of the net-of-cost strategy returns.
 
 Reads ``returns_net.parquet`` from the cache written by ``02_run_backtest.py``. Periods: full
 out-of-sample, COVID stress, the stress year, the remaining calm days, and the high/low volatility

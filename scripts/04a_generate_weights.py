@@ -1,4 +1,4 @@
-"""Step 4.1: generate leakage-free weights for all strategies on the real data.
+"""Generate leakage-free weights for all strategies on the real data.
 
 Reads the processed return matrices, runs :func:`pfopt.backtest.engine.generate_weights` and caches
 the result in ``results/cache/<config hash>/`` (reused unless ``--force`` is given). Writes a short

@@ -1,4 +1,4 @@
-"""Step 1.4: exploratory data analysis (tables and figures).
+"""Exploratory data analysis (tables and figures).
 
 Snapshots: the first feasible date, the stress date from ``config.yaml`` and the last date, each
 with its own point-in-time top-N universe and T-day window. Writes tables to ``results/tables``

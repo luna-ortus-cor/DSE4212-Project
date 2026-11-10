@@ -1,4 +1,4 @@
-"""Tests for the risk-based strategies on the backtest calendar (step 8.7)."""
+"""Tests for the risk-based strategies on the backtest calendar."""
 
 import dataclasses
 

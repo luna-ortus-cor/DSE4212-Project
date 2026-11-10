@@ -1,4 +1,4 @@
-"""Step 8.23: residual-structure diagnostic (sector blocks left by the PCA factors).
+"""Residual-structure diagnostic (sector blocks left by the PCA factors).
 
 For the estimation window of every rebalance, the part of the sample correlation matrix discarded
 by the K-factor (Marchenko-Pastur) model is tested for sector structure with static sector labels

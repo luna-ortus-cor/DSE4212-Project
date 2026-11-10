@@ -3,7 +3,7 @@ weights: max |row sum - 1| = 8.88e-16, min weight = 0.00e+00
 NaN in gross/net returns: 0; missing held-asset returns: 0
 rebalances with a solver fallback: 0; universe sizes 100 to 100
 SPX returns: 2014-12-23 to 2024-12-20 (2516 days)
-runtime: weights cached, total 6 s
+runtime: weights cached, total 7 s
 
 headline metrics, net of 10 bps costs (gross Sharpe in brackets):
 strategy     | ann.ret | ann.vol | Sharpe [gross] | Sortino | maxDD  | turnover/yr

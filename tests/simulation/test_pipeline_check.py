@@ -1,4 +1,4 @@
-"""Tests for the synthetic-panel pipeline validation (step 8.20)."""
+"""Tests for the synthetic-panel pipeline validation."""
 
 import dataclasses
 

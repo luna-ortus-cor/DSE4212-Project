@@ -1,4 +1,4 @@
-"""Tests for the EWMA strategies on the backtest calendar (step 8.22)."""
+"""Tests for the EWMA strategies on the backtest calendar."""
 
 import dataclasses
 

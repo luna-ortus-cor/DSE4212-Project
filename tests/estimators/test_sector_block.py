@@ -1,4 +1,4 @@
-"""Tests for the PCA plus sector-block covariance estimator (step 8.24)."""
+"""Tests for the PCA plus sector-block covariance estimator."""
 
 import numpy as np
 import pytest

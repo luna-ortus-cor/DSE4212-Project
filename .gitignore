@@ -1,4 +1,4 @@
-/data/
+/data/processed/
 results/cache/
 .venv/
 __pycache__/

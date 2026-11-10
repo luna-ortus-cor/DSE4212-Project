@@ -1,8 +1,8 @@
-"""Step 8.7: risk-based allocations (inverse volatility and equal risk contribution).
+"""Risk-based allocations (inverse volatility and equal risk contribution).
 
 Real data: ``IVOL`` and ``ERC-<estimator>`` (sample, Ledoit-Wolf, RMT, PCA covariance) on exactly
 the dates and universes of the core strategies, net of costs, tested with the studentized bootstrap
-of step 8.21 against ``ERC-SAMPLE`` (does denoising help a risk-based portfolio?) and ``IVOL``
+against ``ERC-SAMPLE`` (does denoising help a risk-based portfolio?) and ``IVOL``
 (does using correlations help at all?). ``GMV-SAMPLE`` and ``EW`` are included for context.
 
 Reads ``returns_net.parquet`` written by ``02_run_backtest.py``. Writes ``riskbased_metrics.csv``,

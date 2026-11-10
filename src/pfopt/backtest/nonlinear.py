@@ -1,4 +1,4 @@
-"""Nonlinear-shrinkage GMV strategy on the real data (PLAN.md step 8.2).
+"""Nonlinear-shrinkage GMV strategy on the real data.
 
 ``GMV-NLS``: long-only GMV with the quadratic-inverse-shrinkage covariance
 (:func:`pfopt.estimators.nls.nls_cov`) on exactly the dates, universes, windows, winsorization,

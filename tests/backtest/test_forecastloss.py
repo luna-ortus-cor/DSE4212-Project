@@ -1,4 +1,4 @@
-"""Tests for the covariance forecast loss on random portfolios (step 8.18)."""
+"""Tests for the covariance forecast loss on random portfolios."""
 
 import dataclasses
 

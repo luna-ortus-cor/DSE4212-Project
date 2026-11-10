@@ -1,4 +1,4 @@
-"""Residual-structure diagnostic: sector blocks left by the PCA factors (PLAN.md step 8.23).
+"""Residual-structure diagnostic: sector blocks left by the PCA factors.
 
 The PCA-factor and RMT estimators keep ``K`` components (the eigenvalues above the Marchenko-Pastur
 edge) and replace the rest of the sample correlation matrix by a diagonal (PCA) or by its average

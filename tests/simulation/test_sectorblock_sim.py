@@ -1,4 +1,4 @@
-"""Tests for the positive and negative control of the sector-block estimator (step 8.24)."""
+"""Tests for the positive and negative control of the sector-block estimator."""
 
 import dataclasses
 

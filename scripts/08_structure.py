@@ -1,4 +1,4 @@
-"""Step 5.4: weight concentration, turnover dynamics, sector exposure and spectrum diagnostics.
+"""Weight concentration, turnover dynamics, sector exposure and spectrum diagnostics.
 
 Reads the cached weights, ``returns_net.parquet`` and ``turnover.parquet`` written by
 ``02_run_backtest.py`` (for the config in ``config.yaml``) and the static sector labels of

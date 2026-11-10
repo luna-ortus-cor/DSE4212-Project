@@ -1,4 +1,4 @@
-"""Step 5.5: unconstrained GMV strategies and the long-only gap (hypothesis H3).
+"""Unconstrained GMV strategies and the long-only gap (hypothesis H3).
 
 Generates (or loads) unconstrained GMV weights for the sample, Ledoit-Wolf, RMT and PCA
 covariances on exactly the same dates and universes as the long-only strategies, simulates them

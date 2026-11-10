@@ -1,4 +1,4 @@
-"""Unconstrained (shorting allowed) GMV strategies for hypothesis H3 (PLAN.md step 5.5).
+"""Unconstrained (shorting allowed) GMV strategies for hypothesis H3.
 
 H3: the advantage of denoised / shrunk covariances shrinks under the long-only constraint
 (Jagannathan and Ma, 2003). The unconstrained strategies use exactly the same universe, rebalance

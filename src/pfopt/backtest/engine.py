@@ -1,9 +1,9 @@
-"""Backtest engine: leakage-free weight generation (PLAN.md step 4.1).
+"""Backtest engine: leakage-free weight generation.
 
 At every rebalance date ``t`` the engine uses only data dated ``<= t``: the point-in-time universe
 (:func:`pfopt.data.universe.select_universe`), the last ``T`` log returns up to and including ``t``,
 and per-column winsorization computed inside that window. The weights are meant to be applied to
-returns from ``t + 1`` onward (that alignment is handled by the simulator, step 4.2).
+returns from ``t + 1`` onward (that alignment is handled by the simulator).
 """
 
 from __future__ import annotations
@@ -225,7 +225,7 @@ def simulate(
     cost_bps : float
         Proportional cost in basis points per unit of turnover (``sum |dw|``), at least 0.
     long_only : bool, default True
-        Require non-negative weights. With ``False`` (unconstrained GMV, step 5.5) short positions
+        Require non-negative weights. With ``False`` (unconstrained GMV) short positions
         are allowed; rows must still sum to 1. Short positions pay no borrow or financing cost.
 
     Returns

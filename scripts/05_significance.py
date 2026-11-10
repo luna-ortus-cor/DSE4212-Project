@@ -1,4 +1,4 @@
-"""Step 5.1: bootstrap significance tests of the net-of-cost strategy returns.
+"""Bootstrap significance tests of the net-of-cost strategy returns.
 
 Reads ``returns_net.parquet`` from the cache written by ``02_run_backtest.py`` and writes
 ``significance_tests.csv`` (main block length), ``significance_block_sensitivity.csv`` (all block

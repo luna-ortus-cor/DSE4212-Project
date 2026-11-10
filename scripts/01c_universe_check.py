@@ -1,4 +1,4 @@
-"""Step 1.3: inspect the point-in-time universe on the real data.
+"""Inspect the point-in-time universe on the real data.
 
 Reads the processed parquet files, writes ``results/tables/universe_eligible_counts.csv``, logs the
 number of eligible symbols over time, the first feasible date, example universes at three dates,

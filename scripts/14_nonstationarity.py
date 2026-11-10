@@ -1,8 +1,8 @@
-"""Step 8.22: non-stationarity test (EWMA strategies, volatility calibration, positive control).
+"""Non-stationarity test (EWMA strategies, volatility calibration, positive control).
 
 Real data: long-only GMV with the exponentially weighted covariance and its RMT-clipped version
 (half-lives from ``nonstationarity.halflives``), on exactly the dates and universes of the core
-strategies, tested against sample GMV with the studentized bootstrap of step 8.21. Calibration:
+strategies, tested against sample GMV with the studentized bootstrap. Calibration:
 the log-volatility dynamics of the market factor are estimated from the equal-weight market return
 of the supplied data. Positive control: the same estimators in a stationary and two time-varying
 simulations (a priori and calibrated parameters).

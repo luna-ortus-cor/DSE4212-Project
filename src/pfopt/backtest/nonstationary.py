@@ -1,4 +1,4 @@
-"""EWMA strategies on the real data for the non-stationarity test (PLAN.md step 8.22).
+"""EWMA strategies on the real data for the non-stationarity test.
 
 Same universe, calendar, estimation windows, winsorization, long-only constraint and cost model as
 the core strategies (:func:`pfopt.backtest.engine.generate_weights`); only the covariance differs:

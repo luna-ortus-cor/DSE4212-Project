@@ -1,4 +1,4 @@
-"""Weight and portfolio structure analysis (PLAN.md step 5.4).
+"""Weight and portfolio structure analysis.
 
 Concentration (Herfindahl index, effective number of holdings, pooled weight distribution),
 sector exposure from a static sector label, and the link between the correlation-spectrum

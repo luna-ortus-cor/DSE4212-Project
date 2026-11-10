@@ -90,6 +90,26 @@ residual & n\_placebo & 20 \\
 forecast & n\_portfolios & 500 \\
 forecast & dirichlet\_alphas & [1.0, 0.1] \\
 forecast & hac\_lag & 3 \\
+regularized & ridge\_lambdas & [0.1, 1.0, 10.0] \\
+regularized & shrink\_gammas & [0.25, 0.5, 0.75] \\
+regularized & l1\_bounds & [1.25, 1.5, 2.0] \\
+regularized & enet\_bound & 1.5 \\
+regularized & enet\_lambda & 1.0 \\
+ml & momentum\_days & 252 \\
+ml & skip\_days & 21 \\
+ml & reversal\_days & 21 \\
+ml & vol\_days & 63 \\
+ml & horizon\_days & 21 \\
+ml & purge\_days & 21 \\
+ml & min\_train\_dates & 24 \\
+ml & retrain\_every & 6 \\
+ml & ridge\_alpha & 0.1 \\
+ml & rf\_trees & 200 \\
+ml & rf\_max\_depth & 4 \\
+ml & rf\_min\_leaf & 50 \\
+ml & rf\_max\_features & 0.5 \\
+ml & ic\_gate\_t & 2.0 \\
+ml & force\_portfolio & True \\
 \bottomrule
 \end{tabular}}
 \end{table}

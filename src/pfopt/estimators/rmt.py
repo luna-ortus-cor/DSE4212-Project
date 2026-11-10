@@ -1,4 +1,4 @@
-"""Random-matrix-theory (RMT) eigenvalue clipping (PLAN.md step 2.2).
+"""Random-matrix-theory (RMT) eigenvalue clipping.
 
 Idea: for ``T`` observations of ``N`` independent assets, the eigenvalues of the sample
 correlation matrix follow the Marchenko-Pastur (MP) law with upper edge

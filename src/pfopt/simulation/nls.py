@@ -1,6 +1,6 @@
-"""Simulation check of nonlinear shrinkage against the other estimators (PLAN.md step 8.2).
+"""Simulation check of nonlinear shrinkage against the other estimators.
 
-The factor-model study of step 6.1 (same true model, same generators ``[seed, 1, T, r]``, so the
+The factor-model study (same true model, same generators ``[seed, 1, T, r]``, so the
 draws are identical to the baseline study) is rerun with the quadratic-inverse-shrinkage covariance
 added to the sample, Ledoit-Wolf, RMT and PCA estimators. Two scenarios: ``stationary`` (the 6.1
 baseline) and ``time-varying`` (the 6.3 design). Scores are the relative Frobenius error of the

@@ -1,4 +1,4 @@
-"""Step 8.18: covariance forecast loss on random portfolios.
+"""Covariance forecast loss on random portfolios.
 
 At every rebalance date each covariance estimator (sample, Ledoit-Wolf, RMT, PCA, nonlinear
 shrinkage, PCA plus sector blocks) forecasts the variance of the same random long-only portfolios

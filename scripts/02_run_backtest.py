@@ -1,11 +1,11 @@
-"""Step 4.5: run the main backtest (Tracks A and B) and write tables and figures.
+"""Run the main backtest and write tables and figures.
 
 1. Load the cached weights (``results/cache/<config hash>/``) or generate them; stale caches
    without the volatility-forecast columns are regenerated.
 2. Simulate every strategy with drift and proportional costs (``backtest.cost_bps``).
 3. Write the metrics tables to ``results/tables`` and the figures ``bt_*`` to ``results/figures``.
 4. Cache daily gross/net returns and turnover (``returns_gross.parquet``, ``returns_net.parquet``,
-   ``turnover.parquet``, ``spx_returns.parquet``) next to the weights for the Phase 5 analyses.
+   ``turnover.parquet``, ``spx_returns.parquet``) next to the weights for the later analyses.
 
 The S&P 500 index file starts later than the strategies and is a price index (no dividends), so SPX
 only appears in the common-period table and figure, which start at its first return date.

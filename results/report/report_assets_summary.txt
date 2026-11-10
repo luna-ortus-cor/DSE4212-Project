@@ -1,3 +1,25 @@
-stages run: 0, failed: 0
-figures: 27 (12 main), tables: 34 (8 main)
+stages run: 21, failed: 0
+  03_eda.py                        9.1 s
+  03b_markowitz_frontier.py       12.7 s
+  02a_compare_estimators.py        9.8 s
+  02_run_backtest.py               9.2 s
+  05_significance.py               9.1 s
+  06_subperiods.py                 4.0 s
+  07_sensitivity.py               14.4 s
+  08_structure.py                 10.4 s
+  09_unconstrained.py              7.6 s
+  10_simulation.py                 6.7 s
+  12_pipeline_check.py             2.5 s
+  13_inference.py                 17.3 s
+  14_nonstationarity.py            6.1 s
+  15_residual_structure.py        16.2 s
+  16_sector_block.py               4.6 s
+  17_sector_placebo.py             3.0 s
+  18_risk_based.py                 5.6 s
+  19_nonlinear_shrinkage.py        4.6 s
+  20_forecast_loss.py             71.2 s
+  21_regularized_weights.py        7.9 s
+  22_ml_forecasts.py              14.5 s
+figures: 27 (12 main), tables: 39 (8 main)
+stale files removed: 0
 assets with problems: 0

@@ -1,4 +1,4 @@
-4 synthetic panels of 150 symbols x 2500 days; universe N=100, T=504, about 96 rebalance dates per panel; step 6.1 factor model, K=3
+4 synthetic panels of 150 symbols x 2500 days; universe N=100, T=504, about 96 rebalance dates per panel; simulation factor model, K=3
 VERDICT: accounting and identity checks PASS
 
 1. accounting: mean of r^2 / (w' Sigma w) should be 1 (pass if |z| <= 3); realized/predicted = realized volatility over the mean volatility forecast:
@@ -19,7 +19,7 @@ GMV-SAMPLE      6.66e-16    True
    GMV-PCA      6.66e-16    True
        HRP      8.88e-16    True
 
-3. ranking: mean log(true variance / sample GMV true variance) over rebalance dates (negative = beats sample); 95% t-interval across panels; study_6_1 = same quantity from step 6.1 at the same T (Gaussian, long-only, different random model):
+3. ranking: mean log(true variance / sample GMV true variance) over rebalance dates (negative = beats sample); 95% t-interval across panels; study_6_1 = same quantity from the simulation study at the same T (Gaussian, long-only, different random model):
             mean_log_ratio      se  ci_low  ci_high  n_panels  mean_var_ratio  mean_l1_dist  study_6_1
 strategy                                                                                              
 EW                  0.5959  0.0199  0.5327   0.6591         4          1.9194        1.4986     0.5811

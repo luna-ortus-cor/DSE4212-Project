@@ -1,4 +1,4 @@
-"""Covariance forecast loss on random portfolios (PLAN.md step 8.18).
+"""Covariance forecast loss on random portfolios.
 
 The GMV backtest scores a covariance estimator only through the portfolio that optimizes against
 it, where selection bias is strongest. Here every estimator forecasts the variance of the *same*

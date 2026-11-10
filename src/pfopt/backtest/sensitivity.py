@@ -1,4 +1,4 @@
-"""Sensitivity analyses driver (PLAN.md step 5.3).
+"""Sensitivity analyses driver.
 
 One declarative list of :class:`Scenario` objects covers every grid: estimation window ``T``,
 universe size ``N`` (so ``q = N / T`` varies), transaction costs, a 10% weight cap, the PCA factor

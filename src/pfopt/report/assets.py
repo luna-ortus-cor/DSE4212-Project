@@ -1,8 +1,8 @@
-"""Assembly and checking of the report figures and tables (PLAN.md step 7.1).
+"""Assembly and checking of the report figures and tables.
 
 The stage scripts write their outputs to ``results/figures`` and ``results/tables``. This module
 defines which of them enter the report (:data:`FIGURES`, :data:`TABLES`), checks the figure files
-against the style rules of ``CLAUDE.md`` section 8 (PNG plus PDF, 300 dpi, at most 6.3 in wide),
+against the report style rules (PNG plus PDF, 300 dpi, at most 6.3 in wide),
 selects and formats the table columns and renders Markdown and LaTeX versions. Nothing here
 contains result numbers: every value comes from the CSV files written by the stage scripts.
 """
@@ -99,9 +99,9 @@ FIGURES = (
     FigureSpec("struct_eigen", "struct_eigen", APPENDIX, "Spectrum diagnostics and performance."),
     FigureSpec("simulation_t", "sim_student_t", APPENDIX, "Simulation study, Student-t returns."),
     FigureSpec("res_blocks", "res_blocks", APPENDIX,
-               "Extension 8.23: mean residual correlation by sector pair."),
+               "Extension: mean residual correlation by sector pair."),
     FigureSpec("res_timeseries", "res_timeseries", APPENDIX,
-               "Extension 8.23: sector structure of the PCA residual over time."),
+               "Extension: sector structure of the PCA residual over time."),
 )  # fmt: skip
 
 _PERFORMANCE = (
@@ -139,61 +139,77 @@ TABLES = (
     TableSpec("simulation_detection", "simulation_detection.csv", APPENDIX,
               "Simulation: detected number of factors."),
     TableSpec("pipeline_accounting", "pipeline_check_accounting.csv", APPENDIX,
-              "Extension 8.20: accounting check of the backtest on synthetic panels."),
+              "Extension: accounting check of the backtest on synthetic panels."),
     TableSpec("pipeline_identity", "pipeline_check_identity.csv", APPENDIX,
-              "Extension 8.20: backtest engine against the direct evaluation."),
+              "Extension: backtest engine against the direct evaluation."),
     TableSpec("pipeline_estimation", "pipeline_check_estimation.csv", APPENDIX,
-              "Extension 8.20: estimator ranking of the engine on synthetic panels."),
+              "Extension: estimator ranking of the engine on synthetic panels."),
     TableSpec("inference", "inference_tests.csv", APPENDIX,
-              "Extension 8.21: studentized bootstrap tests with Holm adjustment and detectable "
+              "Extension: studentized bootstrap tests with Holm adjustment and detectable "
               "effects.",
               ("reference", "strategy", "test", "estimate", "ci_low", "ci_high", "p_value",
                "p_holm", "mde")),
     TableSpec("inference_blocklength", "inference_blocklength.csv", APPENDIX,
-              "Extension 8.21: sensitivity of the Holm-adjusted p-values to the block length.",
+              "Extension: sensitivity of the Holm-adjusted p-values to the block length.",
               ("block_length", "reference", "strategy", "test", "estimate", "p_value",
                "p_holm")),
     TableSpec("nonstat_metrics", "nonstat_real_metrics.csv", APPENDIX,
-              "Extension 8.22: EWMA strategies against sample GMV, net of costs."),
+              "Extension: EWMA strategies against sample GMV, net of costs."),
     TableSpec("nonstat_tests", "nonstat_real_tests.csv", APPENDIX,
-              "Extension 8.22: studentized tests of the EWMA strategies.",
+              "Extension: studentized tests of the EWMA strategies.",
               ("reference", "strategy", "test", "estimate", "ci_low", "ci_high", "p_value",
                "p_holm", "mde")),
     TableSpec("nonstat_calibration", "nonstat_calibration.csv", APPENDIX,
-              "Extension 8.22: market volatility dynamics, a priori against calibrated."),
+              "Extension: market volatility dynamics, a priori against calibrated."),
     TableSpec("nonstat_control", "nonstat_sim_paired.csv", APPENDIX,
-              "Extension 8.22: positive control, paired true-variance ratio against sample GMV.",
+              "Extension: positive control, paired true-variance ratio against sample GMV.",
               ("design", "T", "method", "mean_log_ratio", "ci_low", "ci_high")),
     TableSpec("residual_blocks", "residual_structure_blocks.csv", APPENDIX,
-              "Extension 8.23: mean residual correlation by sector pair.", index_label="sector"),
+              "Extension: mean residual correlation by sector pair.", index_label="sector"),
     TableSpec("residual_links", "residual_structure_correlations.csv", APPENDIX,
-              "Extension 8.23: window diagnostics against relative volatility (descriptive)."),
+              "Extension: window diagnostics against relative volatility (descriptive)."),
     TableSpec("sectorblock_metrics", "sectorblock_real_metrics.csv", APPENDIX,
-              "Extension 8.24: PCA plus sector-block strategy, net of costs."),
+              "Extension: PCA plus sector-block strategy, net of costs."),
     TableSpec("sectorblock_tests", "sectorblock_real_tests.csv", APPENDIX,
-              "Extension 8.24: studentized tests of the sector-block strategy.",
+              "Extension: studentized tests of the sector-block strategy.",
               ("reference", "strategy", "test", "estimate", "ci_low", "ci_high", "p_value",
                "p_holm", "mde")),
     TableSpec("sectorblock_control", "sectorblock_sim_vs_pca.csv", APPENDIX,
-              "Extension 8.24: positive and negative control, paired ratio against PCA."),
+              "Extension: positive and negative control, paired ratio against PCA."),
     TableSpec("forecastloss", "forecastloss_summary.csv", APPENDIX,
-              "Extension 8.18: covariance forecast loss on random portfolios (QLIKE)."),
+              "Extension: covariance forecast loss on random portfolios (QLIKE)."),
     TableSpec("nls_metrics", "nls_real_metrics.csv", APPENDIX,
-              "Extension 8.2: quadratic-inverse shrinkage GMV, net of costs."),
+              "Extension: quadratic-inverse shrinkage GMV, net of costs."),
     TableSpec("nls_tests", "nls_real_tests.csv", APPENDIX,
-              "Extension 8.2: studentized tests of GMV-NLS against sample and RMT.",
+              "Extension: studentized tests of GMV-NLS against sample and RMT.",
               ("reference", "strategy", "test", "estimate", "ci_low", "ci_high", "p_value",
                "p_holm", "mde")),
     TableSpec("nls_simulation", "nls_sim_paired.csv", APPENDIX,
-              "Extension 8.2: simulation, true GMV variance against the sample covariance."),
+              "Extension: simulation, true GMV variance against the sample covariance."),
     TableSpec("riskbased_metrics", "riskbased_metrics.csv", APPENDIX,
-              "Extension 8.7: inverse-volatility and ERC portfolios, net of costs."),
+              "Extension: inverse-volatility and ERC portfolios, net of costs."),
     TableSpec("riskbased_tests", "riskbased_tests.csv", APPENDIX,
-              "Extension 8.7: studentized tests against ERC-SAMPLE and IVOL.",
+              "Extension: studentized tests against ERC-SAMPLE and IVOL.",
+              ("reference", "strategy", "test", "estimate", "ci_low", "ci_high", "p_value",
+               "p_holm", "mde")),
+    TableSpec("regularized_metrics", "regularized_metrics.csv", APPENDIX,
+              "Extension: ridge, shrinkage, L1-bounded and elastic-net weights, net of costs."),
+    TableSpec("regularized_tests", "regularized_tests.csv", APPENDIX,
+              "Extension: studentized tests against GMV-SAMPLE and EW.",
+              ("reference", "strategy", "test", "estimate", "ci_low", "ci_high", "p_value",
+               "p_holm", "mde")),
+    TableSpec("ml_signal_ic", "ml_signal_ic.csv", APPENDIX,
+              "Extension: out-of-sample rank IC of the ML signals and the single features.",
+              index_label="predictor"),
+    TableSpec("ml_metrics", "ml_metrics.csv", APPENDIX,
+              "Extension: ML-fed max-Sharpe portfolios (IC gate failed, shown for "
+              "completeness) and core references, net of costs."),
+    TableSpec("ml_tests", "ml_tests.csv", APPENDIX,
+              "Extension: studentized tests against MV-RMT, GMV-RMT and EW.",
               ("reference", "strategy", "test", "estimate", "ci_low", "ci_high", "p_value",
                "p_holm", "mde")),
     TableSpec("sectorblock_placebo", "sectorblock_placebo.csv", APPENDIX,
-              "Extension 8.25: random-label placebo draws of the sector-block strategy."),
+              "Extension: random-label placebo draws of the sector-block strategy."),
 )  # fmt: skip
 
 _EXCLUDED_PARAMETERS = ("paths", "stocks_file", "companies_file", "index_file")
@@ -349,6 +365,20 @@ def to_latex(frame: pd.DataFrame, caption: str, label: str, numeric: list[bool])
         r"\end{table}",
     ]
     return "\n".join(lines) + "\n"
+
+
+def stale_assets(folder: Path, expected: set[str], extensions: tuple[str, ...]) -> list[Path]:
+    """Files in ``folder`` with one of ``extensions`` whose stem is not in ``expected``.
+
+    Report numbering follows the registry order, so an asset can move to a new number and leave the
+    file under its old name behind. Files with other extensions (for example logs) are ignored.
+    """
+    suffixes = {f".{e}" for e in extensions}
+    return sorted(
+        path
+        for path in folder.iterdir()
+        if path.is_file() and path.suffix in suffixes and path.stem not in expected
+    )
 
 
 def numeric_columns(frame: pd.DataFrame) -> list[bool]:

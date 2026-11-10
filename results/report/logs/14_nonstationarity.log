@@ -1,0 +1,3 @@
+2026-11-11 06:17:41,488 INFO loading cached EWMA weights from /mnt/c/Users/russn/work/Y5S1/DSE4212/DSE4212_Project/results/cache/7cf44adf637b/ewma_126-63
+2026-11-11 06:17:44,907 INFO loading cached simulation scores from /mnt/c/Users/russn/work/Y5S1/DSE4212/DSE4212_Project/results/cache/nonstationarity/3bd46d00f339
+2026-11-11 06:17:45,010 INFO summary written to /mnt/c/Users/russn/work/Y5S1/DSE4212/DSE4212_Project/results/tables/nonstat_summary.txt

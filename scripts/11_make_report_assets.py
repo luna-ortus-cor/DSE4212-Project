@@ -1,10 +1,12 @@
-"""Step 7.1: regenerate every figure and table of the report from the cached results.
+"""Regenerate every figure and table of the report from the cached results.
 
 First re-runs the analysis stage scripts (each reads the cached weights and returns, so this takes
 minutes, not hours), then copies the report figures (PNG and PDF) and tables (CSV, Markdown,
 LaTeX) to ``results/report`` under report numbering, checks every file against the style rules
-and writes ``manifest.csv`` and ``report_assets_summary.txt`` there. Exits with status 1 if a
-stage failed or an asset is missing or breaks a rule.
+and writes ``manifest.csv`` and ``report_assets_summary.txt`` there. Files in ``results/report``
+figures and tables that the manifest does not list (left over when the report numbering moved, or
+from an asset that failed to build) are deleted, so the folder holds exactly the report assets.
+Exits with status 1 if a stage failed or an asset is missing or breaks a rule.
 
 Prerequisite: the cleaned data (``scripts/01b_clean_data.py``) and a completed backtest
 (``scripts/02_run_backtest.py``; it is re-run here and uses its cache).
@@ -35,6 +37,7 @@ from pfopt.report.assets import (
     format_table,
     numeric_columns,
     parameter_table,
+    stale_assets,
     to_latex,
     to_markdown,
 )
@@ -60,6 +63,8 @@ STAGES = (
     "18_risk_based.py",
     "19_nonlinear_shrinkage.py",
     "20_forecast_loss.py",
+    "21_regularized_weights.py",
+    "22_ml_forecasts.py",
 )
 
 
@@ -141,6 +146,21 @@ def _build_tables(
     return rows
 
 
+def _remove_stale(manifest: pd.DataFrame, figures_out: Path, tables_out: Path) -> list[Path]:
+    """Delete report files that the manifest does not list; return the deleted paths."""
+    removed = []
+    for kind, folder, extensions in (
+        ("figure", figures_out, ("png", "pdf")),
+        ("table", tables_out, ("csv", "md", "tex")),
+    ):
+        rows = manifest[(manifest["kind"] == kind) & (manifest["problems"] == "")]
+        for path in stale_assets(folder, set(rows["name"]), extensions):
+            path.unlink()
+            logger.info("removed stale report file %s", path.name)
+            removed.append(path)
+    return removed
+
+
 def main() -> None:
     """Re-run the stages, assemble the report assets and write the manifest."""
     parser = argparse.ArgumentParser(description="Assemble the report figures and tables.")
@@ -164,6 +184,7 @@ def main() -> None:
     rows += _build_tables(root / cfg.paths.tables_dir, parameter_table(cfg), tables_out)
     manifest = pd.DataFrame(rows)
     manifest.to_csv(out / "manifest.csv", index=False)
+    removed = _remove_stale(manifest, figures_out, tables_out)
 
     failed = [s for s in stages if s["returncode"] != 0]
     broken = manifest[manifest["problems"] != ""]
@@ -175,6 +196,8 @@ def main() -> None:
         f"({int(((manifest['kind'] == 'figure') & (manifest['role'] == MAIN)).sum())} main), "
         f"tables: {int((manifest['kind'] == 'table').sum())} "
         f"({int(((manifest['kind'] == 'table') & (manifest['role'] == MAIN)).sum())} main)",
+        f"stale files removed: {len(removed)}",
+        *(f"  {p.parent.name}/{p.name}" for p in removed),
         f"assets with problems: {len(broken)}",
         *(f"  {r['name']}: {r['problems']}" for _, r in broken.iterrows()),
     ]
