@@ -416,7 +416,7 @@ def plot_mp_spectra(panels: Sequence[tuple[str, dict]]) -> Figure:
     axes[0].set_ylabel("Density (log scale)")
     handles, labels = axes[0].get_legend_handles_labels()
     fig.legend(handles, labels, loc="outside lower center", ncol=3, fontsize=7)
-    fig.supxlabel("Eigenvalue (log scale)", fontsize=9)
+    axes[len(axes) // 2].set_xlabel("Eigenvalue (log scale)", fontsize=9)
     return fig
 
 

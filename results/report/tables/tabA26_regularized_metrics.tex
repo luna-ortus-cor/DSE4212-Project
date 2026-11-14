@@ -1,10 +1,11 @@
 \begin{table}[t]
 \centering\footnotesize
+\setlength{\tabcolsep}{3pt}
 \caption{Extension: ridge, shrinkage, L1-bounded and elastic-net weights, net of costs.}\label{tab:regularized_metrics}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{lrrrrrrrrr}
 \toprule
-strategy & ann\_vol & ann\_return & sharpe & max\_drawdown & annual\_turnover & mean\_leverage & mean\_effective\_n & mean\_pred\_vol & realized\_over\_pred \\
+Strategy & \shortstack{Annual\\volatility} & \shortstack{Annual\\return} & Sharpe & \shortstack{Max.\\drawdown} & \shortstack{Annual\\turnover} & \shortstack{Mean\\leverage} & \shortstack{Mean\\effective $N$} & \shortstack{Mean\\predicted vol.} & \shortstack{Realized/\\predicted vol.} \\
 \midrule
 GMV-RIDGE-0.1 & 0.129 & 0.096 & 0.774 & -0.340 & 2.098 & 1.000 & 14.322 & 0.110 & 1.172 \\
 GMV-RIDGE-1 & 0.131 & 0.107 & 0.840 & -0.346 & 1.524 & 1.000 & 30.615 & 0.117 & 1.120 \\

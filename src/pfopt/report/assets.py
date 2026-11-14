@@ -81,7 +81,7 @@ FIGURES = (
         "subperiods", "subperiod_sharpe_drawdown", MAIN, "Sharpe and drawdown by subperiod."
     ),
     FigureSpec("sens_q", "sens_q", MAIN, "Sensitivity to N and T (ratio q = N / T)."),
-    FigureSpec("h3", "unc_h3", MAIN, "Long-only against unconstrained GMV (hypothesis H3)."),
+    FigureSpec("h3", "unc_h3", MAIN, "Long-only against unconstrained GMV (hypothesis H2)."),
     FigureSpec("simulation", "sim_gaussian", MAIN, "Simulation study, Gaussian returns."),
     FigureSpec("return_hist", "eda_return_hist", APPENDIX, "Pooled return distribution."),
     FigureSpec("rolling_corr", "eda_rolling_corr", APPENDIX, "Rolling average correlation."),
@@ -124,7 +124,7 @@ TABLES = (
               "Long-only and unconstrained GMV.",
               ("strategy", "constraint", "ann_vol", "sharpe", "annual_turnover",
                "mean_max_weight", "mean_leverage", "realized_over_pred")),
-    TableSpec("h3_tests", "unconstrained_h3.csv", MAIN, "Hypothesis H3 bootstrap test.",
+    TableSpec("h3_tests", "unconstrained_h3.csv", MAIN, "Hypothesis H2 bootstrap test.",
               index_label="name"),
     TableSpec("common_period", "common_period_metrics.csv", APPENDIX,
               "Metrics on the common period with the S&P 500.", _PERFORMANCE),
@@ -213,6 +213,49 @@ TABLES = (
 )  # fmt: skip
 
 _EXCLUDED_PARAMETERS = ("paths", "stocks_file", "companies_file", "index_file")
+
+_LATEX_HEADERS = {
+    "main_net": (
+        "Strategy & Return & Volatility & Sharpe & Sortino & Max. DD & Calmar & CVaR & Turnover"
+    ),
+    "h3_tests": (
+        r"Estimator & Unconstrained & Long-only & Difference & \shortstack{95\% CI\\lower}"
+        r" & \shortstack{95\% CI\\upper} & Raw $p$ & Significant"
+    ),
+    "concentration": (
+        r"Strategy & \shortstack{Mean\\HHI} & \shortstack{Mean\\effective $N$}"
+        r" & \shortstack{Mean max.\\weight} & \shortstack{Mean\\top-10 share}"
+        r" & \shortstack{Mean\\positions} & \shortstack{Zero\\share} & P50 & P90 & P99 & Max."
+    ),
+    "risk_forecast": (
+        r"Strategy & Periods & \shortstack{Mean\\ratio} & \shortstack{Median\\ratio}"
+        r" & \shortstack{Mean log\\ratio} & \shortstack{Pooled\\variance ratio}"
+        r" & \shortstack{Bias\\statistic} & \shortstack{Pooled\\realized vol.}"
+        r" & \shortstack{Mean\\predicted vol.}"
+    ),
+    "regularized_metrics": (
+        r"Strategy & \shortstack{Annual\\volatility} & \shortstack{Annual\\return} & Sharpe"
+        r" & \shortstack{Max.\\drawdown} & \shortstack{Annual\\turnover}"
+        r" & \shortstack{Mean\\leverage} & \shortstack{Mean\\effective $N$}"
+        r" & \shortstack{Mean\\predicted vol.} & \shortstack{Realized/\\predicted vol.}"
+    ),
+}
+_LATEX_NOTES = {
+    "main_net": (
+        "Return is geometric annual return; volatility is annualized. Return, volatility, "
+        r"drawdown and CVaR are decimals. CVaR is the daily 95\% tail loss; turnover is annual "
+        r"$\sum_i|\Delta w_i|$."
+    ),
+    "h3_tests": (
+        "Unconstrained and Long-only are log variance ratios against sample GMV under the "
+        "same constraint. Difference is unconstrained minus long-only; negative values support H2."
+    ),
+    "concentration": (
+        r"HHI is $\sum_i w_i^2$. Averages are over rebalance dates; P50, P90, P99 and Max. "
+        "describe pooled asset weights."
+    ),
+}
+_COMPACT_TABLES = {"concentration", "risk_forecast", "regularized_metrics"}
 
 
 def png_info(path: Path) -> tuple[int, int, float | None]:
@@ -345,7 +388,7 @@ def to_latex(frame: pd.DataFrame, caption: str, label: str, numeric: list[bool])
         Per column, whether it is right-aligned (numeric) or left-aligned.
     """
     spec = "".join("r" if is_num else "l" for is_num in numeric)
-    header = " & ".join(_escape_latex(str(c)) for c in frame.columns) + r" \\"
+    header = _LATEX_HEADERS.get(label, " & ".join(_escape_latex(str(c)) for c in frame.columns))
     body = [
         " & ".join(_escape_latex(cell) for cell in row) + r" \\"
         for row in frame.astype(str).to_numpy().tolist()
@@ -353,17 +396,24 @@ def to_latex(frame: pd.DataFrame, caption: str, label: str, numeric: list[bool])
     lines = [
         r"\begin{table}[t]",
         r"\centering\footnotesize",
+        *([r"\setlength{\tabcolsep}{3pt}"] if label in _COMPACT_TABLES else []),
         rf"\caption{{{_escape_latex(caption)}}}\label{{tab:{label}}}",
         r"\resizebox{\textwidth}{!}{%",
         rf"\begin{{tabular}}{{{spec}}}",
         r"\toprule",
-        header,
+        header + r" \\",
         r"\midrule",
         *body,
         r"\bottomrule",
         r"\end{tabular}}",
-        r"\end{table}",
     ]
+    if label in _LATEX_NOTES:
+        lines.append(
+            r"\par\smallskip\begin{minipage}{\textwidth}\footnotesize\raggedright "
+            + _LATEX_NOTES[label]
+            + r"\end{minipage}"
+        )
+    lines.append(r"\end{table}")
     return "\n".join(lines) + "\n"
 
 

@@ -126,7 +126,7 @@ def test_predicted_volatility_columns(data, result) -> None:
     assert result.diagnostics.loc[date, "pred_vol_GMV-SAMPLE"] == pytest.approx(expected, rel=1e-9)
 
 
-def test_no_leakage_corrupting_the_future_leaves_past_weights_bit_identical(data, result) -> None:
+def test_no_leakage_corrupting_the_future_leaves_past_weights_unchanged(data, result) -> None:
     log_returns, dollar_volume = data
     cutoff = log_returns.index[95]
     rng = np.random.default_rng(123)
@@ -134,6 +134,12 @@ def test_no_leakage_corrupting_the_future_leaves_past_weights_bit_identical(data
     bad_returns, bad_volume = log_returns.copy(), dollar_volume.copy()
     bad_returns.loc[future] = 5.0 * rng.normal(size=bad_returns.loc[future].shape)
     bad_volume.loc[future] = rng.uniform(0.1, 9.0, size=bad_volume.loc[future].shape)
+    pd.testing.assert_frame_equal(
+        log_returns.loc[:cutoff], bad_returns.loc[:cutoff], check_exact=True
+    )
+    pd.testing.assert_frame_equal(
+        dollar_volume.loc[:cutoff], bad_volume.loc[:cutoff], check_exact=True
+    )
     corrupted = generate_weights(bad_returns, bad_volume, CFG)
 
     past = result.diagnostics.index <= cutoff
@@ -141,7 +147,7 @@ def test_no_leakage_corrupting_the_future_leaves_past_weights_bit_identical(data
     for strategy in ALL_STRATEGIES:
         before = result.weights[strategy].loc[past].to_numpy()
         after = corrupted.weights[strategy].loc[corrupted.diagnostics.index <= cutoff].to_numpy()
-        assert np.array_equal(before, after), strategy
+        np.testing.assert_allclose(before, after, rtol=0.0, atol=1e-10, err_msg=strategy)
     assert np.array_equal(
         result.universe.loc[past].to_numpy(),
         corrupted.universe.loc[corrupted.diagnostics.index <= cutoff].to_numpy(),

@@ -1,14 +1,15 @@
 \begin{table}[t]
 \centering\footnotesize
-\caption{Hypothesis H3 bootstrap test.}\label{tab:h3_tests}
+\caption{Hypothesis H2 bootstrap test.}\label{tab:h3_tests}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{lrrrrrrl}
 \toprule
-name & gap\_a & gap\_b & estimate & ci\_low & ci\_high & p\_value & significant \\
+Estimator & Unconstrained & Long-only & Difference & \shortstack{95\% CI\\lower} & \shortstack{95\% CI\\upper} & Raw $p$ & Significant \\
 \midrule
 Ledoit-Wolf & -0.068 & -0.012 & -0.055 & -0.080 & -0.033 & 4.0e-04 & yes \\
 RMT & 0.090 & 0.087 & 0.003 & -0.050 & 0.049 & 0.952 & no \\
 PCA & 0.168 & 0.066 & 0.103 & 0.054 & 0.161 & 4.0e-04 & yes \\
 \bottomrule
 \end{tabular}}
+\par\smallskip\begin{minipage}{\textwidth}\footnotesize\raggedright Unconstrained and Long-only are log variance ratios against sample GMV under the same constraint. Difference is unconstrained minus long-only; negative values support H2.\end{minipage}
 \end{table}

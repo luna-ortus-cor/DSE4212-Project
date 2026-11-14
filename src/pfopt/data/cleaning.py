@@ -1,9 +1,9 @@
 """Cleaning and return matrices.
 
 Turns the raw long stock panel into Date x Symbol matrices of log returns (for estimation),
-simple returns (for portfolio P&L), volume and dollar volume. No look-ahead is possible here: every
-operation is causal in time (forward fill, one-day differences). Winsorization is *not* applied
-here; it is done per estimation window inside the backtest to avoid leakage.
+simple returns (for portfolio P&L), volume and dollar volume. Listed spans and missingness-based
+exclusions use the full panel. Winsorization is *not* applied here; it is done per estimation
+window inside the backtest to avoid leakage.
 """
 
 from __future__ import annotations
@@ -73,7 +73,7 @@ def clean_prices(
 ) -> CleaningResult:
     """Clean the raw stock panel and build return, volume and dollar-volume matrices.
 
-    Steps (all causal in time):
+    Steps:
 
     1. Restrict to ``[start_date, end_date]``; pivot ``Adj Close``, ``Close`` and ``Volume`` to
        Date x Symbol. Non-positive adjusted prices are masked to NaN. Dates on which no symbol has

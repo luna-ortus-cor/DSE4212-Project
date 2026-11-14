@@ -1,10 +1,11 @@
 \begin{table}[t]
 \centering\footnotesize
+\setlength{\tabcolsep}{3pt}
 \caption{Weight concentration.}\label{tab:concentration}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{lrrrrrrrrrr}
 \toprule
-strategy & mean\_hhi & mean\_effective\_n & mean\_max\_weight & mean\_top10\_share & mean\_n\_positions & share\_zero & p50 & p90 & p99 & max \\
+Strategy & \shortstack{Mean\\HHI} & \shortstack{Mean\\effective $N$} & \shortstack{Mean max.\\weight} & \shortstack{Mean\\top-10 share} & \shortstack{Mean\\positions} & \shortstack{Zero\\share} & P50 & P90 & P99 & Max. \\
 \midrule
 EW & 0.010 & 100.000 & 0.010 & 0.100 & 100.000 & 0.000 & 0.010 & 0.010 & 0.010 & 0.010 \\
 GMV-SAMPLE & 0.112 & 10.275 & 0.207 & 0.844 & 20.109 & 0.799 & 2.3e-12 & 0.030 & 0.158 & 0.430 \\
@@ -17,4 +18,5 @@ MV-SAMPLE & 0.157 & 6.932 & 0.256 & 0.967 & 11.365 & 0.886 & 1.5e-13 & 0.014 & 0
 MV-RMT & 0.162 & 6.841 & 0.263 & 0.962 & 11.359 & 0.886 & 1.6e-13 & 0.014 & 0.214 & 0.481 \\
 \bottomrule
 \end{tabular}}
+\par\smallskip\begin{minipage}{\textwidth}\footnotesize\raggedright HHI is $\sum_i w_i^2$. Averages are over rebalance dates; P50, P90, P99 and Max. describe pooled asset weights.\end{minipage}
 \end{table}

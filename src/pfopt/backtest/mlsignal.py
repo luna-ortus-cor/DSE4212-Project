@@ -14,8 +14,8 @@ return after the cutoff. The prediction at ``t`` uses the model from the latest 
 
 The signal is first judged on its own: the out-of-sample Spearman rank information coefficient (IC)
 between the prediction and the realized next-``horizon_days`` return, one value per rebalance date.
-The t-statistic ``mean / (std / sqrt(n))`` treats the dates as independent, which holds when
-``rebalance_days >= horizon_days`` (the label windows then do not overlap).
+The t-statistic ``mean / (std / sqrt(n))`` assumes independent dates. Label windows do not
+overlap when ``rebalance_days >= horizon_days``, but this alone does not establish independence.
 """
 
 from __future__ import annotations

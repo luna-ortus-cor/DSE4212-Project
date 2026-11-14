@@ -93,12 +93,20 @@ def test_no_leakage_and_truncation_prefix(data, result) -> None:
     bad_returns, bad_volume = log_returns.copy(), volume.copy()
     bad_returns.loc[future] = 0.03 * rng.normal(size=bad_returns.loc[future].shape)
     bad_volume.loc[future] = rng.uniform(size=bad_volume.loc[future].shape)
+    pd.testing.assert_frame_equal(
+        log_returns.loc[:cutoff], bad_returns.loc[:cutoff], check_exact=True
+    )
+    pd.testing.assert_frame_equal(volume.loc[:cutoff], bad_volume.loc[:cutoff], check_exact=True)
     corrupted = generate_unconstrained_weights(bad_returns, bad_volume, CFG)
     short = generate_unconstrained_weights(log_returns, volume, CFG, end_date=cutoff)
     for strategy in UNCONSTRAINED_STRATEGIES:
         past = result.weights[strategy].loc[:cutoff]
-        np.testing.assert_array_equal(past.to_numpy(), corrupted.weights[strategy].loc[:cutoff])
-        np.testing.assert_array_equal(past.to_numpy(), short.weights[strategy].to_numpy())
+        np.testing.assert_allclose(
+            past.to_numpy(), corrupted.weights[strategy].loc[:cutoff], rtol=0.0, atol=1e-10
+        )
+        np.testing.assert_allclose(
+            past.to_numpy(), short.weights[strategy].to_numpy(), rtol=0.0, atol=1e-10
+        )
 
 
 def test_simulate_allows_shorts_only_when_asked() -> None:

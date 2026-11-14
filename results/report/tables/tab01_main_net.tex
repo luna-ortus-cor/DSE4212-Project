@@ -4,7 +4,7 @@
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{lrrrrrrrr}
 \toprule
-strategy & ann\_return & ann\_vol & sharpe & sortino & max\_drawdown & calmar & cvar\_95 & annual\_turnover \\
+Strategy & Return & Volatility & Sharpe & Sortino & Max. DD & Calmar & CVaR & Turnover \\
 \midrule
 EW & 0.170 & 0.174 & 0.993 & 1.401 & -0.376 & 0.453 & 0.026 & 0.869 \\
 GMV-LW & 0.094 & 0.130 & 0.758 & 1.066 & -0.335 & 0.280 & 0.019 & 2.262 \\
@@ -17,4 +17,5 @@ MV-RMT & 0.174 & 0.202 & 0.898 & 1.291 & -0.383 & 0.455 & 0.030 & 6.029 \\
 MV-SAMPLE & 0.177 & 0.199 & 0.919 & 1.315 & -0.380 & 0.466 & 0.030 & 5.812 \\
 \bottomrule
 \end{tabular}}
+\par\smallskip\begin{minipage}{\textwidth}\footnotesize\raggedright Return is geometric annual return; volatility is annualized. Return, volatility, drawdown and CVaR are decimals. CVaR is the daily 95\% tail loss; turnover is annual $\sum_i|\Delta w_i|$.\end{minipage}
 \end{table}

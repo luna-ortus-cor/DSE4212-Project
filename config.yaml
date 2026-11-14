@@ -151,5 +151,5 @@ ml:                         # (walk-forward ML return signals); all fixed a prio
   rf_max_depth: 4
   rf_min_leaf: 50
   rf_max_features: 0.5
-  ic_gate_t: 2.0            # mean rank IC > 0 with t >= 2 needed before the optimizer uses a signal
-  force_portfolio: true     # also build portfolios of models that fail the gate (shown for completeness)
+  ic_gate_t: 2.0            # retrospective full-OOS diagnostic: mean rank IC > 0 with t >= 2
+  force_portfolio: true     # build both walk-forward portfolios regardless of the gate

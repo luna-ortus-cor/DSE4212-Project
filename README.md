@@ -16,7 +16,7 @@ pytest -q
 ruff check . && ruff format --check .
 ```
 
-Python 3.11+ (developed on 3.12). Place the Kaggle CSVs in `data/raw/` (not part of the submission):
+Python 3.11+ (developed on 3.12). The supplied Kaggle CSVs are included in `data/raw/`:
 `sp500_stocks.csv`, `sp500_companies.csv`, `sp500_index.csv`.
 
 **Data scope.** Only the supplied stock file is used. Only 172 of its 502 symbols have prices, and the
@@ -131,9 +131,9 @@ Real data (172 priced names, top-100 universe, 156 monthly rebalances, 10 bps co
 - GMV portfolios cut volatility by about 22 to 25% against equal weight (ratio 0.75 to 0.78, significant after Holm).
 - No Sharpe-ratio difference is statistically detectable. The test could only detect a gap of about 0.5 to 0.6
   against equal weight, so this is lack of power, not evidence of equality.
-- Denoising did not help: PCA has 3.3% higher volatility than sample GMV (significant), RMT 4.5% higher (not
-  significant at block 10, p = 0.060; significant at block 5 and not at 20, so only suggestive), and Ledoit-Wolf is
-  indistinguishable in practice.
+- RMT and PCA did not help: PCA has 3.3% higher volatility than sample GMV (significant), RMT 4.5% higher (not
+  significant at block 10, p = 0.060; significant at block 5 and not at 20, so only suggestive), while Ledoit-Wolf lowers
+  volatility by about 0.6%, statistically detectable but economically small.
 - The long-only constraint already regularizes: without it, leverage is 2.7 to 3.7, turnover 6 to 12 times higher,
   and hypothesis H3 holds only for Ledoit-Wolf.
 
@@ -157,7 +157,7 @@ Extensions (reported separately from the core results):
   covariance, which points to how the optimizer uses the estimate. EWMA covariances are consistent with
   non-stationarity but the real-data test is underpowered.
 - Ridge and random-forest return signals have an out-of-sample rank IC that is small and not significant, so the
-  pre-set gate fails; the forced ML portfolios are more concentrated and more volatile than the references.
+  retrospective gate fails; the forced ML portfolios are more concentrated and more volatile than the references.
 
 These are the results of single runs on one data path and the parameters in `config.yaml`, which were fixed in
 advance and not tuned on the test period. Null and negative results are reported as such.

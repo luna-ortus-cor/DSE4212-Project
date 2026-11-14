@@ -1,10 +1,11 @@
 \begin{table}[t]
 \centering\footnotesize
+\setlength{\tabcolsep}{3pt}
 \caption{Volatility forecast quality.}\label{tab:risk_forecast}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{lrrrrrrrr}
 \toprule
-strategy & n\_periods & mean\_ratio & median\_ratio & mean\_log\_ratio & pooled\_variance\_ratio & bias\_statistic & realized\_vol\_pooled & mean\_predicted\_vol \\
+Strategy & Periods & \shortstack{Mean\\ratio} & \shortstack{Median\\ratio} & \shortstack{Mean log\\ratio} & \shortstack{Pooled\\variance ratio} & \shortstack{Bias\\statistic} & \shortstack{Pooled\\realized vol.} & \shortstack{Mean\\predicted vol.} \\
 \midrule
 GMV-SAMPLE & 155 & 1.020 & 0.860 & -0.094 & 1.319 & 1.227 & 0.130 & 0.113 \\
 GMV-LW & 155 & 1.018 & 0.860 & -0.099 & 1.314 & 1.230 & 0.130 & 0.113 \\
